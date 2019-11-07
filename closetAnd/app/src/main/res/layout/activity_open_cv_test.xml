@@ -6,7 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".openCV_test"
     android:orientation="vertical">
-
+    <Button android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/load_image_btn"
+        android:text="Load Image"
+        android:onClick="onButtonClicked"/>
+    <!-- onButtonClicked 는 java file에서 구현한 method.누르면 그 함수 실행-->
     <ImageView
         android:layout_height="wrap_content"
         android:layout_width="match_parent"

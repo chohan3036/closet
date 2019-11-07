@@ -14,7 +14,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     static {
         System.loadLibrary("native-lib");
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,13 +29,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * A native method that is implemented by the 'native-lib' native library,
      * which is packaged with this application.
      */
-    public native String stringFromJNI();
+    ///public native String stringFromJNI();
 
     @Override
     public void onClick(View view) {
         if(view == button){
-            Intent intent = new Intent(this,openCV_test.class);
-            startActivityForResult(intent,30);
+            Intent intent = new Intent(this,GetaLocation.class);
+            //startActivityForResult(intent,30);
+            startActivity(intent);
         }
+
     }
 }
