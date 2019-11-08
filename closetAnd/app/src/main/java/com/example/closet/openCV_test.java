@@ -80,8 +80,8 @@ public class openCV_test extends AppCompatActivity implements CameraBridgeViewBa
         mEdgeImageView.setImageBitmap(mInputImage);
     }
     public void onButtonClicked(View view) {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        //intent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
+        //Intent intent = new Intent(Intent.ACTION_PICK);
+        //intent.setType(android.provider.MediaSto`re.Images.Media.CONTENT_TYPE);
         //intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         //startActivityForResult(intent, REQ_CODE_SELECT_IMAGE);
         Log.d("Log_d Button","ButtonClicked");
