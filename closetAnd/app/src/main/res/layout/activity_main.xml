@@ -6,4 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <Button
+        android:id="@+id/testbutton"
+        android:layout_width="331dp"
+        android:layout_height="275dp"
+        android:layout_gravity="center" />
 </LinearLayout>
