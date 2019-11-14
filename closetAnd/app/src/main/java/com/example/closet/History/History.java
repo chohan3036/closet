@@ -1,20 +1,19 @@
-package com.example.closet;
+package com.example.closet.History;
 
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import com.example.closet.R;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
-public class Home extends Fragment {
+public class History extends Fragment {
 
     View view;
 
-    public Home() {
+    public History()
+    {
         // Required empty public constructor
     }
 
@@ -24,9 +23,10 @@ public class Home extends Fragment {
         super.onCreate(savedInstanceState);
     }
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_home, container, false);
+        view =inflater.inflate(R.layout.fragment_history, container, false);
 
         return view;
     }
