@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="clothes_array2">
+        <item>History</item>
+        <item>Coat</item>
+        <item>Dress</item>
+        <item>Jeans</item>
+        <item>Shirt</item>
+        <item>Shorts</item>
+        <item>Skirt</item>
+        <item>Top</item>
+        <item>Trouser</item>
+    </string-array>
+</resources>
