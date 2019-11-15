@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import com.example.closet.R;
 
 class Clothes_GridAdapter extends BaseAdapter {
@@ -33,18 +33,18 @@ class Clothes_GridAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ImageView imageView;
+        ImageButton imgBtn;
 
         if (convertView == null) {
-            imageView = new ImageView(context);
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(8, 8, 8, 8);
+            imgBtn = new ImageButton(context);
+            imgBtn.setScaleType(ImageButton.ScaleType.CENTER_CROP);
+            imgBtn.setPadding(8, 8, 8, 8);
         }
         else
         {
-            imageView = (ImageView) convertView;
+            imgBtn = (ImageButton) convertView;
         }
-        imageView.setImageResource(imglist[position]);
-        return imageView;
+        imgBtn.setImageResource(imglist[position]);
+        return imgBtn;
     }
 }
