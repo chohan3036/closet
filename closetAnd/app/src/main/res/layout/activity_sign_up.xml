@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/btn_cancel"
+        android:id="@+id/signup_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
@@ -190,7 +190,7 @@
         app:layout_constraintTop_toBottomOf="@+id/et_age" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/signup_ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"

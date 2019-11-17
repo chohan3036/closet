@@ -1,50 +1,97 @@
 package com.example.closet;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.example.closet.Clothes.Clothes;
+import com.example.closet.History.History;
+import com.example.closet.Match.Match;
+import com.example.closet.Recommend.Recommend;
 import com.example.closet.Recommend.recommend_GridAdapter;
+import com.google.android.material.tabs.TabLayout;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-    Button button;
-    ImageButton imageButton;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
     private ViewPager viewPager;
-    // Used to load the 'native-lib' library on application startup.
-    static {
-        System.loadLibrary("native-lib");
-    }
+    private TabLayout tabLayout;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        viewPager.setAdapter(new myPagerAdapter(getSupportFragmentManager()));
 
-        GridView gridview = (GridView) findViewById(R.id.gridview);
-        gridview.setAdapter(new recommend_GridAdapter(this));
+        tabLayout = (TabLayout) findViewById(R.id.tablayout);
+        tabLayout.setupWithViewPager(viewPager);
 
-        imageButton =(ImageButton)findViewById(R.id.imageButton);
-        button = (Button)findViewById(R.id.testbutton);
-        button.setOnClickListener(this);
-        imageButton.setOnClickListener(this);
-        // Example of a call to a native method
-        //TextView tv = findViewById(R.id.sample_text);
-        //tv.setText(stringFromJNI());
+
+        init();
+    }
+
+    public  void init() {
+            int[] tabIcons = new int[]{R.drawable.home, R.drawable.match, R.drawable.history, R.drawable.recommand};
+            for (int i = 0; i < tabIcons.length; i++) {
+
+
+            ImageView imageView = new ImageView(this);
+            imageView.setBackgroundColor(Color.TRANSPARENT);
+            imageView.setImageResource(tabIcons[i]);
+            //imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            //imageView.setPadding(5, 5, 5, 5);
+            try{tabLayout.getTabAt(i).setCustomView(imageView);}
+            catch (Exception e){
+                Log.d("Log_d",e.toString());}
+            //tabLayout.getTabAt(i).setCustomView(tabIcons[i]);
+        }
+    }
+
+    class myPagerAdapter extends FragmentStatePagerAdapter {
+        List<Fragment> fragmentList = new ArrayList<Fragment>();
+
+        public myPagerAdapter(@NonNull FragmentManager fm) {
+            super(fm);
+            fragmentList.add(new Home());
+            fragmentList.add(new Match());
+            fragmentList.add(new History());
+            fragmentList.add(new Recommend());
+
+        }
+
+        @NonNull
+        @Override
+        public Fragment getItem(int position) {
+            //return null;
+            return this.fragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return this.fragmentList.size();
+        }
     }
 
     public void onClick(View view) {
-        if(view == button){
-            Intent intent = new Intent(this,GetaLocation.class );
-            Intent intent1 = new Intent(this, Clothes.class);
-            //startActivityForResult(intent,30);
-            startActivity(intent);
-        }
 
     }
 }
