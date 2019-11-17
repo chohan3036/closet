@@ -20,6 +20,7 @@ import android.widget.ImageView;
 
 import com.example.closet.Clothes.Clothes;
 import com.example.closet.History.History;
+import com.example.closet.Home.Home;
 import com.example.closet.Match.Match;
 import com.example.closet.Recommend.Recommend;
 import com.example.closet.Recommend.recommend_GridAdapter;
@@ -30,10 +31,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
+    Button button;
+    ImageButton imageButton;
     private ViewPager viewPager;
     private TabLayout tabLayout;
 
+    // Used to load the 'native-lib' library on application startup.
+    static {
+        System.loadLibrary("native-lib");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +51,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tabLayout = (TabLayout) findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
 
-
         init();
     }
 
-    public  void init() {
-            int[] tabIcons = new int[]{R.drawable.home, R.drawable.match, R.drawable.history, R.drawable.recommand};
-            for (int i = 0; i < tabIcons.length; i++) {
+    public void init() {
+        int[] tabIcons = new int[]{R.drawable.home, R.drawable.match, R.drawable.history, R.drawable.recommand};
+        for (int i = 0; i < tabIcons.length; i++) {
 
 
             ImageView imageView = new ImageView(this);
@@ -59,11 +64,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             imageView.setImageResource(tabIcons[i]);
             //imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             //imageView.setPadding(5, 5, 5, 5);
-            try{tabLayout.getTabAt(i).setCustomView(imageView);}
-            catch (Exception e){
-                Log.d("Log_d",e.toString());}
-            //tabLayout.getTabAt(i).setCustomView(tabIcons[i]);
+            try {
+                tabLayout.getTabAt(i).setCustomView(imageView);
+            } catch (Exception e) {
+                Log.d("Log_d", e.toString());
+            }
         }
+    }
+
+    @Override
+    public void onClick(View view) {
+
     }
 
     class myPagerAdapter extends FragmentStatePagerAdapter {
@@ -89,9 +100,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public int getCount() {
             return this.fragmentList.size();
         }
-    }
-
-    public void onClick(View view) {
-
     }
 }
