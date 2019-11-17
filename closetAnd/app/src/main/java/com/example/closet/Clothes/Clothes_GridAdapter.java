@@ -14,7 +14,6 @@ import android.widget.ImageView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.widget.ImageButton;
 import com.example.closet.R;
 
 class Clothes_GridAdapter extends BaseAdapter {
@@ -47,7 +46,6 @@ class Clothes_GridAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();

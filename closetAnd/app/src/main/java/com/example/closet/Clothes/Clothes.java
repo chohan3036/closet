@@ -3,7 +3,6 @@ package com.example.closet.Clothes;
 import java.io.File;
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
@@ -24,9 +23,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.AbsListView.OnScrollListener;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.closet.R;
 
-public class Clothes extends Activity implements ListView.OnScrollListener, GridView.OnItemClickListener{
+public class Clothes extends AppCompatActivity implements ListView.OnScrollListener, GridView.OnItemClickListener{
     boolean mBusy = false;
     ProgressDialog mLoagindDialog;
     GridView mGvImageList;

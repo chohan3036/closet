@@ -28,6 +28,10 @@
         android:resizeable="true"
         android:smallScreens="true" />
 
+    <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="@string/map_key" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -36,28 +40,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity
-            android:name=".MainActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="landscape">
-            <!-- 위의 두줄과 applicaiton전 코드는 카메라에 대한 퍼미션과 조건을 설정해주는 단계 -->
+        <activity android:name=".Match.Match_button"></activity>
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Main2Activity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+
         <activity android:name=".GetaLocation" />
         <activity android:name=".Splash" />
         <activity android:name=".SignUp" />
         <activity android:name=".LogIn" />
-        <activity android:name=".Clothes.Clothes" />
-        <activity android:name=".openCV_test"/>
+        <activity android:name=".Clothes.Clothes"/>
+        <activity android:name=".Clothes.ClothesActivity"/>
+        <activity android:name=".openCV_test" />
 
     </application>
 
