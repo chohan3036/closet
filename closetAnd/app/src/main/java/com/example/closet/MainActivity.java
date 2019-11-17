@@ -47,10 +47,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         viewPager.setAdapter(new myPagerAdapter(getSupportFragmentManager()));
-
         tabLayout = (TabLayout) findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
-
         init();
     }
 
