@@ -1,20 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/clothes_iv"
-            android:layout_gravity="center_horizontal"
-            android:layout_centerInParent="true"
-            android:src="@drawable/example_01"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <CheckBox
-            android:id="@+id/chk_clothes_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true" />
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:fillViewport="true"
+            android:background="#FFFFFF" >
+
+                <ImageView
+                    android:id="@+id/clothes_iv"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/example_01"
+                    android:layout_alignParentTop="true"
+                    android:visibility="visible" />
+
+                <CheckBox
+                    android:id="@+id/chk_clothes_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:clickable="false"
+                    android:focusable="false" />
+
+        </RelativeLayout>
 
 </LinearLayout>

@@ -35,34 +35,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Main2Activity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <activity android:name=".GetaLocation" />
-        <activity android:name=".Splash" />
-        <activity android:name=".SignUp" />
-        <activity android:name=".LogIn" />
-        <activity android:name=".openCV_test">
-        </activity>
 
         <activity
             android:name=".MainActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="landscape">
-
             <!-- 위의 두줄과 applicaiton전 코드는 카메라에 대한 퍼미션과 조건을 설정해주는 단계 -->
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Main2Activity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".GetaLocation" />
+        <activity android:name=".Splash" />
+        <activity android:name=".SignUp" />
+        <activity android:name=".LogIn" />
+        <activity android:name=".Clothes.Clothes" />
+        <activity android:name=".openCV_test"/>
+
     </application>
 
 </manifest>

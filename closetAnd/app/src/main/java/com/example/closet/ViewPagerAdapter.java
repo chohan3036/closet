@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import com.example.closet.History.History;
 import com.example.closet.Match.Match;
 import com.example.closet.Recommend.Recommend;
+import com.example.closet.Home.Home;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
@@ -19,15 +20,15 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         switch(position)
         {
             case 0:
-            return new Home();
+                return new Home();
             case 1:
-            return new Match();
+                return new Match();
             case 2:
-            return new History();
+                return new History();
             case 3:
-            return new Recommend();
+                return new Recommend();
             default:
-            return null;
+                return null;
         }
     }
 
