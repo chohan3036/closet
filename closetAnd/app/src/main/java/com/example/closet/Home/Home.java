@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.closet.Clothes.Clothes;
 import com.example.closet.R;
 import com.example.closet.SignUp;
 
@@ -18,6 +19,9 @@ public class Home extends Fragment implements View.OnClickListener {
 
     View view;
     Button singUp;
+    Button BtnMove;
+
+
     public Home() {
         // Required empty public constructor
     }
@@ -27,12 +31,18 @@ public class Home extends Fragment implements View.OnClickListener {
     {
         super.onCreate(savedInstanceState);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home, container, false);
+
         singUp = (Button)view.findViewById(R.id.signUp);
+        BtnMove = (Button) view.findViewById(R.id.BtnActivityOne);
+
         singUp.setOnClickListener(this);
+        BtnMove.setOnClickListener(this);
+
         return view;
     }
 
@@ -40,6 +50,10 @@ public class Home extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         if(view == singUp){
             Intent intent = new Intent(getActivity(), SignUp.class);
+            startActivityForResult(intent,30);
+        }
+        else if(view == BtnMove){
+            Intent intent = new Intent(getActivity(), Clothes.class);
             startActivityForResult(intent,30);
         }
     }

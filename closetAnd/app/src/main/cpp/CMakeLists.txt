@@ -10,7 +10,11 @@ cmake_minimum_required(VERSION 3.4.1)
 # You can define multiple libraries, and CMake builds them for you.
 # Gradle automatically packages shared libraries with your APK.
 
+<<<<<<< HEAD
 set(pathPROJECT C:/Users/choha/Desktop/systemProject/closet/closetAnd)
+=======
+set(pathPROJECT C:/Users/sookmyung/Desktop/git/closet/closetAnd)
+>>>>>>> origin/uiIssue
 set(pathOPENCV ${pathPROJECT}/opencv-3.4.8-android-sdk/OpenCV-android-sdk)
 set(pathLIBOPENCV_JAVA ${pathPROJECT}/app/src/main/JniLibs/${ANDROID_ABI}/libopencv_java3.so)
 

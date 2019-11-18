@@ -4,15 +4,16 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
+import android.widget.ImageView;
+
 import com.example.closet.R;
 
-class Clothes_GridAdapter extends BaseAdapter {
+class GridAdapter extends BaseAdapter {
 
     private Context context;
     public int[] imglist = {R.drawable.example_01, R.drawable.example_04, R.drawable.example_07};
 
-    public Clothes_GridAdapter(Context c) {
+    public GridAdapter(Context c) {
         context = c;
     }
 
@@ -33,18 +34,18 @@ class Clothes_GridAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ImageButton imgBtn;
+        ImageView imageView;
 
         if (convertView == null) {
-            imgBtn = new ImageButton(context);
-            imgBtn.setScaleType(ImageButton.ScaleType.CENTER_CROP);
-            imgBtn.setPadding(8, 8, 8, 8);
+            imageView = new ImageView(context);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageView.setPadding(8, 8, 8, 8);
         }
         else
         {
-            imgBtn = (ImageButton) convertView;
+            imageView = (ImageView) convertView;
         }
-        imgBtn.setImageResource(imglist[position]);
-        return imgBtn;
+        imageView.setImageResource(imglist[position]);
+        return imageView;
     }
 }
