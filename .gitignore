@@ -12,6 +12,8 @@
 /captures
 ./closetAnd/app/src/main/res/values/map_key_api.xml
 ./closetAnd/app/src/main/cpp/CMakeLists.txt
+closetAnd/app/src/main/cpp/CMakeLists.txt
+closetAnd/app/src/main/res/values/map_key_api.xml
 .externalNativeBuild
 .cxx
 
