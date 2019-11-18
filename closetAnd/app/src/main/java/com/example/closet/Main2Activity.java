@@ -119,21 +119,18 @@ public class Main2Activity extends AppCompatActivity {
         String postUrl = "http://" + ipv4Address + ":" + portNumber + "/";
         MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
 
-        for (int i = 0; i < selectedImagesPaths.size(); i++) {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inPreferredConfig = Bitmap.Config.RGB_565;
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            try {
-                Bitmap bitmapdecode = BitmapFactory.decodeFile(selectedImagesPaths.get(i), options);
-                bitmapdecode.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-            }catch(Exception e){
-                responseText.setText("Please Make Sure the Selected File is an Image.");
-                return;
-            }
-            byte[] byteArray = stream.toByteArray();
-
-            multipartBodyBuilder.addFormDataPart("image" + i, "Android_Flask_" + i + ".jpg", RequestBody.create(MediaType.parse("image/*jpg"), byteArray));
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        try {
+            Bitmap responseImage = BitmapFactory.decodeFile(selectedImagesPaths.get(0), options);
+            responseImage.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        }catch(Exception e){
+            responseText.setText("Please Make Sure the Selected File is an Image.");
+            return;
         }
+        byte[] byteArray = stream.toByteArray();
+        multipartBodyBuilder.addFormDataPart("image" + 0, "Android_Flask_" + 0 + ".jpg", RequestBody.create(MediaType.parse("image/*jpg"), byteArray));
 
         RequestBody postBodyImage = multipartBodyBuilder.build();
 
