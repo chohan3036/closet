@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.example.closet.Clothes.Clothes;
 import com.example.closet.R;
@@ -19,7 +20,7 @@ public class Home extends Fragment implements View.OnClickListener {
 
     View view;
     Button singUp;
-    Button BtnMove;
+    ImageButton BtnMove;
 
 
     public Home() {
@@ -38,7 +39,7 @@ public class Home extends Fragment implements View.OnClickListener {
         view = inflater.inflate(R.layout.fragment_home, container, false);
 
         singUp = (Button)view.findViewById(R.id.signUp);
-        BtnMove = (Button) view.findViewById(R.id.BtnActivityOne);
+        BtnMove = (ImageButton) view.findViewById(R.id.BtnActivityOne);
 
         singUp.setOnClickListener(this);
         BtnMove.setOnClickListener(this);
