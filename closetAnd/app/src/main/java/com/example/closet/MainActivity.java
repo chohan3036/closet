@@ -1,4 +1,4 @@
-package com.example.closet;
+package drawable;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
