@@ -12,12 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-<<<<<<< HEAD
 
 import com.example.closet.GetaLocation;
-=======
->>>>>>> origin/uiIssue
-
 import com.example.closet.Clothes.Clothes;
 import com.example.closet.LogIn;
 import com.example.closet.R;
@@ -29,16 +25,9 @@ import com.example.closet.SignUp;
 public class Home extends Fragment implements View.OnClickListener {
 
     View view;
-<<<<<<< HEAD
     Button singUp,logIn;
-=======
-    Button singUp;
     ImageButton BtnMove;
-
->>>>>>> origin/uiIssue
-
     Button map;
-    ImageButton BtnMove;
     public Home() {
         // Required empty public constructor
     }
