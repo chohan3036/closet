@@ -56,13 +56,12 @@
             android:networkSecurityConfig="@xml/network_security_config"
             android:configChanges="keyboardHidden|orientation">
         </activity>
-        
+
         <activity android:name=".GetaLocation" />
         <activity android:name=".Splash" />
         <activity android:name=".SignUp" />
         <activity android:name=".LogIn" />
         <activity android:name=".Clothes.Clothes"/>
-        <activity android:name=".Clothes.ClothesActivity"/>
         <activity android:name=".Clothes.SingleViewActivity"/>
         <activity android:name=".openCV_test" />
 
