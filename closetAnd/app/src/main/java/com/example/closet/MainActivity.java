@@ -1,4 +1,4 @@
-package drawable;
+package com.example.closet;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

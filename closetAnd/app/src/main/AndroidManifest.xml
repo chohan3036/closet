@@ -43,8 +43,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/map_key" />
 
-        <activity android:name=".Match.Match_button"></activity>
-
         <activity android:name=".MainActivity"
         android:theme="@style/AppTheme">
             <intent-filter>
@@ -66,6 +64,7 @@
         <activity android:name=".Clothes.ClothesActivity"/>
         <activity android:name=".Clothes.SingleViewActivity"/>
         <activity android:name=".openCV_test" />
+        <activity android:name=".Match.Match_pop_up"/>
 
     </application>
 
