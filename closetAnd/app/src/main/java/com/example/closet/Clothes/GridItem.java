@@ -1,11 +1,11 @@
 package com.example.closet.Clothes;
 
-public class Clothes_GridItem {
+public class GridItem {
 
     String style;
     int imgno;
 
-    public Clothes_GridItem(String style, int imgno) {
+    public GridItem(String style, int imgno) {
         this.style = style;
         this.imgno = imgno;
     }

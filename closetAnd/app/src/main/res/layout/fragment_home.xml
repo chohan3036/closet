@@ -6,7 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".Home.Home"
     android:orientation="vertical">
-
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="회원가입"
+        android:id="@+id/signUp"
+        />
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"

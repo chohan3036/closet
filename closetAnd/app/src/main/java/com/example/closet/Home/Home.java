@@ -1,7 +1,5 @@
 package com.example.closet.Home;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
@@ -12,15 +10,17 @@ import android.widget.Button;
 
 import com.example.closet.Clothes.Clothes;
 import com.example.closet.R;
+import com.example.closet.SignUp;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Home extends Fragment {
+public class Home extends Fragment implements View.OnClickListener {
 
     View view;
-    private Button BtnMove;
-    private Activity activity;
+    Button singUp;
+    Button BtnMove;
+
 
     public Home() {
         // Required empty public constructor
@@ -32,27 +32,29 @@ public class Home extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        if (context instanceof Activity) {
-            activity = (Activity) context;
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        singUp = (Button)view.findViewById(R.id.signUp);
         BtnMove = (Button) view.findViewById(R.id.BtnActivityOne);
 
-        BtnMove.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(activity, Clothes.class);
-                activity.startActivity(intent);
-            }
-        });
+        singUp.setOnClickListener(this);
+        BtnMove.setOnClickListener(this);
+
         return view;
     }
 
+    @Override
+    public void onClick(View view) {
+        if(view == singUp){
+            Intent intent = new Intent(getActivity(), SignUp.class);
+            startActivityForResult(intent,30);
+        }
+        else if(view == BtnMove){
+            Intent intent = new Intent(getActivity(), Clothes.class);
+            startActivityForResult(intent,30);
+        }
+    }
 }
