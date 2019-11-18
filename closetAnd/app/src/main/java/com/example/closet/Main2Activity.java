@@ -124,8 +124,8 @@ public class Main2Activity extends AppCompatActivity {
             options.inPreferredConfig = Bitmap.Config.RGB_565;
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             try {
-                //Bitmap bitmap = BitmapFactory.decodeFile(selectedImagesPaths.get(i), options);
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                Bitmap bitmapdecode = BitmapFactory.decodeFile(selectedImagesPaths.get(i), options);
+                bitmapdecode.compress(Bitmap.CompressFormat.JPEG, 100, stream);
             }catch(Exception e){
                 responseText.setText("Please Make Sure the Selected File is an Image.");
                 return;
@@ -169,12 +169,14 @@ public class Main2Activity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
                 // In order to access the TextView inside the UI thread, the code is executed inside runOnUiThread()
+                final Bitmap bitmap1 = BitmapFactory.decodeStream(response.body().byteStream());
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         TextView responseText = findViewById(R.id.responseText);
                         try {
                             responseText.setText("Server's Response\n" + response.body().string());
+                            imageView.setImageBitmap(bitmap1);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -207,7 +209,8 @@ public class Main2Activity extends AppCompatActivity {
             else {
                 uri = data.getData();
                 currentImagePath = DocumentsContract.getDocumentId(uri);
-                selectedImagesPaths.add(currentImagePath);
+                String [] realPath = currentImagePath.split(":");
+                selectedImagesPaths.add(realPath[1]);
                 imagesSelected = true;
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
