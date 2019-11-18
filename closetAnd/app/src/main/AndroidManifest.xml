@@ -43,7 +43,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/map_key" />
 
-        <activity android:name=".Match.Match_button"></activity>
 
         <activity android:name=".MainActivity"
         android:theme="@style/AppTheme">
@@ -57,7 +56,6 @@
             android:networkSecurityConfig="@xml/network_security_config"
             android:configChanges="keyboardHidden|orientation">
 
-
         </activity>
 
         <activity android:name=".GetaLocation" />
@@ -65,9 +63,9 @@
         <activity android:name=".SignUp" />
         <activity android:name=".LogIn" />
         <activity android:name=".Clothes.Clothes"/>
-        <activity android:name=".Clothes.ClothesActivity"/>
         <activity android:name=".Clothes.SingleViewActivity"/>
         <activity android:name=".openCV_test" />
+
 
     </application>
 

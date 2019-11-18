@@ -27,6 +27,14 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class Main2Activity extends AppCompatActivity {
     private static final int PERMISSIONS_REQUEST_CODE = 100;
@@ -88,7 +96,95 @@ public class Main2Activity extends AppCompatActivity {
         }
     }
 
+    public void connectServer(View v) {
+        TextView responseText = findViewById(R.id.responseText);
+        if (imagesSelected == false) { // This means no image is selected and thus nothing to upload.
+            responseText.setText("No Image Selected to Upload. Select Image(s) and Try Again.");
+            return;
+        }
+        System.out.println(selectedImagesPaths);
+        responseText.setText("Sending the Files. Please Wait ...");
 
+        EditText ipv4AddressView = findViewById(R.id.IPAddress);
+        String ipv4Address = ipv4AddressView.getText().toString();
+        EditText portNumberView = findViewById(R.id.portNumber);
+        String portNumber = portNumberView.getText().toString();
+
+        Matcher matcher = IP_ADDRESS.matcher(ipv4Address);
+        if (!matcher.matches()) {
+            responseText.setText("Invalid IPv4 Address. Please Check Your Inputs.");
+            return;
+        }
+
+        String postUrl = "http://" + ipv4Address + ":" + portNumber + "/";
+
+        MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        try {
+            Bitmap responseImage = BitmapFactory.decodeFile(selectedImagesPaths.get(0), options);
+            responseImage.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        }catch(Exception e){
+            responseText.setText("Please Make Sure the Selected File is an Image.");
+            return;
+        }
+        byte[] byteArray = stream.toByteArray();
+        multipartBodyBuilder.addFormDataPart("image", "Android_Flask_.jpg",
+                RequestBody.create(MediaType.parse("image/*jpg"), byteArray));
+        RequestBody postBodyImage = multipartBodyBuilder.build();
+        postRequest(postUrl, postBodyImage);
+    }
+
+    void postRequest(String postUrl, RequestBody postBody) {
+
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url(postUrl)
+                .post(postBody)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                // Cancel the post on failure.
+                call.cancel();
+                Log.d("FAIL", e.getMessage());
+
+                // In order to access the TextView inside the UI thread, the code is executed inside runOnUiThread()
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        TextView responseText = findViewById(R.id.responseText);
+                        responseText.setText("Failed to Connect to Server. Please Try Again.");
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                // In order to access the TextView inside the UI thread, the code is executed inside runOnUiThread()
+                //final Bitmap bitmap1 = BitmapFactory.decodeStream(response.body().byteStream());
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        TextView responseText = findViewById(R.id.responseText);
+                        try {
+                            final MediaType responseType = response.body().contentType();
+                            responseText.setText("Server's Response\n" + response.body().string());
+                            Log.d("Recieved this...", responseType.toString());
+                            //imageView.setImageBitmap();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        });
+    }
     public void doTakeAlbumAction(View v)
     {
         // 앨범 호출

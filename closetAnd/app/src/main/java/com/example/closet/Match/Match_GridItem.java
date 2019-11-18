@@ -1,11 +1,11 @@
-package com.example.closet.Clothes;
+package com.example.closet.Match;
 
-public class GridItem {
+public class Match_GridItem {
 
     String style;
     int imgno;
 
-    public GridItem(String style, int imgno) {
+    public Match_GridItem(String style, int imgno) {
         this.style = style;
         this.imgno = imgno;
     }

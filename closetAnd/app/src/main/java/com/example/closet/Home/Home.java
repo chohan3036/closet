@@ -12,8 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+<<<<<<< HEAD
 
 import com.example.closet.GetaLocation;
+=======
+>>>>>>> origin/uiIssue
 
 import com.example.closet.Clothes.Clothes;
 import com.example.closet.LogIn;
@@ -26,7 +29,13 @@ import com.example.closet.SignUp;
 public class Home extends Fragment implements View.OnClickListener {
 
     View view;
+<<<<<<< HEAD
     Button singUp,logIn;
+=======
+    Button singUp;
+    ImageButton BtnMove;
+
+>>>>>>> origin/uiIssue
 
     Button map;
     ImageButton BtnMove;
@@ -47,6 +56,7 @@ public class Home extends Fragment implements View.OnClickListener {
         map.setOnClickListener(this);
         singUp = (Button)view.findViewById(R.id.signUp);
         BtnMove = (ImageButton) view.findViewById(R.id.BtnActivityOne);
+
         singUp.setOnClickListener(this);
         BtnMove.setOnClickListener(this);
 
