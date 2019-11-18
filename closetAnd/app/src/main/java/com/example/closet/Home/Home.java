@@ -2,12 +2,17 @@ package com.example.closet.Home;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.closet.GetaLocation;
 import com.example.closet.R;
 import com.example.closet.SignUp;
 
@@ -18,29 +23,51 @@ public class Home extends Fragment implements View.OnClickListener {
 
     View view;
     Button singUp;
+    Button map;
+
     public Home() {
         // Required empty public constructor
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home, container, false);
-        singUp = (Button)view.findViewById(R.id.signUp);
+        singUp = (Button) view.findViewById(R.id.signUp);
         singUp.setOnClickListener(this);
+        map = (Button) view.findViewById(R.id.mapButton);
+        map.setOnClickListener(this);
         return view;
     }
 
     @Override
     public void onClick(View view) {
-        if(view == singUp){
+        if (view == singUp) {
             Intent intent = new Intent(getActivity(), SignUp.class);
-            startActivityForResult(intent,30);
+            startActivityForResult(intent, 30); //requestCode상수로 만들기
+        } else if (view == map) {
+            Intent intent = new Intent(getActivity(), GetaLocation.class);
+            getActivity().startActivityForResult(intent, 50);
+            //startActivitiyForReuslt =Activity로 호출받게 됨.
+            //Fragment를 불러들인 mainActivity가 있다면 거기서 받을 수가 있겠죠.
+            //메인에서 받은 값을 Fragment에서 재 캐치하는 방법으로 했었던게 기억납니다.
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        //super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 30) {
+            Log.d("Log.dSD", "회원가입 완료");
+        } else if (requestCode == 50) {
+            Log.d("Log_DDSF", "위치 얻기 완료");
+        }
+
     }
 }

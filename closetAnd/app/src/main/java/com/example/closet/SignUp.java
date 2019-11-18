@@ -125,7 +125,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
 
                 outputStream = urlConnection.getOutputStream();
                 String params = null;
-
+                //hash map으로 해서 ,,
                 for(int i =0 ; i<arguments.length; i++){
                     params = "id="+arguments[0]+"&pwd="+arguments[1]+"&nickname="+arguments[2]+"&age="+arguments[3]+"&sex="+arguments[4];
                 }
