@@ -1,8 +1,5 @@
 package com.example.closet.Clothes;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -12,8 +9,9 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.closet.R;
-import com.example.closet.SignUp;
 
 public class Clothes extends AppCompatActivity {
 
