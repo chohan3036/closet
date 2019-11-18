@@ -166,14 +166,17 @@ public class Main2Activity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
                 // In order to access the TextView inside the UI thread, the code is executed inside runOnUiThread()
-                final Bitmap bitmap1 = BitmapFactory.decodeStream(response.body().byteStream());
+                //final Bitmap bitmap1 = BitmapFactory.decodeStream(response.body().byteStream());
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         TextView responseText = findViewById(R.id.responseText);
                         try {
+                            final MediaType responseType = response.body().contentType();
                             responseText.setText("Server's Response\n" + response.body().string());
-                            imageView.setImageBitmap(bitmap1);
+                            Log.d("Recieved this...", responseType.toString());
+                            //imageView.setImageBitmap();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
