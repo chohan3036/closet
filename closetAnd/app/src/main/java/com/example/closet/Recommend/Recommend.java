@@ -26,7 +26,7 @@ public class Recommend extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view =inflater.inflate(R.layout.fragment_match, container, false);
+        view =inflater.inflate(R.layout.fragment_recommend, container, false);
 
         return view;
     }
