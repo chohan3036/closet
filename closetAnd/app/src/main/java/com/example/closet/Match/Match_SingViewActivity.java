@@ -1,12 +1,12 @@
 package com.example.closet.Match;
 
-import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import com.example.closet.R;
 
-public class Match_SingViewActivity extends Activity{
+public class Match_SingViewActivity extends AppCompatActivity{
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
