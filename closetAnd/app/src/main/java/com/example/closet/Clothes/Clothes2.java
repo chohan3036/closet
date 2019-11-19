@@ -1,5 +1,6 @@
-package com.example.closet.Clothes;
+/* package com.example.closet.Clothes;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -13,7 +14,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.closet.R;
 
-public class Clothes extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class Clothes2 extends AppCompatActivity {
+    private Context context;
+    private Clothes2_Adapter adapter;
+    private ArrayList<ClothesItem> arrayList;
 
     public int[] imageIDs = new int[] {R.drawable.example_01, R.drawable.example_04, R.drawable.example_07};
 
@@ -22,9 +28,14 @@ public class Clothes extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clothes);
 
-        GridView gridViewImages = (GridView) findViewById(R.id.clothes_grid);
-        GridAdapter imageGridAdapter = new GridAdapter(this, imageIDs);
-        gridViewImages.setAdapter(imageGridAdapter);
+        loadGridView();
+    }
+
+    private void loadGridView() {
+        GridView gridView = (GridView)findViewById(R.id.clothes_grid);
+        arrayList = new ArrayList<>();
+        adapter = new Clothes2_Adapter(context, arrayList, imageIDs);
+        gridView.setAdapter(adapter);
     }
 
     public void onClick(View view) {
@@ -63,3 +74,5 @@ public class Clothes extends AppCompatActivity {
         });
     }
 }
+
+ */
