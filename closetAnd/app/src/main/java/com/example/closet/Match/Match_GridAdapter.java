@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-
 import com.example.closet.R;
 
 public class Match_GridAdapter extends BaseAdapter {
@@ -50,9 +49,10 @@ public class Match_GridAdapter extends BaseAdapter {
 
     // Keep all Images in array
     public Integer[] mThumbIds = {
+            R.drawable.example_01, R.drawable.example_04,
             R.drawable.image1, R.drawable.image1,
             R.drawable.image1, R.drawable.image1,
-            R.drawable.image1, R.drawable.image1,
-            R.drawable.image1, R.drawable.image1
+            R.drawable.example_07, R.drawable.image1,
+            R.drawable.example_07, R.drawable.image1
     };
 }

@@ -75,7 +75,7 @@
             android:layout_marginRight="30dp"
             android:layout_marginBottom="20dp"
             android:layout_weight="1"
-            android:background="#00BCD4"
+            android:background="#90ee90"
             android:text="Login" />
 
         <Button
@@ -84,9 +84,9 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="50dp"
-            android:layout_weight="1"
             android:layout_marginBottom="20dp"
-            android:background="#00BCD4"
+            android:layout_weight="1"
+            android:background="#90ee90"
             android:text="sign up" />
 
     </LinearLayout>
