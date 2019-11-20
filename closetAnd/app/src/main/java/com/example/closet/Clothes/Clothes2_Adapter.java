@@ -1,16 +1,22 @@
-/* package com.example.closet.Clothes;
+package com.example.closet.Clothes;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
+import android.net.Uri;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.closet.R;
 
@@ -31,44 +37,40 @@ class Clothes2_Adapter extends BaseAdapter {
         mSelectedItemsIds = new SparseBooleanArray();
     }
 
-    public int getCount() {
-        return (null != imageIDs) ? imageIDs.length : 0;
-    }
+    GridView imagegrid = (GridView) findViewById(R.id.clothes_grid);
+    imageAdapter = new ImageAdapter();
+        imagegrid.setAdapter(imageAdapter);
+        imagecursor.close();
 
-    public Object getItem(int position) {
-        return (null != imageIDs) ? imageIDs[position] : 0;
-    }
+    final Button selectBtn = (Button) findViewById(R.id.add);
+        selectBtn.setOnClickListener(new
 
-    public long getItemId(int position) {
-        return position;
-    }
+    OnClickListener() {
 
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ImageView imageView = null;
-
-        if (null != convertView)
-            imageView = (ImageView) convertView;
-        else {
-            // GridView 뷰를 구성할 ImageView 뷰의 비트맵을 정의합니다.
-            // 그리고 그것의 크기를 320*240으로 줄입니다.
-            // 크기를 줄이는 이유는 메모리 부족 문제를 막을 수 있기 때문입니다.
-            Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), imageIDs[position]);
-            bmp = Bitmap.createScaledBitmap(bmp, 320, 240, false);
-
-            // GridView 뷰를 구성할 ImageView 뷰들을 정의합니다.
-            // 뷰에 지정할 이미지는 앞에서 정의한 비트맵 객체입니다.
-            imageView = new ImageView(context);
-            imageView.setAdjustViewBounds(true);
-            imageView.setImageBitmap(bmp);
+        public void onClick (View v){
+            // TODO Auto-generated method stub
+            final int len = thumbnailsselection.length;
+            int cnt = 0;
+            String selectImages = "";
+            for (int i = 0; i < len; i++) {
+                if (thumbnailsselection[i]) {
+                    cnt++;
+                    selectImages = selectImages + arrPath[i] + "|";
+                }
+            }
+            if (cnt == 0) {
+                Toast.makeText(getApplicationContext(),
+                        "Please select at least one image",
+                        Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getApplicationContext(),
+                        "You've selected Total " + cnt + " image(s).",
+                        Toast.LENGTH_LONG).show();
+                Log.d("SelectedImages", selectImages);
+            }
         }
+    });
 
-        // 사진 항목들의 클릭을 처리하는 ImageClickListener 객체를 정의합니다.
-        // 그리고 그것을 ImageView의 클릭 리스너로 설정합니다.
-        GridClickListener imageViewClickListener = new GridClickListener(context, imageIDs[position]);
-        imageView.setOnClickListener(imageViewClickListener);
-
-        return imageView;
-    }
 
     // *** 수정했음 ***
     public int getArrayCount() {
@@ -96,7 +98,7 @@ class Clothes2_Adapter extends BaseAdapter {
             imageView.setAdjustViewBounds(true);
             imageView.setImageBitmap(bmp);
 
-            viewHolder.imageView = imageView;
+            viewHolder.imageView = (ImageView) view.findViewById(R.id.clothes_iv);
             viewHolder.checkBox = (CheckBox) view.findViewById(R.id.chk_clothes_iv);
 
             view.setTag(viewHolder);
@@ -104,48 +106,43 @@ class Clothes2_Adapter extends BaseAdapter {
         else
             viewHolder = (ViewHolder) view.getTag();
 
-        viewHolder.imageView.setImageBitmap(arrayList.getPictureResId(i));
-        viewHolder.checkBox.setChecked(mSelectedItemsIds.get(i));
+        viewHolder.checkbox.setId(position);
+        viewHolder.imageview.setId(position);
+        viewHolder.checkbox.setOnClickListener(new View.OnClickListener() {
 
-        viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
-            @Override
             public void onClick(View v) {
-                checkCheckBox(i, !mSelectedItemsIds.get(i));
+                // TODO Auto-generated method stub
+                CheckBox cb = (CheckBox) v;
+                int id = cb.getId();
+                if (thumbnailsselection[id]){
+                    cb.setChecked(false);
+                    thumbnailsselection[id] = false;
+                } else {
+                    cb.setChecked(true);
+                    thumbnailsselection[id] = true;
+                }
             }
         });
+        holder.imageview.setOnClickListener(new View.OnClickListener() {
 
-        viewHolder.imageView.setOnClickListener(new View.OnClickListener() {
-            GridClickListener imageViewClickListener = new GridClickListener(context, imageIDs[position]);
-            imageView.setOnClickListener(imageViewClickListener);
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                int id = v.getId();
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setDataAndType(Uri.parse("file://" + arrPath[id]), "image/*");
+                startActivity(intent);
+            }
         });
-
-        return view;
+        holder.imageview.setImageBitmap(thumbnails[position]);
+        holder.checkbox.setChecked(thumbnailsselection[position]);
+        holder.id = position;
+        return convertView;
     }
 
-    //Remove all checkbox Selection
-    public void removeSelection() {
-        mSelectedItemsIds = new SparseBooleanArray();
-        notifyDataSetChanged();
-    }
-
-    //Check the Checkbox if not checked
-    public void checkCheckBox(int position, boolean value) {
-        if (value)
-            mSelectedItemsIds.put(position, true);
-        else
-            mSelectedItemsIds.delete(position);
-
-        notifyDataSetChanged();
-    }
-
-    //Return the selected Checkbox IDs
-    public SparseBooleanArray getSelectedIds() {
-        return mSelectedItemsIds;
-    }
-
-    private class ViewHolder {
-        private ImageView imageView;
-        private CheckBox checkBox;
+    class ViewHolder {
+        ImageView imageview;
+        CheckBox checkbox;
+        int id;
     }
 }
-*/

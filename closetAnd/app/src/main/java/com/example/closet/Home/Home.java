@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-import com.example.closet.Clothes.Clothes;
+import com.example.closet.Clothes.Clothes3;
 import com.example.closet.R;
 import com.example.closet.SignUp;
 
@@ -54,7 +54,7 @@ public class Home extends Fragment implements View.OnClickListener {
             startActivityForResult(intent,30);
         }
         else if(view == BtnMove){
-            Intent intent = new Intent(getActivity(), Clothes.class);
+            Intent intent = new Intent(getActivity(), Clothes3.class);
             startActivityForResult(intent,30);
         }
     }

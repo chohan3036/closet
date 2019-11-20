@@ -1,6 +1,5 @@
-/* package com.example.closet.Clothes;
+package com.example.closet.Clothes;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -20,9 +19,11 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.closet.R;
 
-public class Clothes3 extends Activity {
+public class Clothes3 extends AppCompatActivity {
     private int count;
     private Bitmap[] thumbnails;
     private boolean[] thumbnailsselection;
@@ -36,9 +37,7 @@ public class Clothes3 extends Activity {
 
         final String[] columns = { MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID };
         final String orderBy = MediaStore.Images.Media._ID;
-        Cursor imagecursor = managedQuery(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null,
-                null, orderBy);
+        Cursor imagecursor = managedQuery(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null, null, orderBy);
         int image_column_index = imagecursor.getColumnIndex(MediaStore.Images.Media._ID);
         this.count = imagecursor.getCount();
         this.thumbnails = new Bitmap[this.count];
@@ -53,12 +52,13 @@ public class Clothes3 extends Activity {
                     MediaStore.Images.Thumbnails.MICRO_KIND, null);
             arrPath[i]= imagecursor.getString(dataColumnIndex);
         }
-        GridView imagegrid = (GridView) findViewById(R.id.PhoneImageGrid);
+
+        GridView imagegrid = (GridView) findViewById(R.id.clothes_grid);
         imageAdapter = new ImageAdapter();
         imagegrid.setAdapter(imageAdapter);
         imagecursor.close();
 
-        final Button selectBtn = (Button) findViewById(R.id.selectBtn);
+        final Button selectBtn = (Button) findViewById(R.id.add);
         selectBtn.setOnClickListener(new OnClickListener() {
 
             public void onClick(View v) {
@@ -110,10 +110,9 @@ public class Clothes3 extends Activity {
             ViewHolder holder;
             if (convertView == null) {
                 holder = new ViewHolder();
-                convertView = mInflater.inflate(
-                        R.layout.galleryitem, null);
-                holder.imageview = (ImageView) convertView.findViewById(R.id.thumbImage);
-                holder.checkbox = (CheckBox) convertView.findViewById(R.id.itemCheckBox);
+                convertView = mInflater.inflate(R.layout.clothes_griditem, null);
+                holder.imageview = (ImageView) convertView.findViewById(R.id.clothes_iv);
+                holder.checkbox = (CheckBox) convertView.findViewById(R.id.chk_clothes_iv);
 
                 convertView.setTag(holder);
             }
@@ -160,4 +159,3 @@ public class Clothes3 extends Activity {
         int id;
     }
 }
-*/

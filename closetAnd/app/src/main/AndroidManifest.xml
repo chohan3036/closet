@@ -62,8 +62,7 @@
         <activity android:name=".Splash" />
         <activity android:name=".SignUp" />
         <activity android:name=".LogIn" />
-        <activity android:name=".Clothes.Clothes"/>
-        <activity android:name=".Clothes.SingleViewActivity"/>
+        <activity android:name=".Clothes.Clothes3"/>
         <activity android:name=".openCV_test" />
 
 
