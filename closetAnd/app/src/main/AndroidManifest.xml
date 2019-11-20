@@ -64,7 +64,8 @@
         <activity android:name=".LogIn" />
         <activity android:name=".Clothes.Clothes3"/>
         <activity android:name=".openCV_test" />
-
+        <activity android:name=".Match.Match_SingViewActivity"/>
+        <activity android:name=".Match.Match_Grid"/>
 
     </application>
 
