@@ -68,6 +68,9 @@ public class Home extends Fragment implements View.OnClickListener {
         }else if(view == logIn){
             Intent intent = new Intent(getActivity(), LogIn.class);
             startActivity(intent);
+        }  else if(view == BtnMove){
+            Intent intent = new Intent(getActivity(), Clothes.class);
+            startActivityForResult(intent,30);
         }
     }
 
@@ -80,10 +83,7 @@ public class Home extends Fragment implements View.OnClickListener {
         } else if (requestCode == 50) {
             Log.d("Log_DDSF", "위치 얻기 완료");
         }
-        else if(view == BtnMove){
-            Intent intent = new Intent(getActivity(), Clothes.class);
-            startActivityForResult(intent,30);
-        }
+
 
     }
 }
