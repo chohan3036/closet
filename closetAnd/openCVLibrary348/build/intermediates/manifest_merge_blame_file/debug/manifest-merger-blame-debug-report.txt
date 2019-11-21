@@ -5,26 +5,10 @@
 5    android:versionName="3.4.8" >
 6
 7    <uses-sdk
-<<<<<<< HEAD
 7-->C:\Users\Administrator\Desktop\Cltothes_set\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml:7:5-48
-=======
-<<<<<<< HEAD
-7-->C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml:7:5-48
-8        android:minSdkVersion="8"
-8-->C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml:7:5-48
-9        android:targetSdkVersion="26" />
-9-->C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml:7:16-45
-=======
-7-->C:\Users\sookmyung\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml:7:5-48
->>>>>>> 3cf867923fedbdc167c2f6f3b55cbd56beb1a352
 8        android:minSdkVersion="8"
 8-->C:\Users\Administrator\Desktop\Cltothes_set\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml:7:5-48
 9        android:targetSdkVersion="26" />
-<<<<<<< HEAD
 9-->C:\Users\Administrator\Desktop\Cltothes_set\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml:7:16-45
-=======
-9-->C:\Users\sookmyung\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml:7:16-45
->>>>>>> 9cdb002b00287aa08f69bce685bfb184282fcf11
->>>>>>> 3cf867923fedbdc167c2f6f3b55cbd56beb1a352
 10
 11</manifest>

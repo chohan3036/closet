@@ -91,6 +91,7 @@ public class Clothes extends AppCompatActivity implements OnItemSelectedListener
             }
         });
     }
+
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // On selecting a spinner item
         String item = parent.getItemAtPosition(position).toString();

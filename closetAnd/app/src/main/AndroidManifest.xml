@@ -39,11 +39,6 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".Test.GridItem"></activity>
         <activity android:name=".Test.GridMain">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <meta-data
