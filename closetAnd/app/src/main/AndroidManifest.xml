@@ -67,7 +67,8 @@
         <activity android:name=".Clothes.Clothes"/>
         <activity android:name=".Clothes.SingleViewActivity"/>
         <activity android:name=".openCV_test" />
-        <activity android:name=".Match.Match_pop_up"/>
+        <activity android:name=".Match.Match_SingViewActivity"/>
+        <activity android:name=".Match.Match_Grid"/>
 
     </application>
 

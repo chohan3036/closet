@@ -13,11 +13,6 @@ import com.example.closet.R;
 
 class GridAdapter extends BaseAdapter {
 
-    static class ImageViewHolder {
-        ImageView ivImage;
-        CheckBox chkImage;
-    }
-
     Context context = null;
     int[] imageIDs = null;
 
@@ -40,7 +35,6 @@ class GridAdapter extends BaseAdapter {
 
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imageView = null;
-        CheckBox chkImage = null;
 
         if (null != convertView)
             imageView = (ImageView) convertView;
@@ -56,16 +50,7 @@ class GridAdapter extends BaseAdapter {
             imageView = new ImageView(context);
             imageView.setAdjustViewBounds(true);
             imageView.setImageBitmap(bmp);
-
-            /*ImageViewHolder holder = new ImageViewHolder();
-            holder.ivImage = (ImageView) convertView.findViewById(R.id.clothes_iv);
-            holder.chkImage = (CheckBox) convertView.findViewById(R.id.chk_clothes_iv);
-
-            convertView.setTag(holder);
-             */
         }
-
-       /* final ImageViewHolder holder = (ImageViewHolder) convertView.getTag();*/
 
         // 사진 항목들의 클릭을 처리하는 ImageClickListener 객체를 정의합니다.
         // 그리고 그것을 ImageView의 클릭 리스너로 설정합니다.
