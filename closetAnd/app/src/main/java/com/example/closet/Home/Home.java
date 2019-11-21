@@ -18,6 +18,10 @@ import com.example.closet.Clothes.Clothes;
 import com.example.closet.LogIn;
 import com.example.closet.R;
 import com.example.closet.SignUp;
+import com.example.closet.storeClothingNetworking;
+
+import java.net.MalformedURLException;
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,6 +55,13 @@ public class Home extends Fragment implements View.OnClickListener {
 
         logIn = (Button)view.findViewById(R.id.login_button);
         logIn.setOnClickListener(this);
+
+        try {
+            storeClothingNetworking  networking = new storeClothingNetworking();
+            //networking.execute();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
         return view;
     }
 
@@ -83,7 +94,5 @@ public class Home extends Fragment implements View.OnClickListener {
         } else if (requestCode == 50) {
             Log.d("Log_DDSF", "위치 얻기 완료");
         }
-
-
     }
 }

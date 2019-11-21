@@ -25,11 +25,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
 
 public class SignUp extends AppCompatActivity implements View.OnClickListener {
     Button cancel, ok;
@@ -82,109 +84,46 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                 sex = "0";
                 male.setChecked(false);
             }
-            if (nickName == null || id == null || pwd == null || age == null) {
+            if(nickName.equals("") || id.equals("") || pwd.equals("") || age.equals("")) {
                 //돌려보내기
+                //각 내용 유효한 값인지 확인. 나이같은거
+                Log.d("Log_dSingup","입력 안된 항목이 있습니다");
             }
             //네트워킹
             else {
-                String[] arguments = {id, pwd, nickName, age, sex};
-                signUpNetworking signUp = new signUpNetworking(arguments);
-                signUp.execute();
-            }
-        }
-    }
+                HashMap<String,String> arguments = new HashMap<>();
+                arguments.put("id",id);
+                arguments.put("pwd",pwd);
+                arguments.put("nickname",nickName);
+                arguments.put("age",age);
+                arguments.put("sex",sex);
 
-    class signUpNetworking extends AsyncTask<Void, Void, Object> {
-        URL url = null;
-        HttpURLConnection urlConnection = null;
-        String[] arguments;
-        OutputStream outputStream = null;
-        String response = null;
-
-        public signUpNetworking(String[] arguments) {
-            this.arguments = arguments;
-        }
-
-        @Override
-        protected Object doInBackground(Void... voids) {
-            try {
-                Log.d("Log_dDoIn", arguments.toString());
-                url = new URL("http://52.78.194.160:3000/user/signup");
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestProperty("Connection", "Keep-Alive");
-                urlConnection.setConnectTimeout(20 * 1000);//20초
-                urlConnection.setReadTimeout(20 * 1000);
-
-                urlConnection.setRequestMethod("POST");
-                urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
-                urlConnection.setDoInput(true);
-                urlConnection.setDoOutput(true);
-                /*
-                HashMap<String, String> params = new HashMap<>();
-                params.put("id", "sd");
-                params.put("pwd", "aa");
-                params.put("nickname", "asd");
-                params.put("sex", "1");
-                params.put("age", "25");*/
-
-                outputStream = urlConnection.getOutputStream();
-                String params = null;
-                //hash map으로 해서 ,,
-                /*
-                for(int i =0 ; i<arguments.length; i++){
-                    params = "id="+arguments[0]+"&pwd="+arguments[1]+"&nickname="+arguments[2]+"&age="+arguments[3]+"&sex="+arguments[4];
-                }이렇게 할라면 hashMap같은걸로 parsing해서 들어오는걸로 바꾸기 ㅡㅡ */
-
-                params = "id=" + arguments[0] + "&pwd=" + arguments[1] + "&nickname=" + arguments[2] + "&age=" + arguments[3] + "&sex=" + arguments[4];
-                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
-                outputStreamWriter.write(params);
-                outputStreamWriter.flush();
-                urlConnection.connect();
-
-                if (urlConnection.getResponseCode() == 201) {
-                    InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                    response = readStream(in);
-                    JSONObject responseJson = new JSONObject(response);
-                    String uid = responseJson.getString("ID");
-                    String nick = responseJson.getString("Nickname");
-                    String Uid = responseJson.getString("Uid");
-                    //Toast.makeText(getApplicationContext(),"회원가입이 완료되었습니다.",Toast.LENGTH_SHORT).show();
-                    //Caused by: java.lang.RuntimeException: Can't toast on a thread that has not called Looper.prepare()
-
-                    //intent로 home으로 보내거나,,
-
-                } else if (urlConnection.getResponseCode() == 303) {
-                    //Toast.makeText(getApplicationContext(),"이미 존재하는 ID입니다",Toast.LENGTH_LONG);
-                    //아이디 확인 버튼 만들기
-                    //이미 아이디 있음
-                } else {
-                    //404나 그 외 예외처리하기.
+                try {
+                    Networking networking = new Networking(new URL("http://52.78.194.160:3000/user/signup"),arguments);
+                    networking.execute();
+                    networking.get();
+                    JSONObject result = networking.get();
+                    Log.d("Log_dResult", String.valueOf(result));
+                    //각자 그 이후 결과 알려주고 intent
+                    if(result.get("status").equals(201)){
+                    //class java.lang.Integer 로 오네
+                        Log.d("Log_d 회원가입 성공","ㄴㄻㄹ");
+                        Intent intent  = new Intent(this,MainActivity.class);
+                        startActivity(intent);
+                        //uid 정보 put해서 전달하고 저장.
+                    }
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
 
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } finally {
-                urlConnection.disconnect();
             }
-            return null;
-        }
 
-        public String readStream(InputStream in) {
-            String data = "";
-            Scanner s = new Scanner(in);
-            while (s.hasNext())
-                data += s.nextLine() + "\n";
-            s.close();
-            try {
-                JSONObject response = new JSONObject(data);
-                //Log.d("Log_dINput",response.getClass().toString());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return data;
         }
     }
 }

@@ -2,6 +2,7 @@ package com.example.closet;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +23,9 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
 
 public class LogIn extends AppCompatActivity implements View.OnClickListener {
     EditText id, pwd;
@@ -41,15 +44,36 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         if (view == ok) {
-            if(id.getText().toString() != null && pwd.getText().toString()!=null){
-                ArrayList<String> params = new ArrayList<>();
-                params.add(id.getText().toString());
-                params.add(pwd.getText().toString());
-                LogInNetworking networking = new LogInNetworking(params);
-                networking.execute();
-            }
-            else{
-                //입력해주세요
+            if((id.getText().toString()).isEmpty() || (pwd.getText().toString()).isEmpty()) {
+                Log.d("Log_d","로그인 정보를 입력해주세요");
+            }else{
+                HashMap<String,String> params = new HashMap<>();
+                params.put("id",id.getText().toString());
+                params.put("pwd",pwd.getText().toString());
+                Networking networking = null;
+
+                try {
+                    networking = new Networking(new URL("http://52.78.194.160:3000/user/signin"),params);
+                    networking.execute();
+                    JSONObject result = networking.get();
+                    if(result.get("status").equals(201)){
+                        //class java.lang.Integer 로 오네
+                        Log.d("Log_d 로그인 성공","ㄴㄻㄹ");
+                        Intent intent  = new Intent(this,MainActivity.class);
+                        startActivity(intent);
+                        //uid 정보 put해서 전달하고 저장
+                    }
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
         }
     }

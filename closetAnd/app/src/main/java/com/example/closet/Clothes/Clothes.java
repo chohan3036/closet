@@ -11,7 +11,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.closet.Networking_Get;
 import com.example.closet.R;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class Clothes extends AppCompatActivity {
 
@@ -25,6 +29,14 @@ public class Clothes extends AppCompatActivity {
         GridView gridViewImages = (GridView) findViewById(R.id.clothes_grid);
         GridAdapter imageGridAdapter = new GridAdapter(this, imageIDs);
         gridViewImages.setAdapter(imageGridAdapter);
+
+        try {
+            URL url = new URL("http://52.78.194.160:3000/closet/show/personalCloset/1/null"); //uid 고치기
+            Networking_Get networking = new Networking_Get(url);
+            networking.execute();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void onClick(View view) {
