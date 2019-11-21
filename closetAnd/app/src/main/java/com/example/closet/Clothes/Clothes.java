@@ -41,14 +41,7 @@ public class Clothes extends AppCompatActivity implements OnItemSelectedListener
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
         spinner.setOnItemSelectedListener(this);
         String[] items = getResources().getStringArray(R.array.clothes_array);
-        //List<String> categories = new ArrayList<String>();
-        //categories.add("Look");
-        //categories.add("Daily");
-        //categories.add("Office");
-        //categories.add("Cool");
-        //categories.add("Lovely");
-        //categories.add("Casual");
-        //categories.add("Romantic");
+
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinner.setAdapter(dataAdapter);
@@ -89,6 +82,7 @@ public class Clothes extends AppCompatActivity implements OnItemSelectedListener
             }
         });
     }
+
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // On selecting a spinner item
         String item = parent.getItemAtPosition(position).toString();
