@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.PopupWindow;
@@ -18,9 +19,6 @@ import android.widget.GridView;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
-
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 /**
  * A simple {@link Fragment} subclass.
@@ -58,9 +56,11 @@ public class Match extends  Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch(view.getId()){
             case R.id.Save:
-                Popup();
-            //case R.id.Reset;
-            //case R.id.My_pick;
+            {Popup();}
+            case R.id.Reset:
+            {}
+            case R.id.My_pick:
+            {}
         }
     }
 
@@ -87,6 +87,11 @@ public class Match extends  Fragment implements View.OnClickListener {
                 mPopupWindow.dismiss();
             }
         });
+        Spinner spinner = (Spinner) getActivity().findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getActivity(),
+                R.array.match_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
     }
 
 
@@ -165,5 +170,17 @@ public class Match extends  Fragment implements View.OnClickListener {
                 R.array.match_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+    }
+
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        // On selecting a spinner item
+        String item = parent.getItemAtPosition(position).toString();
+
+        // Showing selected spinner item
+        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+
+    }
+    public void onNothingSelected(AdapterView<?> arg0) {
+        // TODO Auto-generated method stub
     }
 }
