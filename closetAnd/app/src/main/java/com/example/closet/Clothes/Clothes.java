@@ -18,9 +18,14 @@ import android.widget.AdapterView.OnItemSelectedListener;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.closet.Networking_Get;
 import com.example.closet.R;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 public class Clothes extends AppCompatActivity implements OnItemSelectedListener{
+
 
     public int[] imageIDs = new int[] {R.drawable.example_01, R.drawable.example_04, R.drawable.example_07};
 
@@ -32,6 +37,15 @@ public class Clothes extends AppCompatActivity implements OnItemSelectedListener
         GridView gridViewImages = (GridView) findViewById(R.id.clothes_grid);
         GridAdapter imageGridAdapter = new GridAdapter(this, imageIDs);
         gridViewImages.setAdapter(imageGridAdapter);
+
+
+        try {
+            URL url = new URL("http://52.78.194.160:3000/closet/show/personalCloset/1/null"); //uid 고치기
+            Networking_Get networking = new Networking_Get(url);
+            networking.execute();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
         spinner.setOnItemSelectedListener(this);
