@@ -1,10 +1,9 @@
-package com.example.closet;
+package com.example.closet.Clothes;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,8 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+
+import com.example.closet.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -36,10 +35,10 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class Main2Activity extends AppCompatActivity {
+public class AddClothes extends AppCompatActivity {
     private static final int PERMISSIONS_REQUEST_CODE = 100;
     String[] REQUESTED_PEERMISSIONS = {Manifest.permission.CAMERA,
-                                       Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     private static final Pattern IP_ADDRESS
             = Pattern.compile(
@@ -55,21 +54,21 @@ public class Main2Activity extends AppCompatActivity {
     private static final int PICK_FROM_CAMERA = 0;
     private static final int PICK_FROM_ALBUM = 1;
     private Uri uri;
-
     ImageView imageView;
     Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        /*
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(getApplicationContext(), "이 앱을 실행하려면 인터넷과 외부 저장소 접근 권한이 필요합니다.", Toast.LENGTH_SHORT).show();
-            ActivityCompat.requestPermissions(Main2Activity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-            ActivityCompat.requestPermissions(Main2Activity.this, new String[]{Manifest.permission.INTERNET}, 2);
-        }
+            ActivityCompat.requestPermissions(AddClothes.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+            ActivityCompat.requestPermissions(AddClothes.this, new String[]{Manifest.permission.INTERNET}, 2);
+        }*/
+
         setContentView(R.layout.activity_main2);
         imageView = findViewById(R.id.imageTest);
     }
