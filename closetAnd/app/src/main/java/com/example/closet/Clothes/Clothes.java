@@ -38,15 +38,6 @@ public class Clothes extends AppCompatActivity implements OnItemSelectedListener
         GridAdapter imageGridAdapter = new GridAdapter(this, imageIDs);
         gridViewImages.setAdapter(imageGridAdapter);
 
-
-        try {
-            URL url = new URL("http://52.78.194.160:3000/closet/show/personalCloset/1/null"); //uid 고치기
-            Networking_Get networking = new Networking_Get(url);
-            networking.execute();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
         spinner.setOnItemSelectedListener(this);
         String[] items = getResources().getStringArray(R.array.clothes_array);

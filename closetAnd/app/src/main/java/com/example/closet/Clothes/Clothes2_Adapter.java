@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -20,35 +21,74 @@ import android.widget.Toast;
 
 import com.example.closet.R;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 class Clothes2_Adapter extends BaseAdapter {
 
     private Context context;
     private LayoutInflater inflater;
     private int layout;
-    private ArrayList<Integer> arrayList;
     private SparseBooleanArray mSelectedItemsIds;
 
     int[] imageIDs = null;
 
-    public Clothes2_Adapter(Context context, int layout, ArrayList<Integer> arrayList) {
+    ArrayList<URL> photoUrls;
+    ArrayList<Bitmap> photoBitmap = new ArrayList<>();
+    UrlToBitmap urlToBitmap;
 
-        inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+    public Clothes2_Adapter(Context context, int layout, ArrayList<URL> photoUrls) {
+
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.context = context;
-        this.arrayList = arrayList;
         this.layout = layout;
         //this.imageIDs = imageIDs;
+        this.photoUrls = photoUrls;
+        Log.d("Log_dasagagadg", String.valueOf(this.photoUrls.get(0)));
         mSelectedItemsIds = new SparseBooleanArray();
+
+        urlToBitmap = new UrlToBitmap(photoUrls);
+        urlToBitmap.execute();
+        try {
+            photoBitmap = urlToBitmap.get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
+
+    /*
+    private void fileToBitmap(){
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        for(int i = 0 ; i<photoUrls.size(); i++) {
+            Bitmap bitmap = BitmapFactory.decodeFile(photoUrls.get(i).getPath(), bmOptions);
+            System.out.println(photoUrls.get(i).getPath());
+            System.out.println(photoUrls.get(i).getAbsolutePath());
+            try {
+                System.out.println(photoUrls.get(i).getCanonicalPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //bitmap= Bitmap.createScaledBitmap(bitmap,)
+            Log.d("Log_dBITMAP",bitmap.toString());
+            photoBitmap.add(bitmap);
+        }
+    }*/
 
     // 수정했음
     public int getImageCount() {
-        return (null != imageIDs) ? imageIDs.length : 0;
+        return (null != photoUrls) ? photoUrls.size() : 0;
     }
 
     public Object getImageItem(int position) {
-        return (null != imageIDs) ? imageIDs[position] : 0;
+        return (null != photoUrls) ? photoUrls.get(position) : 0;
     }
 
     public long getImageItemId(int position) {
@@ -56,11 +96,11 @@ class Clothes2_Adapter extends BaseAdapter {
     }
 
     public int getCount() {
-        return arrayList.size();
+        return photoUrls.size();
     }
 
     public Object getItem(int i) {
-        return arrayList.get(i);
+        return photoUrls.get(i);
     }
 
     public long getItemId(int i) {
@@ -69,7 +109,7 @@ class Clothes2_Adapter extends BaseAdapter {
 
     public View getView(final int i, View view, ViewGroup viewGroup) {
         ViewHolder viewHolder;
-        View gridView ;
+        View gridView;
 
         if (view == null) {
             view = inflater.inflate(layout, viewGroup, false);
@@ -81,16 +121,16 @@ class Clothes2_Adapter extends BaseAdapter {
             view.setTag(viewHolder);
         } else
             viewHolder = (ViewHolder) view.getTag();
+        viewHolder.imageView.setImageBitmap(photoBitmap.get(i));
+        //viewHolder.imageView.setImageResource(arrayList.get(i)); // 보완 필요
+        viewHolder.checkBox.setChecked(mSelectedItemsIds.get(i));
 
-            viewHolder.imageView.setImageResource(arrayList.get(i)); // 보완 필요
-            viewHolder.checkBox.setChecked(mSelectedItemsIds.get(i));
-
-            viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    checkCheckBox(i, !mSelectedItemsIds.get(i));
-                }
-            });
+        viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkCheckBox(i, !mSelectedItemsIds.get(i));
+            }
+        });
 
         return view;
     }
@@ -127,4 +167,35 @@ class Clothes2_Adapter extends BaseAdapter {
         return mSelectedItemsIds;
     }
 
+}
+
+class UrlToBitmap extends AsyncTask<Void,Void,ArrayList<Bitmap>> {
+    ArrayList<URL> photoUrls;
+    ArrayList<Bitmap> photoBitmap = new ArrayList<>();
+    public UrlToBitmap(ArrayList<URL> photoUrls){
+        this.photoUrls = photoUrls;
+    }
+
+    @Override
+    protected ArrayList<Bitmap> doInBackground(Void... voids) {
+
+        for (int i = 0; i < photoUrls.size(); i++) {
+            try {
+                HttpURLConnection connection = (HttpURLConnection) photoUrls.get(i).openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream inputStream = connection.getInputStream();
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                photoBitmap.add(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return photoBitmap;
+    }
+
+    @Override
+    protected void onPostExecute(ArrayList<Bitmap> o) {
+        super.onPostExecute(o);
+    }
 }

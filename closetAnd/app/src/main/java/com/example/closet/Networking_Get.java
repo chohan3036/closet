@@ -14,7 +14,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class Networking_Get extends AsyncTask<Void,Void,Void> {
+public class Networking_Get extends AsyncTask<Void,Void,JSONObject> {
 
     URL url = null;
     HttpURLConnection urlConnection = null;
@@ -24,26 +24,24 @@ public class Networking_Get extends AsyncTask<Void,Void,Void> {
             this.url = url;
     }
     @Override
-    protected Void doInBackground(Void... voids) {
+    protected JSONObject doInBackground(Void... voids) {
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestProperty("Connection", "Keep-Alive");
-            urlConnection.setConnectTimeout(20 * 1000);//20초
-            urlConnection.setReadTimeout(20 * 1000);
+            urlConnection.setConnectTimeout(40 * 1000);//40초
+            urlConnection.setReadTimeout(40 * 1000);
             urlConnection.setRequestMethod("GET");
             //urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
             urlConnection.setDoInput(true);
             //urlConnection.setDoOutput(true);
-
             urlConnection.connect();
-
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
             response = readStream(in);
             JSONObject responseJson = new JSONObject(response);
             Log.d("Log_dGetCODE", String.valueOf(urlConnection.getResponseCode()));
             Log.d("Log_dGETResponse",response);
             //JSON return 해주기.
-
+            return responseJson;
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
@@ -53,6 +51,12 @@ public class Networking_Get extends AsyncTask<Void,Void,Void> {
 
         return null;
     }
+
+    @Override
+    protected void onPostExecute(JSONObject resultJson) {
+        super.onPostExecute(resultJson);
+    }
+
     public String readStream(InputStream in) {
         String data = "";
         Scanner s = new Scanner(in);
