@@ -68,6 +68,7 @@
         <activity android:name=".Match.Match_SingViewActivity"/>
         <activity android:name=".Match.Match_Grid"/>
 
+
     </application>
 
 </manifest>

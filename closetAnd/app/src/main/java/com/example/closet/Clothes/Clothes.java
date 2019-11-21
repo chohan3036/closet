@@ -8,12 +8,19 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
+import java.util.ArrayList;
+import java.util.List;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.Toast;
+import android.widget.AdapterView.OnItemSelectedListener;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.closet.R;
 
-public class Clothes extends AppCompatActivity {
+public class Clothes extends AppCompatActivity implements OnItemSelectedListener{
 
     public int[] imageIDs = new int[] {R.drawable.example_01, R.drawable.example_04, R.drawable.example_07};
 
@@ -25,6 +32,21 @@ public class Clothes extends AppCompatActivity {
         GridView gridViewImages = (GridView) findViewById(R.id.clothes_grid);
         GridAdapter imageGridAdapter = new GridAdapter(this, imageIDs);
         gridViewImages.setAdapter(imageGridAdapter);
+
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        spinner.setOnItemSelectedListener(this);
+        String[] items = getResources().getStringArray(R.array.clothes_array);
+        //List<String> categories = new ArrayList<String>();
+        //categories.add("Look");
+        //categories.add("Daily");
+        //categories.add("Office");
+        //categories.add("Cool");
+        //categories.add("Lovely");
+        //categories.add("Casual");
+        //categories.add("Romantic");
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        spinner.setAdapter(dataAdapter);
     }
 
     public void onClick(View view) {
@@ -62,4 +84,16 @@ public class Clothes extends AppCompatActivity {
             }
         });
     }
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        // On selecting a spinner item
+        String item = parent.getItemAtPosition(position).toString();
+
+        // Showing selected spinner item
+        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+
+    }
+    public void onNothingSelected(AdapterView<?> arg0) {
+        // TODO Auto-generated method stub
+    }
+
 }
