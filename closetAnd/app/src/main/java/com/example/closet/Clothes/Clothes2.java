@@ -1,6 +1,8 @@
-/* package com.example.closet.Clothes;
+package com.example.closet.Clothes;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -19,7 +21,7 @@ import java.util.ArrayList;
 public class Clothes2 extends AppCompatActivity {
     private Context context;
     private Clothes2_Adapter adapter;
-    private ArrayList<ClothesItem> arrayList;
+    private ArrayList<Integer> arrayList;
 
     public int[] imageIDs = new int[] {R.drawable.example_01, R.drawable.example_04, R.drawable.example_07};
 
@@ -27,15 +29,27 @@ public class Clothes2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clothes);
-
+        context = Clothes2.this;
         loadGridView();
     }
 
     private void loadGridView() {
         GridView gridView = (GridView)findViewById(R.id.clothes_grid);
-        arrayList = new ArrayList<>();
-        adapter = new Clothes2_Adapter(context, arrayList, imageIDs);
+        arrayList = new ArrayList<Integer>();
+        arrayList.add((int)R.drawable.example_01);
+        arrayList.add((int)R.drawable.example_04);
+        arrayList.add((int)R.drawable.example_07);
+        adapter = new Clothes2_Adapter(context, R.layout.clothes_griditem, arrayList);
         gridView.setAdapter(adapter);
+    }
+
+    public class ImageArray{
+        public ImageArray(int index, String msg){
+            this.index = index;
+            this.msg = msg;
+        }
+        int index;
+        String msg;
     }
 
     public void onClick(View view) {
@@ -74,5 +88,3 @@ public class Clothes2 extends AppCompatActivity {
         });
     }
 }
-
- */

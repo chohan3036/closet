@@ -2,11 +2,11 @@
 <resources>
     <string-array name="match_array">
         <item>Look</item>
-        <item>Daily Look</item>
-        <item>Office Look</item>
-        <item>Lovely Look</item>
-        <item>Casual Look</item>
-        <item>Shorts</item>
-        <item>Skirt</item>
+        <item>Daily</item>
+        <item>Office</item>
+        <item>Lovely</item>
+        <item>Casual</item>
+        <item>Romantic</item>
+        <item>Cool</item>
     </string-array>
 </resources>

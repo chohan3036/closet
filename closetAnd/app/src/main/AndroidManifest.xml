@@ -67,11 +67,14 @@
         <activity android:name=".Splash" />
         <activity android:name=".SignUp" />
         <activity android:name=".LogIn" />
+
         <activity android:name=".Clothes.Clothes" />
         <activity android:name=".Clothes.SingleViewActivity" />
         <activity android:name=".openCV_test" />
         <activity android:name=".Match.Match_SingViewActivity" />
         <activity android:name=".Match.Match_Grid" />
+        <activity android:name=".Clothes.Clothes2"/>
+
     </application>
 
 </manifest>
