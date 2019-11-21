@@ -1,2 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<<<<<<< HEAD
 <merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\choha\Desktop\systemProject\closet\closetAnd\openCVLibrary348\src\main\jniLibs"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\choha\Desktop\systemProject\closet\closetAnd\openCVLibrary348\src\debug\jniLibs"/></dataSet></merger>
+=======
+<<<<<<< HEAD
+<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\jniLibs"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\debug\jniLibs"/></dataSet></merger>
+=======
+<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\sookmyung\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\main\jniLibs"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\sookmyung\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\debug\jniLibs"/></dataSet></merger>
+>>>>>>> 9cdb002b00287aa08f69bce685bfb184282fcf11
+>>>>>>> origin/uiIssue

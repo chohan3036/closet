@@ -12,16 +12,20 @@ public class History extends Fragment {
 
     View view;
 
-    public History()
-    {
+
+    public int[] imageIDs = new int[]{R.drawable.example_01, R.drawable.example_04, R.drawable.example_07};
+
+    public History() {
         // Required empty public constructor
     }
-
+}
+/*
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -32,3 +36,14 @@ public class History extends Fragment {
     }
 
 }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_clothes);
+
+        GridView gridViewImages = (GridView) findViewById(R.id.clothes_grid);
+        GridAdapter imageGridAdapter = new GridAdapter(this, imageIDs);
+        gridViewImages.setAdapter(imageGridAdapter);
+    }
+ */

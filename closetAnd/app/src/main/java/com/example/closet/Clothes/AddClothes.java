@@ -184,8 +184,6 @@ public class AddClothes extends AppCompatActivity {
             }
         });
     }
-
-
     public void doTakeAlbumAction(View v)
     {
         // 앨범 호출
