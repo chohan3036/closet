@@ -1,27 +1,19 @@
 package com.example.closet.Clothes;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.closet.R;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -50,7 +42,7 @@ class Clothes2_Adapter extends BaseAdapter {
         this.layout = layout;
         //this.imageIDs = imageIDs;
         this.photoUrls = photoUrls;
-        Log.d("Log_dasagagadg", String.valueOf(this.photoUrls.get(0)));
+        //Log.d("Log_dasagagadg", String.valueOf(this.photoUrls.get(0)));
         mSelectedItemsIds = new SparseBooleanArray();
 
         urlToBitmap = new UrlToBitmap(photoUrls);
