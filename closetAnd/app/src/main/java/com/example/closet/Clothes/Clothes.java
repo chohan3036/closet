@@ -2,6 +2,15 @@ package com.example.closet.Clothes;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -14,29 +23,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.closet.Networking_Get;
 import com.example.closet.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.ExecutionException;
 
-public class Clothes extends AppCompatActivity implements OnItemSelectedListener{
-
-    public int[] imageIDs = new int[] {R.drawable.example_01, R.drawable.example_04, R.drawable.example_07};
+public class Clothes extends AppCompatActivity implements OnItemSelectedListener {
+    private Clothes2_Adapter adapter;
+    ArrayList<URL> photoUrls = new ArrayList<>();
+    GridView gridView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clothes);
-
-        GridView gridViewImages = (GridView) findViewById(R.id.clothes_grid);
-        GridAdapter imageGridAdapter = new GridAdapter(this, imageIDs);
-        gridViewImages.setAdapter(imageGridAdapter);
-
-        try {
-            URL url = new URL("http://52.78.194.160:3000/closet/show/personalCloset/1/null"); //uid 고치기
-            Networking_Get networking = new Networking_Get(url);
-            networking.execute();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+        getClothings(null);
+        loadGridView();
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
         spinner.setOnItemSelectedListener(this);
@@ -47,18 +52,49 @@ public class Clothes extends AppCompatActivity implements OnItemSelectedListener
         spinner.setAdapter(dataAdapter);
     }
 
+    private void getClothings(String category) {
+        try {
+            //URL url = new URL("http://52.78.194.160:3000/closet/show/personalCloset/1/null"); //uid 고치기
+            URL url = new URL("http://52.78.194.160:3000/closet/show/personalCloset/1/"+category);
+            Networking_Get networking = new Networking_Get(url);
+            networking.execute();
+            JSONObject result = networking.get();
+            JSONArray clothingResults = (JSONArray) result.get("result");
+            //Log.d("Log_d_jsonarray", String.valueOf(clothingResults));
+            for (int i = 0; i < clothingResults.length(); i++) {
+                JSONObject eachClothing = clothingResults.getJSONObject(i);
+                String photoFile = eachClothing.getString("photo");
+                //Log.d("Log_dPhotoFile",photoFile);
+                photoUrls.add(new URL(photoFile));
+            }
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadGridView() {
+        gridView = (GridView) findViewById(R.id.clothes_grid);
+        adapter = new Clothes2_Adapter(this, R.layout.clothes_griditem, photoUrls);
+        gridView.setAdapter(adapter);
+    }
+
     public void onClick(View view) {
-        /*switch(view.getId()){
+        switch (view.getId()) {
             case R.id.add:
-                System.out.println(view.getId());
-                addPopup();
                 break;
             case R.id.info:
                 //infoPopup();
                 break;
             case R.id.mypick:
                 break;
-        }*/
+        }
     }
 /*
     private PopupWindow infoPopupWindow;
@@ -122,14 +158,20 @@ public class Clothes extends AppCompatActivity implements OnItemSelectedListener
         });
     }
 */
+
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // On selecting a spinner item
         String item = parent.getItemAtPosition(position).toString();
-
-        // Showing selected spinner item
-        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-
+        System.out.println(item);
+        if(item.equals("Category") == false) {
+            // Showing selected spinner item
+            Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+            photoUrls.clear();
+            getClothings(item);
+            loadGridView();
+        }
     }
+
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
     }
