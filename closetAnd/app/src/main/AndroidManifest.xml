@@ -38,13 +38,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".Test.GridItem"></activity>
-        <activity android:name=".Test.GridMain">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".Test.GridMain"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -55,22 +49,14 @@
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
         <activity android:name=".Clothes.AddClothes"
             android:networkSecurityConfig="@xml/network_security_config"
             android:configChanges="keyboardHidden|orientation">
-
         </activity>
-
-        <activity
-            android:name=".Main2Activity"
-            android:configChanges="keyboardHidden|orientation"
-            android:networkSecurityConfig="@xml/network_security_config" />
 
         <activity android:name=".GetaLocation" />
         <activity android:name=".Splash" />

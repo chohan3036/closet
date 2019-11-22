@@ -61,14 +61,14 @@
         android:padding="5dp">
 
         <Button
-        android:id="@+id/add"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginTop="15dp"
-        android:background="#90ee90"
-        android:onClick="onClick"
-        android:text="ADD" />
+            android:id="@+id/add"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="15dp"
+            android:background="#90ee90"
+            android:text="ADD"
+            android:onClick="onClick"/>
 
         <Button
             android:id="@+id/info"
@@ -78,8 +78,8 @@
             android:layout_marginTop="15dp"
             android:layout_marginLeft="15dp"
             android:background="#90ee90"
-            android:onClick="Onclick"
-            android:text="INFO" />
+            android:text="INFO"
+            android:onClick="onClick"/>
 
         <Button
             android:id="@+id/mypick"
@@ -89,8 +89,8 @@
             android:layout_marginLeft="15dp"
             android:layout_marginTop="15dp"
             android:background="#90ee90"
-            android:onClick="onClick"
-            android:text="MYPICK" />
+            android:text="MYPICK"
+            android:onClick="onClick"/>
 
     </LinearLayout>
 
