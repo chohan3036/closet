@@ -15,6 +15,7 @@ import com.example.closet.Clothes.GridClickListener;
 import com.example.closet.Clothes.UrlToBitmap;
 import com.example.closet.R;
 import com.like.LikeButton;
+import com.like.OnLikeListener;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -87,9 +88,18 @@ class Recommend_GridAdapter extends BaseAdapter {
             viewHolder = (Recommend_GridAdapter.ViewHolder) view.getTag();
         viewHolder.imageView.setImageBitmap(photoBitmap.get(i));
 
-        Recommend_ClickListener likeClickListener = new Recommend_ClickListener();
         LikeButton likeButton = (LikeButton) view.findViewById(R.id.like_button);
-        likeButton.setOnClickListener(likeClickListener) ;
+        likeButton.setOnLikeListener(new OnLikeListener(){
+            @Override
+            public void liked(LikeButton likeButton) {
+
+            }
+
+            @Override
+            public void unLiked(LikeButton likeButton) {
+
+            }
+        });
 
         return view;
     }

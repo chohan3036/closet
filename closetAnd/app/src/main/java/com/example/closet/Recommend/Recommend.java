@@ -58,6 +58,7 @@ public class Recommend extends Fragment implements View.OnClickListener {
             }
         });
     }
+
     private void setSpinnerData1() {
         Spinner spinner = (Spinner) view.findViewById(R.id.spinner2);
         String[] items = getResources().getStringArray(R.array.recommend_array2);
@@ -99,5 +100,4 @@ public class Recommend extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
 
     }
-
 }

@@ -30,4 +30,3 @@ public class ThumbImageInfo {
         this.checkedState = checkedState;
     }
 }
-

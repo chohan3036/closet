@@ -35,7 +35,7 @@ class Clothes_Adapter extends BaseAdapter {
         this.context = context;
         this.layout = layout;
         this.photoUrls = photoUrls;
-        Log.d("Log_dasagagadg", String.valueOf(this.photoUrls.get(0)));
+        //Log.d("Log_dasagagadg", String.valueOf(this.photoUrls.get(0)));
         mSelectedItemsIds = new SparseBooleanArray();
 
         urlToBitmap = new UrlToBitmap(photoUrls);

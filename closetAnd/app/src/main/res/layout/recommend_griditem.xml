@@ -34,6 +34,7 @@
         <com.like.LikeButton
             app:icon_type="thumb"
             app:icon_size="25dp"
+            app:is_enabled="false"
             android:id="@+id/like_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
