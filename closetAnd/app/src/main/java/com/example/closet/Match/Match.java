@@ -1,7 +1,5 @@
 package com.example.closet.Match;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,11 +10,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
-import android.content.Context;
-import android.content.Intent;
-import com.example.closet.History.History;
-import com.example.closet.MainActivity;
 import com.example.closet.R;
+import com.example.closet.SignUp;
+
 import android.widget.GridView;
 import android.view.Gravity;
 import android.widget.LinearLayout;
@@ -63,6 +59,7 @@ public class Match extends  Fragment implements View.OnClickListener {
             case R.id.Reset: {
             }
             case R.id.My_pick: {
+                    Move();
             }
         }
     }
@@ -83,11 +80,12 @@ public class Match extends  Fragment implements View.OnClickListener {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 // On selecting a spinner item
                 String item = parent.getItemAtPosition(position).toString();
-
-                // Showing selected spinner item
-                Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-
+                if (item.equals("Look") == false) {
+                    // Showing selected spinner item
+                    Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+                }
             }
+
             public void onNothingSelected(AdapterView<?> arg0) {
                 // TODO Auto-generated method stub
             }
@@ -108,4 +106,9 @@ public class Match extends  Fragment implements View.OnClickListener {
             }
         });
     }
-}
+
+   public void Move() {
+            Intent intent = new Intent(getActivity(), Match_Grid.class);
+            startActivityForResult(intent, 30); //requestCode상수로 만들기
+        }
+    }

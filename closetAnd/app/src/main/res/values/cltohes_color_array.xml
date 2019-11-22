@@ -1,2 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <array name="clothes_color_array">
+        <item>"Color"</item>
+        <item>Red</item>
+        <item>Orange</item>
+        <item>Yellow</item>
+        <item>Yellow Green</item>
+        <item>Green</item>
+        <item>Sky Blue</item>
+        <item>Blue</item>
+        <item>Bluish Violet </item>
+        <item>khaki</item>
+        <item>Brown</item>
+        <item>Beige</item>
+        <item>White</item>
+        <item>Black</item>
+        <item>Gray</item>
+    </array>
+</resources>
