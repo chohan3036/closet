@@ -86,9 +86,6 @@ public class Match extends  Fragment implements View.OnClickListener {
 
                 // Showing selected spinner item
                 Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-                Intent myIntent = new Intent(view.getContext(), History.class);
-                myIntent.putExtra("text",item);
-                startActivity(myIntent);
 
             }
             public void onNothingSelected(AdapterView<?> arg0) {

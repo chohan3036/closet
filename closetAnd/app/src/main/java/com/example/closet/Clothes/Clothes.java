@@ -15,7 +15,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.closet.Networking_Get;
