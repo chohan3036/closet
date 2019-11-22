@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -80,7 +79,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             fragmentList.add(new Match());
             fragmentList.add(new History());
             fragmentList.add(new Recommend());
-
         }
 
         @NonNull
