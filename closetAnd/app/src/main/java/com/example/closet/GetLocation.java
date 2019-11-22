@@ -66,14 +66,20 @@ public class GetLocation extends AsyncTask<Void, Void, Void> {
          */
         try {
             if (mLocationPermissionGranted) {
-                Task locationResult = mFusedLocationProviderClient.getLastLocation();
+                final Task locationResult = mFusedLocationProviderClient.getLastLocation();
+
                 locationResult.addOnCompleteListener(activity, new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()) {
-                            // Set the map's camera position to the current location of the device.
-                            //mLastKnownLocation = task.getResult();
                             Log.d("Log_D_TASK.RETRESULT", task.getResult().toString());
+                            String result = task.getResult().toString();
+                            String[] rr = result.split(" ");
+                            System.out.println(rr[0]);
+                            System.out.println(rr[1]);
+                            Log.d("Log_D_TASK.RETRESULT111", rr[0]);
+                            Log.d("Log_D_TASK.RETRESULT222", rr[1]);
+                            //Location[fused 37.544685,126.965041 hAcc=15 et=+11d4h25m39s888ms alt=80.5 vAcc=2 sAcc=??? bAcc=??? {Bundle[mParcelledData.dataSize=52]}]
                         } else {
                             Log.d("Task Is not Successful", "Current location is null. Using defaults.");
                             Log.e("Task Is not Successful", "Exception: %s", task.getException());

@@ -38,7 +38,6 @@ public class Networking_Get extends AsyncTask<Void,Void,JSONObject> {
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
             response = readStream(in);
             JSONObject responseJson = new JSONObject(response);
-            Log.d("Log_dGetCODE", String.valueOf(urlConnection.getResponseCode()));
             Log.d("Log_dGETResponse",response);
             //JSON return 해주기.
             return responseJson;
