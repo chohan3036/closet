@@ -18,7 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.Toast;
-
+import android.widget.AdapterView.OnItemSelectedListener;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.closet.Networking_Get;
@@ -57,13 +57,17 @@ public class Clothes extends AppCompatActivity implements OnItemSelectedListener
         loadGridView();
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        Spinner spinner1 = (Spinner) findViewById(R.id.spinner4);
         spinner.setOnItemSelectedListener(this);
+        spinner1.setOnItemSelectedListener(this);
         String[] items = getResources().getStringArray(R.array.clothes_array);
-
+        String[] items1 = getResources().getStringArray(R.array.clothes_color_array);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
+        ArrayAdapter<String> dataAdapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items1);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        dataAdapter1.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinner.setAdapter(dataAdapter);
-    }
+        spinner1.setAdapter(dataAdapter1);
 
     private void getClothings(String category) {
         try {
@@ -182,7 +186,7 @@ public class Clothes extends AppCompatActivity implements OnItemSelectedListener
         // On selecting a spinner item
         String item = parent.getItemAtPosition(position).toString();
         System.out.println(item);
-        if(item.equals("Category") == false) {
+        if(item.equals("Category") == false || item.equals("Color") == false) {
             // Showing selected spinner item
             Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             photoUrls.clear();
@@ -193,6 +197,7 @@ public class Clothes extends AppCompatActivity implements OnItemSelectedListener
 
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
+
     }
 
     @Override
