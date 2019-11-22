@@ -18,7 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemSelectedListener;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.closet.Networking_Get;
@@ -68,11 +68,12 @@ public class Clothes extends AppCompatActivity implements OnItemSelectedListener
         dataAdapter1.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinner.setAdapter(dataAdapter);
         spinner1.setAdapter(dataAdapter1);
+    }
 
     private void getClothings(String category) {
         try {
             //URL url = new URL("http://52.78.194.160:3000/closet/show/personalCloset/1/null"); //uid 고치기
-            URL url = new URL("http://52.78.194.160:3000/closet/show/personalCloset/1/"+category);
+            URL url = new URL("http://52.78.194.160:3000/closet/show/personalCloset/1/" + category);
             Networking_Get networking = new Networking_Get(url);
             networking.execute();
             JSONObject result = networking.get();
