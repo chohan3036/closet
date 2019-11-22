@@ -1,20 +1,15 @@
 package com.example.closet.Clothes;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -29,6 +24,7 @@ import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class Clothes extends AppCompatActivity implements OnItemSelectedListener {
@@ -88,15 +84,16 @@ public class Clothes extends AppCompatActivity implements OnItemSelectedListener
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.add:
+                addPopup();
                 break;
             case R.id.info:
-                //infoPopup();
+                infoPopup();
                 break;
             case R.id.mypick:
                 break;
         }
     }
-/*
+
     private PopupWindow infoPopupWindow;
     private PopupWindow addPopupWindow;
 
@@ -157,7 +154,6 @@ public class Clothes extends AppCompatActivity implements OnItemSelectedListener
             }
         });
     }
-*/
 
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // On selecting a spinner item
