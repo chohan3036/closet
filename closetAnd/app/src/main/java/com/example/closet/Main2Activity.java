@@ -185,8 +185,6 @@ public class Main2Activity extends AppCompatActivity {
             }
         });
     }
-
-
     public void doTakeAlbumAction(View v)
     {
         // 앨범 호출

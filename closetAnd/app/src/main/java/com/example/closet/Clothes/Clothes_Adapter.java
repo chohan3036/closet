@@ -1,66 +1,78 @@
 package com.example.closet.Clothes;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
-import android.net.Uri;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.closet.R;
 
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
-class Clothes2_Adapter extends BaseAdapter {
+class Clothes_Adapter extends BaseAdapter {
 
     private Context context;
     private LayoutInflater inflater;
     private int layout;
-    private ArrayList<Integer> arrayList;
     private SparseBooleanArray mSelectedItemsIds;
 
-    int[] imageIDs = null;
+    ArrayList<URL> photoUrls;
+    ArrayList<Bitmap> photoBitmap = new ArrayList<>();
+    UrlToBitmap urlToBitmap;
 
-    public Clothes2_Adapter(Context context, int layout, ArrayList<Integer> arrayList) {
 
-        inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    public Clothes_Adapter(Context context, int layout, ArrayList<URL> photoUrls) {
+
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.context = context;
-        this.arrayList = arrayList;
         this.layout = layout;
-        //this.imageIDs = imageIDs;
+        this.photoUrls = photoUrls;
+        Log.d("Log_dasagagadg", String.valueOf(this.photoUrls.get(0)));
         mSelectedItemsIds = new SparseBooleanArray();
+
+        urlToBitmap = new UrlToBitmap(photoUrls);
+        urlToBitmap.execute();
+        try {
+            photoBitmap = urlToBitmap.get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
-    // 수정했음
-    public int getImageCount() {
-        return (null != imageIDs) ? imageIDs.length : 0;
-    }
-
-    public Object getImageItem(int position) {
-        return (null != imageIDs) ? imageIDs[position] : 0;
-    }
-
-    public long getImageItemId(int position) {
-        return position;
-    }
+    /*
+    private void fileToBitmap(){
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        for(int i = 0 ; i<photoUrls.size(); i++) {
+            Bitmap bitmap = BitmapFactory.decodeFile(photoUrls.get(i).getPath(), bmOptions);
+            System.out.println(photoUrls.get(i).getPath());
+            System.out.println(photoUrls.get(i).getAbsolutePath());
+            try {
+                System.out.println(photoUrls.get(i).getCanonicalPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //bitmap= Bitmap.createScaledBitmap(bitmap,)
+            Log.d("Log_dBITMAP",bitmap.toString());
+            photoBitmap.add(bitmap);
+        }
+    }*/
 
     public int getCount() {
-        return arrayList.size();
+        return photoUrls.size();
     }
 
     public Object getItem(int i) {
-        return arrayList.get(i);
+        return photoUrls.get(i);
     }
 
     public long getItemId(int i) {
@@ -69,28 +81,25 @@ class Clothes2_Adapter extends BaseAdapter {
 
     public View getView(final int i, View view, ViewGroup viewGroup) {
         ViewHolder viewHolder;
-        View gridView ;
+        View gridView;
 
         if (view == null) {
             view = inflater.inflate(layout, viewGroup, false);
             viewHolder = new ViewHolder();
-
             viewHolder.imageView = (ImageView) view.findViewById(R.id.clothes_iv);
             viewHolder.checkBox = (CheckBox) view.findViewById(R.id.chk_clothes_iv);
-
             view.setTag(viewHolder);
         } else
             viewHolder = (ViewHolder) view.getTag();
+        viewHolder.imageView.setImageBitmap(photoBitmap.get(i));
+        viewHolder.checkBox.setChecked(mSelectedItemsIds.get(i));
 
-            viewHolder.imageView.setImageResource(arrayList.get(i)); // 보완 필요
-            viewHolder.checkBox.setChecked(mSelectedItemsIds.get(i));
-
-            viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    checkCheckBox(i, !mSelectedItemsIds.get(i));
-                }
-            });
+        viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkCheckBox(i, !mSelectedItemsIds.get(i));
+            }
+        });
 
         return view;
     }
@@ -126,5 +135,4 @@ class Clothes2_Adapter extends BaseAdapter {
     public SparseBooleanArray getSelectedIds() {
         return mSelectedItemsIds;
     }
-
 }

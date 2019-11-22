@@ -8,7 +8,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,15 +17,12 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import com.example.closet.Clothes.Clothes;
 import com.example.closet.History.History;
 import com.example.closet.Home.Home;
 import com.example.closet.Match.Match;
 import com.example.closet.Recommend.Recommend;
-import com.example.closet.Recommend.recommend_GridAdapter;
 import com.google.android.material.tabs.TabLayout;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 

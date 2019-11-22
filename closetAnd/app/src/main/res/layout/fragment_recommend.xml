@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,20 +16,12 @@
         android:background="#FFEB3B">
 
         <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_weight="1"
-            android:entries="@array/clothes_array1"></Spinner>
-
-        <Spinner
             android:id="@+id/spinner1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:layout_weight="1"
-            android:entries="@array/clothes_array2"></Spinner>
+            android:entries="@array/recommend_array1"></Spinner>
 
         <Spinner
             android:id="@+id/spinner2"
@@ -35,7 +29,15 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:layout_weight="1"
-            android:entries="@array/clothes_array3"></Spinner>
+            android:entries="@array/recommend_array2"></Spinner>
+
+        <Spinner
+            android:id="@+id/spinner3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_weight="1"
+            android:entries="@array/recommend_array3"></Spinner>
         />
     </LinearLayout>
 
@@ -44,18 +46,17 @@
         android:layout_height="0dp"
         android:layout_weight="8">
 
-        <GridView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/gridview"
+        <GridView
+            android:id="@+id/recommend_grid"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:columnWidth="100dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
             android:gravity="center"
             android:horizontalSpacing="10dp"
             android:numColumns="2"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
             android:stretchMode="columnWidth"
             android:verticalSpacing="10dp" />
+
     </LinearLayout>
 
 </LinearLayout>

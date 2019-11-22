@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LogIn"
-    android:orientation="vertical"
-    android:background="#FFEB3B">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,7 +31,7 @@
             app:srcCompat="@drawable/id" />
 
         <EditText
-            android:id="@+id/username"
+            android:id="@+id/login_id"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginRight="50dp"
@@ -55,7 +54,7 @@
             app:srcCompat="@drawable/key" />
 
         <EditText
-            android:id="@+id/password"
+            android:id="@+id/login_pwd"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginRight="50dp"
@@ -69,6 +68,7 @@
         android:layout_weight="1">
 
         <Button
+            android:id="@+id/login_ok"
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_marginLeft="50dp"
