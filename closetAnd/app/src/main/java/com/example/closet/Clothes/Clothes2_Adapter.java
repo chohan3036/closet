@@ -114,10 +114,8 @@ class Clothes2_Adapter extends BaseAdapter {
         if (view == null) {
             view = inflater.inflate(layout, viewGroup, false);
             viewHolder = new ViewHolder();
-
             viewHolder.imageView = (ImageView) view.findViewById(R.id.clothes_iv);
             viewHolder.checkBox = (CheckBox) view.findViewById(R.id.chk_clothes_iv);
-
             view.setTag(viewHolder);
         } else
             viewHolder = (ViewHolder) view.getTag();
@@ -166,13 +164,12 @@ class Clothes2_Adapter extends BaseAdapter {
     public SparseBooleanArray getSelectedIds() {
         return mSelectedItemsIds;
     }
-
 }
-
-class UrlToBitmap extends AsyncTask<Void,Void,ArrayList<Bitmap>> {
+class UrlToBitmap extends AsyncTask<Void, Void, ArrayList<Bitmap>> {
     ArrayList<URL> photoUrls;
     ArrayList<Bitmap> photoBitmap = new ArrayList<>();
-    public UrlToBitmap(ArrayList<URL> photoUrls){
+
+    public UrlToBitmap(ArrayList<URL> photoUrls) {
         this.photoUrls = photoUrls;
     }
 

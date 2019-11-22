@@ -71,7 +71,7 @@ public class Clothes2 extends AppCompatActivity {
     }
     private void loadGridView() {
         GridView gridView = (GridView)findViewById(R.id.clothes_grid);
-        adapter = new Clothes2_Adapter(context, R.layout.clothes_griditem,  photoUrls);
+        adapter = new Clothes2_Adapter(this, R.layout.clothes_griditem,  photoUrls);
         gridView.setAdapter(adapter);
     }
 

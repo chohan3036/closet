@@ -48,7 +48,6 @@ public class Networking_Get extends AsyncTask<Void,Void,JSONObject> {
             e.printStackTrace();
         }
 
-
         return null;
     }
 

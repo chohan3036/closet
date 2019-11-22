@@ -82,7 +82,7 @@ public class Home extends Fragment implements View.OnClickListener {
             Intent intent = new Intent(getActivity(), LogIn.class);
             startActivity(intent);
         }  else if(view == BtnMove){
-            Intent intent = new Intent(getActivity(), Clothes2.class);
+            Intent intent = new Intent(getActivity(), Clothes.class);
             startActivityForResult(intent,30);
         }
     }
