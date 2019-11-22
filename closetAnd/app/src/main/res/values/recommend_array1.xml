@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="clothes_array1">
+    <string-array name="recommend_array1">
         <item>Sex/Age</item>
         <item>Coat</item>
         <item>Dress</item>

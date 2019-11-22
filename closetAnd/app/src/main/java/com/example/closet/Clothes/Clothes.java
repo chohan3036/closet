@@ -3,21 +3,16 @@ package com.example.closet.Clothes;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.closet.Networking_Get;
@@ -29,6 +24,7 @@ import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class Clothes extends AppCompatActivity implements OnItemSelectedListener {
@@ -44,14 +40,17 @@ public class Clothes extends AppCompatActivity implements OnItemSelectedListener
         loadGridView();
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        Spinner spinner1 = (Spinner) findViewById(R.id.spinner4);
         spinner.setOnItemSelectedListener(this);
+        spinner1.setOnItemSelectedListener(this);
         String[] items = getResources().getStringArray(R.array.clothes_array);
-
+        String[] items1 = getResources().getStringArray(R.array.clothes_color_array);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
+        ArrayAdapter<String> dataAdapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items1);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        dataAdapter1.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinner.setAdapter(dataAdapter);
-
-    }
+        spinner1.setAdapter(dataAdapter1);
 
     private void getClothings(String category) {
         try {
@@ -88,27 +87,65 @@ public class Clothes extends AppCompatActivity implements OnItemSelectedListener
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.add:
+                addPopup();
+                break;
             case R.id.info:
-                Popup();
+                infoPopup();
+                break;
             case R.id.mypick:
+                break;
         }
     }
 
-    private PopupWindow mPopupWindow;
+    private PopupWindow infoPopupWindow;
+    private PopupWindow addPopupWindow;
 
-    protected void Popup() {
-        View popupView = getLayoutInflater().inflate(R.layout.activity_clothes2, null);
-        mPopupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+    protected void addPopup() {
+        View addPopupView = getLayoutInflater().inflate(R.layout.activity_clothes3, null);
+        addPopupWindow = new PopupWindow(addPopupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         //popupView 에서 (LinearLayout 을 사용) 레이아웃이 둘러싸고 있는 컨텐츠의 크기 만큼 팝업 크기를 지정
-        mPopupWindow.setFocusable(true);
+        addPopupWindow.setFocusable(true);
         // 외부 영역 선택시 PopUp 종료
-        mPopupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+        addPopupWindow.showAtLocation(addPopupView, Gravity.CENTER, 0, 0);
+
+        Button close = (Button) addPopupView.findViewById(R.id.closeAdd);
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addPopupWindow.dismiss();
+            }
+        });
+
+        Button album = (Button) addPopupView.findViewById(R.id.callAlbum);
+        album.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Camera", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Button camera = (Button) addPopupView.findViewById(R.id.callCamera);
+        camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Camera", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    protected void infoPopup() {
+        View popupView = getLayoutInflater().inflate(R.layout.activity_clothes2, null);
+        infoPopupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        //popupView 에서 (LinearLayout 을 사용) 레이아웃이 둘러싸고 있는 컨텐츠의 크기 만큼 팝업 크기를 지정
+        infoPopupWindow.setFocusable(true);
+        // 외부 영역 선택시 PopUp 종료
+        infoPopupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
 
         Button cancel = (Button) popupView.findViewById(R.id.Cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPopupWindow.dismiss();
+                infoPopupWindow.dismiss();
             }
         });
 
@@ -125,18 +162,17 @@ public class Clothes extends AppCompatActivity implements OnItemSelectedListener
         // On selecting a spinner item
         String item = parent.getItemAtPosition(position).toString();
         System.out.println(item);
-        if(item.equals("Category") == false) {
+        if(item.equals("Category") == false || item.equals("Color") == false) {
             // Showing selected spinner item
             Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             photoUrls.clear();
             getClothings(item);
             loadGridView();
         }
-
     }
 
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
-    }
 
+    }
 }
