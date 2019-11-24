@@ -1,4 +1,4 @@
-package com.example.closet.History;
+package com.example.closet.Recommend;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -7,17 +7,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ImageView;
 
+import com.example.closet.Clothes.GridClickListener;
 import com.example.closet.Clothes.UrlToBitmap;
 import com.example.closet.R;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-class History_GridAdapter extends BaseAdapter {
+class Recommend_GridAdapter extends BaseAdapter {
 
     Context context = null;
     private LayoutInflater inflater;
@@ -28,7 +32,7 @@ class History_GridAdapter extends BaseAdapter {
     ArrayList<Bitmap> photoBitmap = new ArrayList<>();
     UrlToBitmap urlToBitmap;
 
-    public History_GridAdapter(Context context,  ArrayList<String> arrayTextList, ArrayList<URL> photoUrls) {
+    public Recommend_GridAdapter(Context context,  ArrayList<String> arrayTextList, ArrayList<URL> photoUrls) {
         this.context = context;
         this.arrayTextList = arrayTextList;
         this.photoUrls = photoUrls;
@@ -44,7 +48,6 @@ class History_GridAdapter extends BaseAdapter {
             e.printStackTrace();
         }
     }
-
 
     /*
     public int getCount() { return (null != imageIDs) ? imageIDs.length : 0; }
@@ -76,19 +79,27 @@ class History_GridAdapter extends BaseAdapter {
 
         if (view == null) {
             view = inflater.inflate(layout, viewGroup, false);
-            viewHolder = new History_GridAdapter.ViewHolder();
-            viewHolder.imageView = (ImageView) view.findViewById(R.id.history_iv);
-            viewHolder.textView = (TextView) view.findViewById(R.id.history_tv);
+            viewHolder = new Recommend_GridAdapter.ViewHolder();
+            viewHolder.imageView = (ImageView) view.findViewById(R.id.recommend_iv);
+            viewHolder.textView = (TextView) view.findViewById(R.id.like);
+            viewHolder.button = (LikeButton) view.findViewById(R.id.like_button);
             view.setTag(viewHolder);
         } else
-            viewHolder = (History_GridAdapter.ViewHolder) view.getTag();
+            viewHolder = (Recommend_GridAdapter.ViewHolder) view.getTag();
         viewHolder.imageView.setImageBitmap(photoBitmap.get(i));
-        viewHolder.textView.setText(arrayTextList.get(i));
 
-        // 사진 항목들의 클릭을 처리하는 ImageClickListener 객체를 정의합니다.
-        // 그리고 그것을 ImageView의 클릭 리스너로 설정합니다.
-        History_GridClickListener imageViewClickListener = new History_GridClickListener(context, photoUrls.get(i));
-        viewHolder.imageView.setOnClickListener(imageViewClickListener);
+        LikeButton likeButton = (LikeButton) view.findViewById(R.id.like_button);
+        likeButton.setOnLikeListener(new OnLikeListener(){
+            @Override
+            public void liked(LikeButton likeButton) {
+
+            }
+
+            @Override
+            public void unLiked(LikeButton likeButton) {
+
+            }
+        });
 
         return view;
     }
@@ -96,6 +107,7 @@ class History_GridAdapter extends BaseAdapter {
     private class ViewHolder {
         private ImageView imageView;
         private TextView textView;
+        private LikeButton button;
     }
 
 }

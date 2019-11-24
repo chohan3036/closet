@@ -26,8 +26,8 @@ class Match_Adapter extends BaseAdapter {
 
     }
     public int getCount() {
-        return mThumbIds.length;
-    }
+       return mThumbIds.length;
+   }
 
     public Object getItem(int position) {
         return null;
@@ -51,18 +51,11 @@ class Match_Adapter extends BaseAdapter {
         {
             imageView = (ImageView) convertView;
         }
-        imageView.setImageResource(mThumbIds[position]);
+       // imageView.setImageResource(mThumbIds[position]);
         return imageView;
     }
-
-    // Keep all Images in array
     public Integer[] mThumbIds = {
-            Bitmap bitmap = (Bitmap)this.getIntent().getParcelableExtra("Bitmap");
-         ImageView viewBitmap = (ImageView)findViewById(R.id.bitmapview);
-        viewBitmap.setImageBitmap(bitmap);
-            for(int i=0; i<this.intent().size.i++){
+            R.drawable.closet, R.drawable.closet
 
-    }
-    });
-
+    };
 }

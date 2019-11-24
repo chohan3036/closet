@@ -16,8 +16,10 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.Spinner;
 import android.widget.Toast;
+import android.widget.Spinner;
+
+import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -35,7 +37,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class Clothes extends AppCompatActivity implements OnItemSelectedListener {
-    private Clothes2_Adapter adapter;
+    private Clothes_Adapter adapter;
     ArrayList<URL> photoUrls = new ArrayList<>();
     GridView gridView;
 
@@ -99,7 +101,7 @@ public class Clothes extends AppCompatActivity implements OnItemSelectedListener
 
     private void loadGridView() {
         gridView = (GridView) findViewById(R.id.clothes_grid);
-        adapter = new Clothes2_Adapter(this, R.layout.clothes_griditem, photoUrls);
+        adapter = new Clothes_Adapter(this, R.layout.clothes_griditem, photoUrls);
         gridView.setAdapter(adapter);
     }
 
