@@ -25,7 +25,6 @@ public class Match extends  Fragment implements View.OnClickListener {
     private PopupWindow mPopupWindow;
     View view;
     Button Save, My_pick, Reset;
-    GridView gridView;
 
     public Match() {
         // Required empty public constructor

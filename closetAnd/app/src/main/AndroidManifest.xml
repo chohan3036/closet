@@ -40,10 +40,6 @@
         <activity android:name=".Test.GridItem"></activity>
         <activity android:name=".Test.GridMain"></activity>
 
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/map_key" />
-
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme">
