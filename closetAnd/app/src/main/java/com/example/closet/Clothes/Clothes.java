@@ -36,7 +36,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-public class Clothes extends AppCompatActivity implements OnItemSelectedListener {
+public class Clothes extends AppCompatActivity {
     private Clothes_Adapter adapter;
     ArrayList<URL> photoUrls = new ArrayList<>();
     GridView gridView;
@@ -60,8 +60,6 @@ public class Clothes extends AppCompatActivity implements OnItemSelectedListener
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
         Spinner spinner1 = (Spinner) findViewById(R.id.spinner4);
-        spinner.setOnItemSelectedListener(this);
-        spinner1.setOnItemSelectedListener(this);
         String[] items = getResources().getStringArray(R.array.clothes_array);
         String[] items1 = getResources().getStringArray(R.array.clothes_color_array);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
@@ -69,13 +67,74 @@ public class Clothes extends AppCompatActivity implements OnItemSelectedListener
         dataAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         dataAdapter1.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinner.setAdapter(dataAdapter);
+        spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item = parent.getItemAtPosition(position).toString();
+                System.out.println(item);
+                if(!item.equals("Category")) {
+                    // Showing selected spinner item
+                    Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+                    photoUrls.clear();
+                    getClothings(item);
+                    loadGridView();
+                }
+            }
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
         spinner1.setAdapter(dataAdapter1);
+        spinner1.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item1 = parent.getItemAtPosition(position).toString();
+                System.out.println(item1);
+                if(item1.equals("Color") == false) {
+                    // Showing selected spinner item
+                    Toast.makeText(parent.getContext(), "Selected: " + item1, Toast.LENGTH_LONG).show();
+                    photoUrls.clear();
+                    getClothings1(item1);
+                    loadGridView();
+                }
+            }
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
     }
 
     private void getClothings(String category) {
         try {
             //URL url = new URL("http://52.78.194.160:3000/closet/show/personalCloset/1/null"); //uid 고치기
             URL url = new URL("http://52.78.194.160:3000/closet/show/personalCloset/1/" + category);
+            Networking_Get networking = new Networking_Get(url);
+            networking.execute();
+            JSONObject result = networking.get();
+            JSONArray clothingResults = (JSONArray) result.get("result");
+            //Log.d("Log_d_jsonarray", String.valueOf(clothingResults));
+            for (int i = 0; i < clothingResults.length(); i++) {
+                JSONObject eachClothing = clothingResults.getJSONObject(i);
+                String photoFile = eachClothing.getString("photo");
+                //Log.d("Log_dPhotoFile",photoFile);
+                photoUrls.add(new URL(photoFile));
+            }
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getClothings1(String color) {
+        try {
+            //URL url = new URL("http://52.78.194.160:3000/closet/show/personalCloset/1/null"); //uid 고치기
+            URL url = new URL("http://52.78.194.160:3000/closet/show/personalCloset/1/" + color);
             Networking_Get networking = new Networking_Get(url);
             networking.execute();
             JSONObject result = networking.get();
@@ -184,25 +243,6 @@ public class Clothes extends AppCompatActivity implements OnItemSelectedListener
             }
         });
     }
-
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // On selecting a spinner item
-        String item = parent.getItemAtPosition(position).toString();
-        System.out.println(item);
-        if(!(item.equals("Category"))) {
-            // Showing selected spinner item
-            Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-            photoUrls.clear();
-            getClothings(item);
-            loadGridView();
-        }
-    }
-
-    public void onNothingSelected(AdapterView<?> arg0) {
-        // TODO Auto-generated method stub
-
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PICK_FROM_CAMERA){

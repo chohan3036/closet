@@ -2,6 +2,7 @@ package com.example.closet.Clothes;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -97,6 +98,7 @@ class Clothes_Adapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 checkCheckBox(i, !mSelectedItemsIds.get(i));
+
             }
         });
 

@@ -40,10 +40,6 @@
         <activity android:name=".Test.GridItem"></activity>
         <activity android:name=".Test.GridMain"></activity>
 
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/map_key" />
-
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme">
@@ -65,6 +61,8 @@
         <activity android:name=".LogIn" />
 
         <activity android:name=".Clothes.Clothes" />
+        <activity android:name=".Match.Match_Grid"/>
+        <activity android:name=".Match.Match_SingViewActivity"/>
         <activity android:name=".History.History_SingleViewActivity" />
         <activity android:name=".openCV_test" />
 

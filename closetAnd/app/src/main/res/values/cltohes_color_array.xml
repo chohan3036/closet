@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="clothes_color_array">
-        <item>"Color"</item>
+        <item>Color</item>
         <item>Red</item>
         <item>Orange</item>
         <item>Yellow</item>
