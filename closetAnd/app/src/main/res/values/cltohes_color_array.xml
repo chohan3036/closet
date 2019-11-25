@@ -2,6 +2,7 @@
 <resources>
     <array name="clothes_color_array">
         <item>Color</item>
+        <item>All</item>
         <item>Red</item>
         <item>Orange</item>
         <item>Yellow</item>

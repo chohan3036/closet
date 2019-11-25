@@ -51,11 +51,14 @@ public class Clothes extends AppCompatActivity {
     Bitmap bitmap;
     //image to server
 
+    String uid = "1"; // 들어오는  유저 index저장 하기.
+    String net_url = "http://52.78.194.160:3000/closet/show/personalCloset?uid=" + uid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clothes);
-        getClothings(null);
+        getClothings(net_url);
         loadGridView();
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
@@ -72,14 +75,23 @@ public class Clothes extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = parent.getItemAtPosition(position).toString();
                 System.out.println(item);
-                if(!item.equals("Category")) {
+
+                if (!item.equals("Category")) {
                     // Showing selected spinner item
                     Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
                     photoUrls.clear();
-                    getClothings(item);
+                    String categoryUrl;
+
+                    if(item.equals("All"))
+                        categoryUrl = net_url;
+                    else
+                        categoryUrl = net_url.concat("&category=" + item);
+                    getClothings(categoryUrl);
                     loadGridView();
                 }
+
             }
+
             public void onNothingSelected(AdapterView<?> arg0) {
                 // TODO Auto-generated method stub
             }
@@ -90,51 +102,30 @@ public class Clothes extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item1 = parent.getItemAtPosition(position).toString();
                 System.out.println(item1);
-                if(item1.equals("Color") == false) {
+                if (!item1.equals("Color")) {
                     // Showing selected spinner item
                     Toast.makeText(parent.getContext(), "Selected: " + item1, Toast.LENGTH_LONG).show();
                     photoUrls.clear();
-                    getClothings1(item1);
+                    String colorUrl;
+                    if(item1.equals("All"))
+                        colorUrl = net_url;
+                    else
+                        colorUrl = net_url.concat("&color=" + item1);
+                    getClothings(colorUrl);
                     loadGridView();
                 }
             }
+
             public void onNothingSelected(AdapterView<?> arg0) {
                 // TODO Auto-generated method stub
             }
         });
     }
 
-    private void getClothings(String category) {
+    private void getClothings(String net_url) {
         try {
-            //URL url = new URL("http://52.78.194.160:3000/closet/show/personalCloset/1/null"); //uid 고치기
-            URL url = new URL("http://52.78.194.160:3000/closet/show/personalCloset/1/" + category);
-            Networking_Get networking = new Networking_Get(url);
-            networking.execute();
-            JSONObject result = networking.get();
-            JSONArray clothingResults = (JSONArray) result.get("result");
-            //Log.d("Log_d_jsonarray", String.valueOf(clothingResults));
-            for (int i = 0; i < clothingResults.length(); i++) {
-                JSONObject eachClothing = clothingResults.getJSONObject(i);
-                String photoFile = eachClothing.getString("photo");
-                //Log.d("Log_dPhotoFile",photoFile);
-                photoUrls.add(new URL(photoFile));
-            }
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void getClothings1(String color) {
-        try {
-            //URL url = new URL("http://52.78.194.160:3000/closet/show/personalCloset/1/null"); //uid 고치기
-            URL url = new URL("http://52.78.194.160:3000/closet/show/personalCloset/1/" + color);
+            //uid = "1"; //임시 ! 바꿔야함
+            URL url = new URL(net_url);
             Networking_Get networking = new Networking_Get(url);
             networking.execute();
             JSONObject result = networking.get();
@@ -243,26 +234,25 @@ public class Clothes extends AppCompatActivity {
             }
         });
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PICK_FROM_CAMERA){
+        if (requestCode == PICK_FROM_CAMERA) {
 
-        }
-        else if (requestCode == PICK_FROM_ALBUM) {
+        } else if (requestCode == PICK_FROM_ALBUM) {
             String currentImagePath;
             //selectedImagesPaths = new ArrayList<>();
             if (data == null) {
                 Log.d("Log_d data", "data is null");
-            }
-            else {
+            } else {
                 uri = data.getData();
                 currentImagePath = DocumentsContract.getDocumentId(uri);
-                String [] realPath = currentImagePath.split(":");
+                String[] realPath = currentImagePath.split(":");
                 selectedImagesPaths = realPath[1];
                 imagesSelected = true;
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-                    Log.d("Log_d bitmap객체 : ",bitmap.toString());
+                    Log.d("Log_d bitmap객체 : ", bitmap.toString());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

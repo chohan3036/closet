@@ -2,6 +2,7 @@
 <resources>
     <string-array name="clothes_array">
         <item>Category</item>
+        <item>All</item>
         <item>Coat</item>
         <item>Dress</item>
         <item>Jeans</item>
