@@ -82,7 +82,6 @@ public class Match_Grid extends AppCompatActivity {
             gridView = (GridView) findViewById(R.id.gridview1);
             adapter = new Match_Adapter(this);
             gridView.setAdapter(adapter);
-
         }
 }
 

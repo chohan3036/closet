@@ -22,12 +22,12 @@ class Match_Adapter extends BaseAdapter {
     public Match_Adapter(Context context) {
 
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-         mcontext = context;
+        mcontext = context;
 
     }
     public int getCount() {
-       return mThumbIds.length;
-   }
+        return mThumbIds.length;
+    }
 
     public Object getItem(int position) {
         return null;
@@ -51,7 +51,7 @@ class Match_Adapter extends BaseAdapter {
         {
             imageView = (ImageView) convertView;
         }
-       // imageView.setImageResource(mThumbIds[position]);
+        // imageView.setImageResource(mThumbIds[position]);
         return imageView;
     }
     public Integer[] mThumbIds = {
