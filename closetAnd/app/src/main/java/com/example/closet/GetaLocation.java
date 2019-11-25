@@ -92,6 +92,7 @@ public class GetaLocation extends AppCompatActivity implements View.OnClickListe
                             String[] LatLng = result.split(" ")[1].split(",");
                             lat = LatLng[0];
                             lng = LatLng[1];
+                            Log.d("Log_dLocation",lat+"\n"+lng);
                             //Location[fused 37.544685,126.965041 hAcc=15 et=+11d4h25m39s888ms alt=80.5 vAcc=2 sAcc=??? bAcc=??? {Bundle[mParcelledData.dataSize=52]}]
                             getWeather();
                         } else {
@@ -110,8 +111,9 @@ public class GetaLocation extends AppCompatActivity implements View.OnClickListe
             URL url = new URL("http://52.78.194.160:3030/weather?lat="+lat+"&lng="+lng);
             Networking_Get networking = new Networking_Get(url);
             networking.execute();
-            JSONObject jsonObject = networking.get();
-            Log.d("Log_dadad",jsonObject.toString());
+            String rr = String.valueOf(networking.get());
+            //JSONObject jsonObject = new JSONObject(rr);
+            Log.d("Log_dadad",rr.toString());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

@@ -51,7 +51,7 @@ public class Clothes extends AppCompatActivity implements OnItemSelectedListener
         dataAdapter1.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinner.setAdapter(dataAdapter);
         spinner1.setAdapter(dataAdapter1);
-
+    }
     private void getClothings(String category) {
         try {
             URL url = new URL("http://52.78.194.160:3000/closet/show/personalCloset/1/"+category); //uid 고치기
@@ -162,7 +162,7 @@ public class Clothes extends AppCompatActivity implements OnItemSelectedListener
         // On selecting a spinner item
         String item = parent.getItemAtPosition(position).toString();
         System.out.println(item);
-        if(item.equals("Category") == false || item.equals("Color") == false) {
+        if(!(item.equals("Category"))) {
             // Showing selected spinner item
             Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
             photoUrls.clear();
