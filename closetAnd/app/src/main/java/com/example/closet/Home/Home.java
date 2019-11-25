@@ -17,13 +17,11 @@ import android.widget.ImageButton;
 import com.example.closet.GetaLocation;
 import com.example.closet.Clothes.Clothes;
 import com.example.closet.LogIn;
-import com.example.closet.Clothes.Clothes2;
 import com.example.closet.R;
 import com.example.closet.SignUp;
 import com.example.closet.storeClothingNetworking;
 
 import java.net.MalformedURLException;
-import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.

@@ -41,7 +41,7 @@
             android:background="@android:color/transparent"
             android:gravity="center"
             android:horizontalSpacing="10dp"
-            android:numColumns="auto_fit"
+            android:numColumns="2"
             android:stretchMode="columnWidth"
             android:verticalSpacing="10dp" />
     </LinearLayout>

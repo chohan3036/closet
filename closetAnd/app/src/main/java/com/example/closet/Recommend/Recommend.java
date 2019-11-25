@@ -39,9 +39,7 @@ public class Recommend extends Fragment implements View.OnClickListener {
         //Spinner.setEnabled(true);
         return view;
     }
-    public void onClick(View view) {
 
-    }
     private void setSpinnerData() {
         Spinner spinner = (Spinner) view.findViewById(R.id.spinner1);
         String[] items = getResources().getStringArray(R.array.recommend_array1);
@@ -57,9 +55,10 @@ public class Recommend extends Fragment implements View.OnClickListener {
             }
             public void onNothingSelected(AdapterView<?> arg0) {
                 // TODO Auto-generated method stub
+            }
+        });
     }
-});
-    }
+
     private void setSpinnerData1() {
         Spinner spinner = (Spinner) view.findViewById(R.id.spinner2);
         String[] items = getResources().getStringArray(R.array.recommend_array2);
@@ -96,5 +95,9 @@ public class Recommend extends Fragment implements View.OnClickListener {
                 // TODO Auto-generated method stub
             }
         });
+    }
+
+    public void onClick(View view) {
+
     }
 }

@@ -1,6 +1,12 @@
 package com.example.closet.Clothes;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,9 +16,11 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.Spinner;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Spinner;
+
+import java.util.ArrayList;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.closet.Networking_Get;
@@ -22,15 +30,26 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class Clothes extends AppCompatActivity implements OnItemSelectedListener {
-    private Clothes2_Adapter adapter;
+    private Clothes_Adapter adapter;
     ArrayList<URL> photoUrls = new ArrayList<>();
     GridView gridView;
+
+    //image to server
+    private static final int PICK_FROM_CAMERA = 0;
+    private static final int PICK_FROM_ALBUM = 1;
+
+    String selectedImagesPaths;
+    boolean imagesSelected = false;
+    private Uri uri;
+    Bitmap bitmap;
+    //image to server
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +71,11 @@ public class Clothes extends AppCompatActivity implements OnItemSelectedListener
         spinner.setAdapter(dataAdapter);
         spinner1.setAdapter(dataAdapter1);
     }
+
     private void getClothings(String category) {
         try {
-            URL url = new URL("http://52.78.194.160:3000/closet/show/personalCloset/1/"+category); //uid 고치기
+            //URL url = new URL("http://52.78.194.160:3000/closet/show/personalCloset/1/null"); //uid 고치기
+            URL url = new URL("http://52.78.194.160:3000/closet/show/personalCloset/1/" + category);
             Networking_Get networking = new Networking_Get(url);
             networking.execute();
             JSONObject result = networking.get();
@@ -80,7 +101,7 @@ public class Clothes extends AppCompatActivity implements OnItemSelectedListener
 
     private void loadGridView() {
         gridView = (GridView) findViewById(R.id.clothes_grid);
-        adapter = new Clothes2_Adapter(this, R.layout.clothes_griditem, photoUrls);
+        adapter = new Clothes_Adapter(this, R.layout.clothes_griditem, photoUrls);
         gridView.setAdapter(adapter);
     }
 
@@ -116,19 +137,25 @@ public class Clothes extends AppCompatActivity implements OnItemSelectedListener
             }
         });
 
-        Button album = (Button) addPopupView.findViewById(R.id.callAlbum);
-        album.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Camera", Toast.LENGTH_SHORT).show();
-            }
-        });
-
         Button camera = (Button) addPopupView.findViewById(R.id.callCamera);
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Camera", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.setType("image/*");
+                startActivityForResult(intent, PICK_FROM_CAMERA);
+            }
+        });
+
+        Button album = (Button) addPopupView.findViewById(R.id.callAlbum);
+        album.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Album", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                startActivityForResult(intent, PICK_FROM_ALBUM);
             }
         });
     }
@@ -174,5 +201,36 @@ public class Clothes extends AppCompatActivity implements OnItemSelectedListener
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PICK_FROM_CAMERA){
+
+        }
+        else if (requestCode == PICK_FROM_ALBUM) {
+            String currentImagePath;
+            //selectedImagesPaths = new ArrayList<>();
+            if (data == null) {
+                Log.d("Log_d data", "data is null");
+            }
+            else {
+                uri = data.getData();
+                currentImagePath = DocumentsContract.getDocumentId(uri);
+                String [] realPath = currentImagePath.split(":");
+                selectedImagesPaths = realPath[1];
+                imagesSelected = true;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                    Log.d("Log_d bitmap객체 : ",bitmap.toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+        AddClothes sendImage = new AddClothes(imagesSelected, selectedImagesPaths, bitmap);
+        sendImage.connectServer();
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

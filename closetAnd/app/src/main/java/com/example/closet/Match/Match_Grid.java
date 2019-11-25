@@ -31,6 +31,7 @@ public class Match_Grid extends AppCompatActivity {
         GridView gridview = (GridView) findViewById(R.id.gridview1);
         gridview.setAdapter(new Match_GridAdapter(this));
 
+
             //View popupView = getLayoutInflater().inflate(R.layout.match_my_pick, null);
            // mPopupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 

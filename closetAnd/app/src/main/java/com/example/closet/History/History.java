@@ -1,72 +1,57 @@
 package com.example.closet.History;
 
-import android.os.Bundle;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.content.Intent;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-import com.example.closet.R;
-import android.os.Bundle;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.Button;
 import android.widget.GridView;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
-import android.widget.TextView;
-import android.widget.Toast;
-import java.util.ArrayList;
-import java.util.List;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemSelectedListener;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.closet.Networking_Get;
 import com.example.closet.R;
 
-import java.net.MalformedURLException;
 import java.net.URL;
-
+import java.util.ArrayList;
 
 public class History extends Fragment {
 
     View view;
-
-
-    public int[] imageIDs = new int[]{R.drawable.example_01, R.drawable.example_04, R.drawable.example_07};
+    private Context context;
+    private ArrayList<String> arrayTextList;
+    ArrayList<URL> photoUrls = new ArrayList<>();
+    private History_GridAdapter adapter;
 
     public History() {
         // Required empty public constructor
     }
 
-
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_history, container, false);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        // Inflate the layout for this fragment
-        view =inflater.inflate(R.layout.fragment_history, container, false);
-        //setContentView(R.layout.activity_clothes);
-        //Intent it;
-        //String text = it.getStringEXTR("text");
-        //TextView mTextview = (TextView) view.findViewById(R.id.history_tv);
-        //mTextview.setText(text);
-
-        //GridView gridViewImages = (GridView) findViewById(R.id.clothes_grid);
-        //GridAdapter imageGridAdapter = new GridAdapter(this, imageIDs);
-        //gridViewImages.setAdapter(imageGridAdapter);
-        return view;
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        loadGridView(view);
     }
 
-        }
+    private void loadGridView(View view) {
+        GridView gridView = (GridView) view.findViewById(R.id.history_grid);
+        arrayTextList = new ArrayList<>();
+        for (int i = 1; i <= photoUrls.size()+1; i++)
+            arrayTextList.add("History Items " + i);
+        History_GridAdapter imageGridAdapter = new History_GridAdapter(context, arrayTextList, photoUrls);
+        gridView.setAdapter(imageGridAdapter);
+    }
+
+}
