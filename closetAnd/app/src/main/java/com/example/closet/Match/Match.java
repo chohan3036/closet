@@ -24,7 +24,7 @@ import androidx.fragment.app.Fragment;
 public class Match extends  Fragment implements View.OnClickListener {
     private PopupWindow mPopupWindow;
     View view;
-    Button Save, My_pick, Reset;
+    Button save, mypick, reset;
 
     public Match() {
         // Required empty public constructor
@@ -40,25 +40,26 @@ public class Match extends  Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.fragment_match, container, false);
-        Save = (Button) view.findViewById(R.id.Save);
-        Save.setOnClickListener(this);
 
-        My_pick = (Button) view.findViewById(R.id.My_pick);
-        My_pick.setOnClickListener(this);
-        Reset = (Button) view.findViewById(R.id.Reset);
-        Reset.setOnClickListener(this);
+        save = (Button) view.findViewById(R.id.save);
+        save.setOnClickListener(this);
+        mypick = (Button) view.findViewById(R.id.mypick);
+        mypick.setOnClickListener(this);
+        reset = (Button) view.findViewById(R.id.reset);
+        reset.setOnClickListener(this);
+
         return view;
     }
 
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.Save: {
+            case R.id.save: {
                 Popup();
             }
-            case R.id.Reset: {
+            case R.id.reset: {
             }
-            case R.id.My_pick: {
-                   // Move(); match_grid로 이동
+            case R.id.mypick: {
+                Move();          // Move(); match_grid로 이동
             }
         }
     }
@@ -107,8 +108,9 @@ public class Match extends  Fragment implements View.OnClickListener {
         });
     }
 
-   //public void Move() {  // my pick 버튼 누르면 match grid로 이동
-    //        Intent intent = new Intent(getActivity(), Match_Grid.class);
-    //        startActivityForResult(intent, 30); //requestCode상수로 만들기
-     //   }
+    public void Move() {  // mypick 버튼 누르면 Match_Grid로 이동
+            Intent intent = new Intent(getActivity(), Match_Grid.class);
+            startActivityForResult(intent, 30); //requestCode상수로 만들기
     }
+
+}

@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.ImageView;
 
+import com.example.closet.Clothes.GridClickListener;
 import com.example.closet.Clothes.UrlToBitmap;
 import com.example.closet.R;
 
@@ -75,6 +76,11 @@ class History_GridAdapter extends BaseAdapter {
 
         viewHolder.imageView.setImageBitmap(photoBitmap.get(i));
         viewHolder.textView.setText(arrayTextList.get(i));
+
+        // 사진 항목들의 클릭을 처리하는 ImageClickListener 객체를 정의합니다.
+        // 그리고 그것을 ImageView의 클릭 리스너로 설정합니다.
+        History_GridClickListener imageViewClickListener = new History_GridClickListener(context, photoUrls.get(i));
+        viewHolder.imageView.setOnClickListener(imageViewClickListener);
 
         return view;
     }

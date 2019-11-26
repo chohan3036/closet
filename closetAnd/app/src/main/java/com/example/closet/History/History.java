@@ -54,8 +54,7 @@ public class History extends Fragment {
     }
     private void getClothings(String category) {
         try {
-            //URL url = new URL("http://52.78.194.160:3000/closet/show/personalCloset/1/null"); //uid 고치기
-            URL url = new URL("http://52.78.194.160:3000/closet/show/personalCloset/1/" + category);
+            URL url = new URL("http://52.78.194.160:3000/closet/show/personalCloset?uid=1" + category);
             Networking_Get networking = new Networking_Get(url);
             networking.execute();
             JSONObject result = networking.get();
@@ -89,3 +88,4 @@ public class History extends Fragment {
     }
 
 }
+
