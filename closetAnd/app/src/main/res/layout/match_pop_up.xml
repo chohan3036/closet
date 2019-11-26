@@ -14,7 +14,7 @@
         android:orientation="vertical">
 
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/match_save_spinner"
             android:layout_width="match_parent"
             android:layout_height="73dp"
             android:layout_gravity="center"
@@ -27,7 +27,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/Cancel"
+                android:id="@+id/match_save_Cancel"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -40,7 +40,7 @@
                 android:background="#ffffff" />
 
             <Button
-                android:id="@+id/Ok"
+                android:id="@+id/match_save_Ok"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

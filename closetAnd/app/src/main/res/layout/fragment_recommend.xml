@@ -16,7 +16,7 @@
         android:background="#FFEB3B">
 
         <Spinner
-            android:id="@+id/spinner1"
+            android:id="@+id/recommend_spinner_sex_age"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -24,7 +24,7 @@
             android:entries="@array/recommend_array1"></Spinner>
 
         <Spinner
-            android:id="@+id/spinner2"
+            android:id="@+id/recommend_spinner_history"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -32,7 +32,7 @@
             android:entries="@array/recommend_array2"></Spinner>
 
         <Spinner
-            android:id="@+id/spinner3"
+            android:id="@+id/recommend_spinner_like"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
