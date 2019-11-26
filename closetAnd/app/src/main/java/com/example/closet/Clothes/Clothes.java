@@ -23,6 +23,7 @@ import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.closet.Match.Match_Grid;
 import com.example.closet.Networking_Get;
 import com.example.closet.R;
 
@@ -54,6 +55,9 @@ public class Clothes extends AppCompatActivity {
     String uid = "1"; // 들어오는  유저 index저장 하기.
     String net_url = "http://52.78.194.160:3000/closet/show/personalCloset?uid=" + uid;
 
+    ArrayList<Integer> checked_items;
+    JSONArray clothingResults;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +86,7 @@ public class Clothes extends AppCompatActivity {
                     photoUrls.clear();
                     String categoryUrl;
 
-                    if(item.equals("All"))
+                    if (item.equals("All"))
                         categoryUrl = net_url;
                     else
                         categoryUrl = net_url.concat("&category=" + item);
@@ -107,7 +111,7 @@ public class Clothes extends AppCompatActivity {
                     Toast.makeText(parent.getContext(), "Selected: " + item1, Toast.LENGTH_LONG).show();
                     photoUrls.clear();
                     String colorUrl;
-                    if(item1.equals("All"))
+                    if (item1.equals("All"))
                         colorUrl = net_url;
                     else
                         colorUrl = net_url.concat("&color=" + item1);
@@ -129,8 +133,11 @@ public class Clothes extends AppCompatActivity {
             Networking_Get networking = new Networking_Get(url);
             networking.execute();
             JSONObject result = networking.get();
-            JSONArray clothingResults = (JSONArray) result.get("result");
-            //Log.d("Log_d_jsonarray", String.valueOf(clothingResults));
+            clothingResults = (JSONArray) result.get("result");
+            Log.d("Log_d_jsonarrayResult", String.valueOf(clothingResults));
+            //checked 된 거랑 맞춰서 intent로 보내는 방법으로  해보기
+            //[{"cid":19,"color_name":"red","color_r":255,"color_g":10,"color_b":30,"category":"skirt","description":"favorite","photo":"https:\/\/closetsook.s3.ap-northeast-2.amazonaws.com\/1574096231635.PNG"},{"cid":24,"color_name":"white","color_r":11,"color_g":45,"color_b":133,"category":"skirt"
+
             for (int i = 0; i < clothingResults.length(); i++) {
                 JSONObject eachClothing = clothingResults.getJSONObject(i);
                 String photoFile = eachClothing.getString("photo");
@@ -164,6 +171,25 @@ public class Clothes extends AppCompatActivity {
                 infoPopup();
                 break;
             case R.id.mypick:
+                ArrayList<URL> selected_to_match = new ArrayList<>();
+                checked_items = Clothes_Adapter.checked_items;
+                try {
+                    for (int i = 0; i < checked_items.size(); i++) {
+                        Log.d("Log_dDDaaaaa", i + ":" + (checked_items.get(i)));
+                        JSONObject eachClothing = null;
+                        //int check_index = checked_items.get(i);
+                        eachClothing = clothingResults.getJSONObject(checked_items.get(i));
+                        String photoFile = eachClothing.getString("photo");
+                        selected_to_match.add(new URL(photoFile));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                Intent intent = new Intent(this, Match_Grid.class);
+                intent.putExtra("selected_items",selected_to_match);
+                startActivity(intent);
                 break;
         }
     }
