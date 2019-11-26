@@ -23,6 +23,7 @@ import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.closet.Match.Match_Grid;
 import com.example.closet.Networking_Get;
 import com.example.closet.R;
 
@@ -55,6 +56,7 @@ public class Clothes extends AppCompatActivity {
     String net_url = "http://52.78.194.160:3000/closet/show/personalCloset?uid=" + uid;
 
     ArrayList<Integer> checked_items;
+    JSONArray clothingResults;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +133,7 @@ public class Clothes extends AppCompatActivity {
             Networking_Get networking = new Networking_Get(url);
             networking.execute();
             JSONObject result = networking.get();
-            JSONArray clothingResults = (JSONArray) result.get("result");
+            clothingResults = (JSONArray) result.get("result");
             Log.d("Log_d_jsonarrayResult", String.valueOf(clothingResults));
             //checked 된 거랑 맞춰서 intent로 보내는 방법으로  해보기
             //[{"cid":19,"color_name":"red","color_r":255,"color_g":10,"color_b":30,"category":"skirt","description":"favorite","photo":"https:\/\/closetsook.s3.ap-northeast-2.amazonaws.com\/1574096231635.PNG"},{"cid":24,"color_name":"white","color_r":11,"color_g":45,"color_b":133,"category":"skirt"
@@ -169,10 +171,25 @@ public class Clothes extends AppCompatActivity {
                 infoPopup();
                 break;
             case R.id.mypick:
-                Log.d("Log_ddad","asasasf");
+                ArrayList<URL> selected_to_match = new ArrayList<>();
                 checked_items = Clothes_Adapter.checked_items;
-                for (int i = 0; i < checked_items.size(); i++)
-                    Log.d("Log_dDDaaaaa", i + ":" + (checked_items.get(i)));
+                try {
+                    for (int i = 0; i < checked_items.size(); i++) {
+                        Log.d("Log_dDDaaaaa", i + ":" + (checked_items.get(i)));
+                        JSONObject eachClothing = null;
+                        //int check_index = checked_items.get(i);
+                        eachClothing = clothingResults.getJSONObject(checked_items.get(i));
+                        String photoFile = eachClothing.getString("photo");
+                        selected_to_match.add(new URL(photoFile));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                Intent intent = new Intent(this, Match_Grid.class);
+                intent.putExtra("selected_items",selected_to_match);
+                startActivity(intent);
                 break;
         }
     }

@@ -136,8 +136,8 @@ class Clothes_Adapter extends BaseAdapter {
             checked_items.remove((Integer)position);
         }
         notifyDataSetChanged();
-        for(int i =0 ; i <checked_items.size() ; i++)
-            Log.d("Log_dDD",i +"==="+(checked_items.get(i)));
+        //for(int i =0 ; i <checked_items.size() ; i++)
+        //    Log.d("Log_dDD",i +"==="+(checked_items.get(i)));
     }
 
     /**
