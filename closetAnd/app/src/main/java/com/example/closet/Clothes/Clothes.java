@@ -54,6 +54,8 @@ public class Clothes extends AppCompatActivity {
     String uid = "1"; // 들어오는  유저 index저장 하기.
     String net_url = "http://52.78.194.160:3000/closet/show/personalCloset?uid=" + uid;
 
+    ArrayList<Integer> checked_items;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +84,7 @@ public class Clothes extends AppCompatActivity {
                     photoUrls.clear();
                     String categoryUrl;
 
-                    if(item.equals("All"))
+                    if (item.equals("All"))
                         categoryUrl = net_url;
                     else
                         categoryUrl = net_url.concat("&category=" + item);
@@ -107,7 +109,7 @@ public class Clothes extends AppCompatActivity {
                     Toast.makeText(parent.getContext(), "Selected: " + item1, Toast.LENGTH_LONG).show();
                     photoUrls.clear();
                     String colorUrl;
-                    if(item1.equals("All"))
+                    if (item1.equals("All"))
                         colorUrl = net_url;
                     else
                         colorUrl = net_url.concat("&color=" + item1);
@@ -130,7 +132,9 @@ public class Clothes extends AppCompatActivity {
             networking.execute();
             JSONObject result = networking.get();
             JSONArray clothingResults = (JSONArray) result.get("result");
-            //Log.d("Log_d_jsonarray", String.valueOf(clothingResults));
+            Log.d("Log_d_jsonarray", String.valueOf(clothingResults));
+            //checked 된 거랑 맞춰서 intent로 보내는 방법으로  해보기
+
             for (int i = 0; i < clothingResults.length(); i++) {
                 JSONObject eachClothing = clothingResults.getJSONObject(i);
                 String photoFile = eachClothing.getString("photo");
@@ -164,6 +168,10 @@ public class Clothes extends AppCompatActivity {
                 infoPopup();
                 break;
             case R.id.mypick:
+                Log.d("Log_ddad","asasasf");
+                checked_items = Clothes_Adapter.checked_items;
+                for (int i = 0; i < checked_items.size(); i++)
+                    Log.d("Log_dDDaaaaa", i + ":" + (checked_items.get(i)));
                 break;
         }
     }
