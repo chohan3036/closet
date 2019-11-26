@@ -56,7 +56,7 @@ public class Match extends  Fragment implements View.OnClickListener {
             case R.id.Reset: {
             }
             case R.id.My_pick: {
-                Move_to_match_grid(); //match_grid로 이동
+               //Move_to_match_grid(); //match_grid로 이동
             }
         }
     }
@@ -67,6 +67,31 @@ public class Match extends  Fragment implements View.OnClickListener {
         mPopupWindow.setFocusable(true);
         mPopupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
 
+        Spinner spinner = (Spinner) popupView.findViewById(R.id.match_save_spinner);
+        String[] Look_item = getResources().getStringArray(R.array.match_array);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, Look_item);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(dataAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // On selecting a spinner item
+                String Look = parent.getItemAtPosition(position).toString();
+                if (!Look.equals("Look")) {
+                    Toast.makeText(parent.getContext(), "Selected: " + Look, Toast.LENGTH_LONG).show();
+                    Button ok = (Button) popupView.findViewById(R.id.match_save_Ok);
+                    ok.setOnClickListener(new View.OnClickListener() {
+                         public void onClick(View v){
+                             //save networkigng 해야하는 곳(아바타랑 Look 같이 보내주기)
+                             mPopupWindow.dismiss();
+                         }
+                    });
+                }
+            }
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
+
         Button cancel = (Button) popupView.findViewById(R.id.match_save_Cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,34 +99,9 @@ public class Match extends  Fragment implements View.OnClickListener {
                 mPopupWindow.dismiss();
             }
         });
-
-        Button ok = (Button) popupView.findViewById(R.id.match_save_Ok);
-        ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Spinner spinner = (Spinner) popupView.findViewById(R.id.match_save_spinner);
-                String[] Look_item = getResources().getStringArray(R.array.match_array);
-                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, Look_item);
-                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinner.setAdapter(dataAdapter);
-                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        // On selecting a spinner item
-                        String Look = parent.getItemAtPosition(position).toString();
-                        if (!Look.equals("Look")) {
-                            Toast.makeText(parent.getContext(), "Selected: " + Look, Toast.LENGTH_LONG).show();
-                            //save networkigng 해야하는 곳(아바타랑 Look 같이 보내주기)
-                        }
-                    }
-                    public void onNothingSelected(AdapterView<?> arg0) {
-                        // TODO Auto-generated method stub
-                    }
-                });
-            }
-        });
     }
-        public void Move_to_match_grid() {  // my pick 버튼 누르면 match grid로 이동
-               Intent intent = new Intent(getActivity(), Match_Grid.class);
-               startActivity(intent);
-        }
+       // public void Move_to_match_grid() {  // my pick 버튼 누르면 match grid로 이동
+       //        Intent intent = new Intent(getActivity(), Match_Grid.class);
+       //        startActivity(intent);
+      //  }
     }
