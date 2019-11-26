@@ -80,7 +80,6 @@ class Clothes_Adapter extends BaseAdapter {
 
     public View getView(final int i, View view, ViewGroup viewGroup) {
         ViewHolder viewHolder;
-        View gridView;
 
         if (view == null) {
             view = inflater.inflate(layout, viewGroup, false);
