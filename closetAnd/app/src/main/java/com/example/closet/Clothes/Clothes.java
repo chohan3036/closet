@@ -283,7 +283,6 @@ public class Clothes extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-
         }
         AddClothes sendImage = new AddClothes(imagesSelected, selectedImagesPaths, bitmap);
         sendImage.connectServer();

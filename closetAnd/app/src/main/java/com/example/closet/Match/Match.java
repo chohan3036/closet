@@ -56,7 +56,7 @@ public class Match extends  Fragment implements View.OnClickListener {
             case R.id.Reset: {
             }
             case R.id.My_pick: {
-                   // Move(); match_grid로 이동
+                Move_to_match_grid(); //match_grid로 이동
             }
         }
     }
@@ -100,9 +100,8 @@ public class Match extends  Fragment implements View.OnClickListener {
             }
         });
     }
-
-        public void Move() {  // my pick 버튼 누르면 match grid로 이동
+        public void Move_to_match_grid() {  // my pick 버튼 누르면 match grid로 이동
                Intent intent = new Intent(getActivity(), Match_Grid.class);
-               startActivityForResult(intent, 30); //requestCode상수로 만들기
+               startActivity(intent);
         }
     }
