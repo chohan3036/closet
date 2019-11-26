@@ -36,7 +36,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-public class Clothes extends AppCompatActivity implements OnItemSelectedListener {
+public class Clothes extends AppCompatActivity {
     private Clothes_Adapter adapter;
     ArrayList<URL> photoUrls = new ArrayList<>();
     GridView gridView;
@@ -51,17 +51,18 @@ public class Clothes extends AppCompatActivity implements OnItemSelectedListener
     Bitmap bitmap;
     //image to server
 
+    String uid = "1"; // 들어오는  유저 index저장 하기.
+    String net_url = "http://52.78.194.160:3000/closet/show/personalCloset?uid=" + uid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clothes);
-        getClothings(null);
+        getClothings(net_url);
         loadGridView();
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
         Spinner spinner1 = (Spinner) findViewById(R.id.spinner4);
-        spinner.setOnItemSelectedListener(this);
-        spinner1.setOnItemSelectedListener(this);
         String[] items = getResources().getStringArray(R.array.clothes_array);
         String[] items1 = getResources().getStringArray(R.array.clothes_color_array);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
@@ -69,13 +70,62 @@ public class Clothes extends AppCompatActivity implements OnItemSelectedListener
         dataAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         dataAdapter1.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinner.setAdapter(dataAdapter);
+        spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item = parent.getItemAtPosition(position).toString();
+                System.out.println(item);
+
+                if (!item.equals("Category")) {
+                    // Showing selected spinner item
+                    Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+                    photoUrls.clear();
+                    String categoryUrl;
+
+                    if(item.equals("All"))
+                        categoryUrl = net_url;
+                    else
+                        categoryUrl = net_url.concat("&category=" + item);
+                    getClothings(categoryUrl);
+                    loadGridView();
+                }
+
+            }
+
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
         spinner1.setAdapter(dataAdapter1);
+        spinner1.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String item1 = parent.getItemAtPosition(position).toString();
+                System.out.println(item1);
+                if (!item1.equals("Color")) {
+                    // Showing selected spinner item
+                    Toast.makeText(parent.getContext(), "Selected: " + item1, Toast.LENGTH_LONG).show();
+                    photoUrls.clear();
+                    String colorUrl;
+                    if(item1.equals("All"))
+                        colorUrl = net_url;
+                    else
+                        colorUrl = net_url.concat("&color=" + item1);
+                    getClothings(colorUrl);
+                    loadGridView();
+                }
+            }
+
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
     }
 
-    private void getClothings(String category) {
+    private void getClothings(String net_url) {
         try {
-            //URL url = new URL("http://52.78.194.160:3000/closet/show/personalCloset/1/null"); //uid 고치기
-            URL url = new URL("http://52.78.194.160:3000/closet/show/personalCloset/1/" + category);
+            //uid = "1"; //임시 ! 바꿔야함
+            URL url = new URL(net_url);
             Networking_Get networking = new Networking_Get(url);
             networking.execute();
             JSONObject result = networking.get();
@@ -185,44 +235,24 @@ public class Clothes extends AppCompatActivity implements OnItemSelectedListener
         });
     }
 
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // On selecting a spinner item
-        String item = parent.getItemAtPosition(position).toString();
-        System.out.println(item);
-        if(item.equals("Category") == false || item.equals("Color") == false) {
-            // Showing selected spinner item
-            Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-            photoUrls.clear();
-            getClothings(item);
-            loadGridView();
-        }
-    }
-
-    public void onNothingSelected(AdapterView<?> arg0) {
-        // TODO Auto-generated method stub
-
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PICK_FROM_CAMERA){
+        if (requestCode == PICK_FROM_CAMERA) {
 
-        }
-        else if (requestCode == PICK_FROM_ALBUM) {
+        } else if (requestCode == PICK_FROM_ALBUM) {
             String currentImagePath;
             //selectedImagesPaths = new ArrayList<>();
             if (data == null) {
                 Log.d("Log_d data", "data is null");
-            }
-            else {
+            } else {
                 uri = data.getData();
                 currentImagePath = DocumentsContract.getDocumentId(uri);
-                String [] realPath = currentImagePath.split(":");
+                String[] realPath = currentImagePath.split(":");
                 selectedImagesPaths = realPath[1];
                 imagesSelected = true;
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-                    Log.d("Log_d bitmap객체 : ",bitmap.toString());
+                    Log.d("Log_d bitmap객체 : ", bitmap.toString());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

@@ -25,7 +25,6 @@ public class Match extends  Fragment implements View.OnClickListener {
     private PopupWindow mPopupWindow;
     View view;
     Button Save, My_pick, Reset;
-    GridView gridView;
 
     public Match() {
         // Required empty public constructor
@@ -59,7 +58,7 @@ public class Match extends  Fragment implements View.OnClickListener {
             case R.id.Reset: {
             }
             case R.id.My_pick: {
-                    Move();
+                   // Move(); match_grid로 이동
             }
         }
     }
@@ -90,6 +89,7 @@ public class Match extends  Fragment implements View.OnClickListener {
                 // TODO Auto-generated method stub
             }
         });
+
         Button cancel = (Button) popupView.findViewById(R.id.Cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,8 +107,8 @@ public class Match extends  Fragment implements View.OnClickListener {
         });
     }
 
-   public void Move() {
-            Intent intent = new Intent(getActivity(), Match_Grid.class);
-            startActivityForResult(intent, 30); //requestCode상수로 만들기
-        }
+   //public void Move() {  // my pick 버튼 누르면 match grid로 이동
+    //        Intent intent = new Intent(getActivity(), Match_Grid.class);
+    //        startActivityForResult(intent, 30); //requestCode상수로 만들기
+     //   }
     }

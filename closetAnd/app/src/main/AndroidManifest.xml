@@ -37,37 +37,31 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Test.GridItem"></activity>
-        <activity android:name=".Test.GridMain"></activity>
 
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/map_key" />
-
+        <activity android:name=".Test.GridItem" />
+        <activity android:name=".Test.GridMain" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".Clothes.AddClothes"
-            android:networkSecurityConfig="@xml/network_security_config"
-            android:configChanges="keyboardHidden|orientation">
-        </activity>
-
+            android:configChanges="keyboardHidden|orientation"
+            android:networkSecurityConfig="@xml/network_security_config"></activity>
         <activity android:name=".GetaLocation" />
         <activity android:name=".Splash" />
         <activity android:name=".SignUp" />
         <activity android:name=".LogIn" />
-
         <activity android:name=".Clothes.Clothes" />
+        <activity android:name=".Match.Match_Grid" />
+        <activity android:name=".Match.Match_SingViewActivity" />
         <activity android:name=".History.History_SingleViewActivity" />
         <activity android:name=".openCV_test" />
-
     </application>
 
 </manifest>

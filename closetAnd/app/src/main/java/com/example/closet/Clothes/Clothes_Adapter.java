@@ -2,6 +2,8 @@ package com.example.closet.Clothes;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -96,6 +98,8 @@ class Clothes_Adapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 checkCheckBox(i, !mSelectedItemsIds.get(i));
+                //i는 0부터 체크박스 번호.
+                //parent로 보내서 networking으로 받은거 정보 넘겨주면 될듯?
             }
         });
 

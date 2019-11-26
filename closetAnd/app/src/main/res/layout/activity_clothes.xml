@@ -16,6 +16,7 @@
             android:layout_height="50dp"
             android:layout_marginLeft="20dp"
             android:background="#FFFFFF"
+
             android:entries="@array/clothes_array" />
 
         <Spinner

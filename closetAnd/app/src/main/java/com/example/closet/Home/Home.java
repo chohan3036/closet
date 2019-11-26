@@ -29,9 +29,10 @@ import java.net.MalformedURLException;
 public class Home extends Fragment implements View.OnClickListener {
 
     View view;
-    Button singUp,logIn;
+    Button singUp, logIn;
     ImageButton BtnMove;
     Button map;
+
     public Home() {
         // Required empty public constructor
     }
@@ -47,17 +48,17 @@ public class Home extends Fragment implements View.OnClickListener {
         view = inflater.inflate(R.layout.fragment_home, container, false);
         map = (Button) view.findViewById(R.id.mapButton);
         map.setOnClickListener(this);
-        singUp = (Button)view.findViewById(R.id.signUp);
+        singUp = (Button) view.findViewById(R.id.signUp);
         BtnMove = (ImageButton) view.findViewById(R.id.BtnActivityOne);
 
         singUp.setOnClickListener(this);
         BtnMove.setOnClickListener(this);
 
-        logIn = (Button)view.findViewById(R.id.login_button);
+        logIn = (Button) view.findViewById(R.id.login_button);
         logIn.setOnClickListener(this);
 
         try {
-            storeClothingNetworking  networking = new storeClothingNetworking();
+            storeClothingNetworking networking = new storeClothingNetworking();
             //networking.execute();
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -69,19 +70,19 @@ public class Home extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         if (view == singUp) {
             Intent intent = new Intent(getActivity(), SignUp.class);
-            startActivityForResult(intent, 30); //requestCode상수로 만들기
+            startActivity(intent); //requestCode상수로 만들기
         } else if (view == map) {
             Intent intent = new Intent(getActivity(), GetaLocation.class);
-            getActivity().startActivityForResult(intent, 50);
+            startActivity(intent);
             //startActivitiyForReuslt =Activity로 호출받게 됨.
             //Fragment를 불러들인 mainActivity가 있다면 거기서 받을 수가 있겠죠.
             //메인에서 받은 값을 Fragment에서 재 캐치하는 방법으로 했었던게 기억납니다.
-        }else if(view == logIn){
+        } else if (view == logIn) {
             Intent intent = new Intent(getActivity(), LogIn.class);
             startActivity(intent);
-        }  else if(view == BtnMove){
+        } else if (view == BtnMove) {
             Intent intent = new Intent(getActivity(), Clothes.class);
-            startActivityForResult(intent,30);
+            startActivityForResult(intent, 30);
         }
     }
 
