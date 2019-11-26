@@ -132,8 +132,9 @@ public class Clothes extends AppCompatActivity {
             networking.execute();
             JSONObject result = networking.get();
             JSONArray clothingResults = (JSONArray) result.get("result");
-            Log.d("Log_d_jsonarray", String.valueOf(clothingResults));
+            Log.d("Log_d_jsonarrayResult", String.valueOf(clothingResults));
             //checked 된 거랑 맞춰서 intent로 보내는 방법으로  해보기
+            //[{"cid":19,"color_name":"red","color_r":255,"color_g":10,"color_b":30,"category":"skirt","description":"favorite","photo":"https:\/\/closetsook.s3.ap-northeast-2.amazonaws.com\/1574096231635.PNG"},{"cid":24,"color_name":"white","color_r":11,"color_g":45,"color_b":133,"category":"skirt"
 
             for (int i = 0; i < clothingResults.length(); i++) {
                 JSONObject eachClothing = clothingResults.getJSONObject(i);
