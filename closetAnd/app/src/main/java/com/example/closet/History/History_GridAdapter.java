@@ -19,20 +19,22 @@ import java.util.concurrent.ExecutionException;
 
 class History_GridAdapter extends BaseAdapter {
 
-    Context context = null;
+    Context context;
     private LayoutInflater inflater;
     private int layout;
 
-    ArrayList<String> arrayTextList = null;
     ArrayList<URL> photoUrls;
     ArrayList<Bitmap> photoBitmap = new ArrayList<>();
     UrlToBitmap urlToBitmap;
+    ArrayList<String> arrayTextList;
 
-    public History_GridAdapter(Context context,  ArrayList<String> arrayTextList, ArrayList<URL> photoUrls) {
+    public History_GridAdapter(Context context, ArrayList<URL> photoUrls, ArrayList<String> arrayTextList) {
+
         this.context = context;
-        this.arrayTextList = arrayTextList;
+        inflater = LayoutInflater.from(context);
+
         this.photoUrls = photoUrls;
-        Log.d("Log_dasagagadg", String.valueOf(this.photoUrls.get(0)));
+        this.arrayTextList = arrayTextList;
 
         urlToBitmap = new UrlToBitmap(photoUrls);
         urlToBitmap.execute();
@@ -44,19 +46,6 @@ class History_GridAdapter extends BaseAdapter {
             e.printStackTrace();
         }
     }
-
-
-    /*
-    public int getCount() { return (null != imageIDs) ? imageIDs.length : 0; }
-
-    public Object getItem(int position) {
-        return (null != imageIDs) ? imageIDs[position] : 0;
-    }
-
-    public long getItemId(int position) {
-        return position;
-    }
-    */
 
     public int getCount() {
         return photoUrls.size();
@@ -72,23 +61,20 @@ class History_GridAdapter extends BaseAdapter {
 
     public View getView(final int i, View view, ViewGroup viewGroup) {
         ViewHolder viewHolder;
-        View gridView;
 
         if (view == null) {
-            view = inflater.inflate(layout, viewGroup, false);
-            viewHolder = new History_GridAdapter.ViewHolder();
+            viewHolder = new ViewHolder();
+
+            view = inflater.inflate(R.layout.history_griditem, viewGroup, false);
             viewHolder.imageView = (ImageView) view.findViewById(R.id.history_iv);
             viewHolder.textView = (TextView) view.findViewById(R.id.history_tv);
+
             view.setTag(viewHolder);
         } else
-            viewHolder = (History_GridAdapter.ViewHolder) view.getTag();
+            viewHolder = (ViewHolder) view.getTag();
+
         viewHolder.imageView.setImageBitmap(photoBitmap.get(i));
         viewHolder.textView.setText(arrayTextList.get(i));
-
-        // 사진 항목들의 클릭을 처리하는 ImageClickListener 객체를 정의합니다.
-        // 그리고 그것을 ImageView의 클릭 리스너로 설정합니다.
-        History_GridClickListener imageViewClickListener = new History_GridClickListener(context, photoUrls.get(i));
-        viewHolder.imageView.setOnClickListener(imageViewClickListener);
 
         return view;
     }

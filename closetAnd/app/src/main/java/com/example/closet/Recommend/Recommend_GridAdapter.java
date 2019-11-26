@@ -8,14 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.ImageView;
 
-import com.example.closet.Clothes.GridClickListener;
 import com.example.closet.Clothes.UrlToBitmap;
 import com.example.closet.R;
-import com.like.LikeButton;
-import com.like.OnLikeListener;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -23,20 +19,22 @@ import java.util.concurrent.ExecutionException;
 
 class Recommend_GridAdapter extends BaseAdapter {
 
-    Context context = null;
+    Context context;
     private LayoutInflater inflater;
     private int layout;
 
-    ArrayList<String> arrayTextList = null;
     ArrayList<URL> photoUrls;
     ArrayList<Bitmap> photoBitmap = new ArrayList<>();
     UrlToBitmap urlToBitmap;
+    ArrayList<String> arrayTextList;
 
-    public Recommend_GridAdapter(Context context,  ArrayList<String> arrayTextList, ArrayList<URL> photoUrls) {
+    public Recommend_GridAdapter(Context context, ArrayList<URL> photoUrls, ArrayList<String> arrayTextList) {
+
         this.context = context;
-        this.arrayTextList = arrayTextList;
+        inflater = LayoutInflater.from(context);
+
         this.photoUrls = photoUrls;
-        Log.d("Log_dasagagadg", String.valueOf(this.photoUrls.get(0)));
+        this.arrayTextList = arrayTextList;
 
         urlToBitmap = new UrlToBitmap(photoUrls);
         urlToBitmap.execute();
@@ -48,18 +46,6 @@ class Recommend_GridAdapter extends BaseAdapter {
             e.printStackTrace();
         }
     }
-
-    /*
-    public int getCount() { return (null != imageIDs) ? imageIDs.length : 0; }
-
-    public Object getItem(int position) {
-        return (null != imageIDs) ? imageIDs[position] : 0;
-    }
-
-    public long getItemId(int position) {
-        return position;
-    }
-    */
 
     public int getCount() {
         return photoUrls.size();
@@ -75,39 +61,34 @@ class Recommend_GridAdapter extends BaseAdapter {
 
     public View getView(final int i, View view, ViewGroup viewGroup) {
         ViewHolder viewHolder;
-        View gridView;
 
         if (view == null) {
-            view = inflater.inflate(layout, viewGroup, false);
-            viewHolder = new Recommend_GridAdapter.ViewHolder();
+            viewHolder = new ViewHolder();
+
+            view = inflater.inflate(R.layout.recommend_griditem, viewGroup, false);
             viewHolder.imageView = (ImageView) view.findViewById(R.id.recommend_iv);
-            viewHolder.textView = (TextView) view.findViewById(R.id.like);
-            viewHolder.button = (LikeButton) view.findViewById(R.id.like_button);
+            viewHolder.button = (Button) view.findViewById(R.id.like_button);
+
             view.setTag(viewHolder);
         } else
-            viewHolder = (Recommend_GridAdapter.ViewHolder) view.getTag();
+            viewHolder = (ViewHolder) view.getTag();
+
         viewHolder.imageView.setImageBitmap(photoBitmap.get(i));
 
-        LikeButton likeButton = (LikeButton) view.findViewById(R.id.like_button);
-        likeButton.setOnLikeListener(new OnLikeListener(){
+        /* viewHolder.button.setOnClickListener(new Button.OnClickListener(){
             @Override
-            public void liked(LikeButton likeButton) {
-
-            }
-
-            @Override
-            public void unLiked(LikeButton likeButton) {
-
+            public void onClick(View view) {
+                viewHolder.button.setActivated(true);
             }
         });
+         */
 
         return view;
     }
 
     private class ViewHolder {
         private ImageView imageView;
-        private TextView textView;
-        private LikeButton button;
+        private Button button;
     }
 
 }
