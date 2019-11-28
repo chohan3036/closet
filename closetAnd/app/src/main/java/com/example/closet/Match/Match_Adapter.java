@@ -38,7 +38,6 @@ class Match_Adapter extends BaseAdapter {
         this.context = context;
         this.layout = layout;
         this.selected_from_clothes = selected_from_clothes;
-
         mSelectedItemsIds = new SparseBooleanArray();
 
         urlToBitmap = new UrlToBitmap(selected_from_clothes);

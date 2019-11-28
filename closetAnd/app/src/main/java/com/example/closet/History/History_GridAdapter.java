@@ -84,7 +84,7 @@ class History_GridAdapter extends BaseAdapter {
 
         viewHolder.imageView.setImageBitmap(photoBitmap.get(i));
         viewHolder.textView.setText(arrayTextList.get(i));
-        
+
         viewHolder.imageView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){

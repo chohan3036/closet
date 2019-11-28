@@ -10,10 +10,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import org.opencv.core.*;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
+
+import static org.opencv.core.CvType.CV_8U;
+import static org.opencv.imgproc.Imgproc.GC_BGD;
+
 
 public class openCV_test extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener2{
     static {
@@ -37,8 +42,9 @@ public class openCV_test extends AppCompatActivity implements CameraBridgeViewBa
         mImageView = findViewById(R.id.origin_iv);
         mEdgeImageView = findViewById(R.id.edge_iv);
 
+        grabCut();
         //detectEdgeUsingJNI();
-        detectEdge();
+        //detectEdge();
     }
 
     @Override
@@ -77,6 +83,34 @@ public class openCV_test extends AppCompatActivity implements CameraBridgeViewBa
         Utils.matToBitmap(edge, mInputImage);
         src.release();
         edge.release();
+        mEdgeImageView.setImageBitmap(mInputImage);
+    }
+
+    public void grabCut(){
+        Mat src = new Mat();
+        Mat mask = new Mat();
+
+        //mask = np.zeros(img.shape[:2], dtype=np.uint8)
+        mask.copySize(src);
+        mask.setTo(Scalar.all(Imgproc.CV_RGBA2mRGBA)); //이값이mask가 아니고원본이미지 설정으로 해야하는것 같기도 함.
+        //mask = ones(src.size(), CV_8U) * GC_BGD;
+
+        Utils.bitmapToMat(mInputImage, src);
+
+        Rect rectangle = new Rect(10, 10, src.cols() - 20, src.rows() - 20);
+
+        int iterCount = 1;
+
+        Mat bgdModel = new Mat(); // extracted features for background
+        Mat fgdModel = new Mat(); // extracted features for foreground
+        Mat source = new Mat(1, 1, CV_8U, new Scalar(0));
+
+        Imgproc.grabCut(src,mask,rectangle,bgdModel,fgdModel,iterCount,Imgproc.GC_INIT_WITH_MASK);
+
+        Utils.matToBitmap(src,mInputImage); //??
+        src.release();
+        mask.release();
+
         mEdgeImageView.setImageBitmap(mInputImage);
     }
     public void onButtonClicked(View view) {

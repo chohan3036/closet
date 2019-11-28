@@ -20,6 +20,7 @@ import com.example.closet.Clothes.Clothes;
 import com.example.closet.LogIn;
 import com.example.closet.R;
 import com.example.closet.SignUp;
+import com.example.closet.openCV_test;
 import com.example.closet.storeClothingNetworking;
 
 import org.json.JSONArray;
@@ -39,6 +40,8 @@ public class Home extends Fragment implements View.OnClickListener {
     ImageButton BtnMove;
     Button map;
     TextView weather_info_textView;
+
+    Button testCv;
 
     public Home() {
         // Required empty public constructor
@@ -65,6 +68,9 @@ public class Home extends Fragment implements View.OnClickListener {
         logIn.setOnClickListener(this);
 
         weather_info_textView = (TextView)view.findViewById(R.id.weather_text);
+
+        testCv = (Button)view.findViewById(R.id.testCV);
+        testCv.setOnClickListener(this);
         return view;
     }
 
@@ -87,6 +93,9 @@ public class Home extends Fragment implements View.OnClickListener {
         } else if (view == BtnMove) {
             Intent intent = new Intent(getActivity(), Clothes.class);
             startActivityForResult(intent, 30);
+        }else if (view == testCv){
+            Intent intent = new Intent(getActivity(), openCV_test.class);
+            startActivity(intent);
         }
     }
 
