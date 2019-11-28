@@ -34,6 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -64,6 +65,7 @@ public class Match_Grid extends AppCompatActivity {
     boolean imagesSelected = false;
     private Uri uri;
     Bitmap bitmap;
+    ArrayList<URL> selected_from_clothes = new ArrayList<>();
 
     //public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     // Inflate the layout for this fragment
@@ -75,6 +77,8 @@ public class Match_Grid extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.match_my_pick);
+        Intent intent = getIntent();
+        selected_from_clothes = (ArrayList<URL>) intent.getSerializableExtra("selected_items");
         loadGridView();
     }
 

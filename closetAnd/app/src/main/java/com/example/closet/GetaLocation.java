@@ -4,11 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,6 +29,7 @@ public class GetaLocation extends AppCompatActivity implements View.OnClickListe
     FusedLocationProviderClient mFusedLocationProviderClient;
     Boolean mLocationPermissionGranted = false;
     String lat, lng;
+    String weatherResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +45,7 @@ public class GetaLocation extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
 
     }
+
     private void getLocationPermission() {
         /*
          * Request location permission, so that we can get the location of the
@@ -92,7 +97,7 @@ public class GetaLocation extends AppCompatActivity implements View.OnClickListe
                             String[] LatLng = result.split(" ")[1].split(",");
                             lat = LatLng[0];
                             lng = LatLng[1];
-                            Log.d("Log_dLocation",lat+"\n"+lng);
+                            Log.d("Log_dLocation", lat + "\n" + lng);
                             //Location[fused 37.544685,126.965041 hAcc=15 et=+11d4h25m39s888ms alt=80.5 vAcc=2 sAcc=??? bAcc=??? {Bundle[mParcelledData.dataSize=52]}]
                             getWeather();
                         } else {
@@ -106,14 +111,16 @@ public class GetaLocation extends AppCompatActivity implements View.OnClickListe
             Log.e("Exception: %s", e.getMessage());
         }
     }
-    public void getWeather(){
+
+    public void getWeather() {
         try {
-            URL url = new URL("http://52.78.194.160:3030/weather?lat="+lat+"&lng="+lng);
+            URL url = new URL("http://52.78.194.160:3030/weather?lat=" + lat + "&lng=" + lng);
             Networking_Get networking = new Networking_Get(url);
             networking.execute();
-            String rr = String.valueOf(networking.get());
-            //JSONObject jsonObject = new JSONObject(rr);
-            Log.d("Log_dadad",rr.toString());
+            weatherResult = String.valueOf(networking.get());
+            //Log.d("Log_d_From_weatherAPI", weatherResult);
+            // {"grid":{"latitude":"37.53376","longitude":"126.98864","city":"서울","county":"용산구","village":"용산동4가"},"wind":{"wdir":"252.00","wspd":"1.60"},"precipitation":{"sinceOntime":"0.00","type":"0"},"sky":{"code":"SKY_O01","name":"맑음"},"temperature":{"tc":"11.20","tmax":"13.00","tmin":"4.00"},"humidity":"61.00","lightning":"0","timeRelease":"2019-11-26 16:00:00"}
+            returnToHome();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -121,5 +128,12 @@ public class GetaLocation extends AppCompatActivity implements View.OnClickListe
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+    }
+
+    public void returnToHome() {
+        Intent intent = new Intent();
+        intent.putExtra("result", weatherResult);
+        setResult(3000,intent);
+        finish();
     }
 }

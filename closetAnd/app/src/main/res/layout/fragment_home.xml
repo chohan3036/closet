@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".Home.Home"
     android:orientation="vertical">
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,5 +53,16 @@
         android:fontFamily="sans-serif-black"
         android:foregroundTint="#2196F3"
         android:text="Click!" />
+
+    <TextView
+        android:id="@+id/weather_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:layout_marginLeft="150dp"
+        android:background="@android:color/black"
+        android:text="오늘의 날씨는 ..."
+        android:textColor="@android:color/white" />
+
 
 </FrameLayout>

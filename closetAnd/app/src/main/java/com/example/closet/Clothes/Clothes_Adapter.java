@@ -29,6 +29,7 @@ class Clothes_Adapter extends BaseAdapter {
     ArrayList<Bitmap> photoBitmap = new ArrayList<>();
     UrlToBitmap urlToBitmap;
 
+    static public ArrayList<Integer> checked_items = new ArrayList<>(); //clothes에서 쓸 수 있게 static
 
     public Clothes_Adapter(Context context, int layout, ArrayList<URL> photoUrls) {
 
@@ -82,6 +83,8 @@ class Clothes_Adapter extends BaseAdapter {
 
     public View getView(final int i, View view, ViewGroup viewGroup) {
         ViewHolder viewHolder;
+        View gridView;
+        //checked_items = new ArrayList<>(); 어디선가 초기화해줘야하는데,,
 
         if (view == null) {
             view = inflater.inflate(layout, viewGroup, false);
@@ -98,8 +101,6 @@ class Clothes_Adapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 checkCheckBox(i, !mSelectedItemsIds.get(i));
-                //i는 0부터 체크박스 번호.
-                //parent로 보내서 networking으로 받은거 정보 넘겨주면 될듯?
             }
         });
 
@@ -123,12 +124,20 @@ class Clothes_Adapter extends BaseAdapter {
      * Check the Checkbox if not checked
      **/
     public void checkCheckBox(int position, boolean value) {
-        if (value)
-            mSelectedItemsIds.put(position, true);
-        else
-            mSelectedItemsIds.delete(position);
 
+        //i는 0부터 체크박스 번호. 여기서는 position인가?
+        //parent로 보내서 networking으로 받은거 정보 넘겨주면 될듯?
+
+        if (value) {
+            mSelectedItemsIds.put(position, true);
+            checked_items.add((Integer)position);
+        } else {
+            mSelectedItemsIds.delete(position);
+            checked_items.remove((Integer)position);
+        }
         notifyDataSetChanged();
+        //for(int i =0 ; i <checked_items.size() ; i++)
+        //    Log.d("Log_dDD",i +"==="+(checked_items.get(i)));
     }
 
     /**
