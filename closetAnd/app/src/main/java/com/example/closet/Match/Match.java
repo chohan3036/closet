@@ -11,19 +11,28 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
+
 import com.example.closet.R;
+
 import android.widget.GridView;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import java.net.URL;
+import java.util.ArrayList;
+
 import androidx.fragment.app.Fragment;
+
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Match extends  Fragment implements View.OnClickListener {
+public class Match extends Fragment implements View.OnClickListener {
     private PopupWindow mPopupWindow;
     View view;
     Button save, mypick, reset;
+    ArrayList<URL> selected_from_clothes = new ArrayList<>();
+
 
     public Match() {
         // Required empty public constructor
@@ -32,6 +41,8 @@ public class Match extends  Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent = getActivity().getIntent();
+        selected_from_clothes = (ArrayList<URL>) intent.getSerializableExtra("selected_items");
     }
 
     @Override
@@ -82,7 +93,7 @@ public class Match extends  Fragment implements View.OnClickListener {
                     Toast.makeText(parent.getContext(), "Selected: " + Look, Toast.LENGTH_LONG).show();
                     Button ok = (Button) popupView.findViewById(R.id.match_save_Ok);
                     ok.setOnClickListener(new View.OnClickListener() {
-         public void onClick(View v) {
+                        public void onClick(View v) {
                             //save networkigng 해야하는 곳(아바타랑 Look 같이 보내주기)
                             mPopupWindow.dismiss();
                         }
@@ -106,6 +117,7 @@ public class Match extends  Fragment implements View.OnClickListener {
 
     public void Move() {  // mypick 버튼 누르면 Match_Grid로 이동
         Intent intent = new Intent(getContext(), Match_Grid.class);
+        //intent.putExtra("selected_items", selected_from_clothes);
         startActivity(intent);
     }
 }

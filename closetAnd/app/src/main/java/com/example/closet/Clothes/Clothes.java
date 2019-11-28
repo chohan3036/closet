@@ -1,5 +1,6 @@
 package com.example.closet.Clothes;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -22,7 +23,10 @@ import android.widget.Spinner;
 import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
+import com.example.closet.Match.Match;
 import com.example.closet.Match.Match_Grid;
 import com.example.closet.Networking_Get;
 import com.example.closet.R;
@@ -162,6 +166,7 @@ public class Clothes extends AppCompatActivity {
         gridView.setAdapter(adapter);
     }
 
+    @SuppressLint("ResourceType")
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.add:
@@ -187,10 +192,14 @@ public class Clothes extends AppCompatActivity {
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
-                Intent intent = new Intent(this, Match_Grid.class);
-                intent.putExtra("selected_items",selected_to_match);
+                selected_items.selected_from_clothes = selected_to_match;
                 Toast.makeText(this, "Clothes you choose have been sent!", Toast.LENGTH_LONG).show();
-                startActivity(intent);
+                /*Intent intent = new Intent(view.getContext(), Match.class);
+                intent.putExtra("selected_items", selected_to_match);
+
+                view.getContext().startActivity(intent);*/
+
+
                 break;
         }
     }
