@@ -1,5 +1,6 @@
 package com.example.closet.Match;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,7 +23,7 @@ import androidx.fragment.app.Fragment;
 public class Match extends  Fragment implements View.OnClickListener {
     private PopupWindow mPopupWindow;
     View view;
-    Button Save, My_pick, Reset;
+    Button save, mypick, reset;
 
     public Match() {
         // Required empty public constructor
@@ -38,25 +39,26 @@ public class Match extends  Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.fragment_match, container, false);
-        Save = (Button) view.findViewById(R.id.Save);
-        Save.setOnClickListener(this);
 
-        My_pick = (Button) view.findViewById(R.id.My_pick);
-        My_pick.setOnClickListener(this);
-        Reset = (Button) view.findViewById(R.id.Reset);
-        Reset.setOnClickListener(this);
+        save = (Button) view.findViewById(R.id.save);
+        save.setOnClickListener(this);
+        mypick = (Button) view.findViewById(R.id.mypick);
+        mypick.setOnClickListener(this);
+        reset = (Button) view.findViewById(R.id.reset);
+        reset.setOnClickListener(this);
+
         return view;
     }
 
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.Save: {
+            case R.id.save: {
                 Popup();
             }
-            case R.id.Reset: {
+            case R.id.reset: {
             }
-            case R.id.My_pick: {
-               //Move_to_match_grid(); //match_grid로 이동
+            case R.id.mypick: {
+                Move(); // match_grid로 이동
             }
         }
     }
@@ -80,13 +82,14 @@ public class Match extends  Fragment implements View.OnClickListener {
                     Toast.makeText(parent.getContext(), "Selected: " + Look, Toast.LENGTH_LONG).show();
                     Button ok = (Button) popupView.findViewById(R.id.match_save_Ok);
                     ok.setOnClickListener(new View.OnClickListener() {
-                         public void onClick(View v){
-                             //save networkigng 해야하는 곳(아바타랑 Look 같이 보내주기) Look을 text로..
-                             mPopupWindow.dismiss();
-                         }
+         public void onClick(View v) {
+                            //save networkigng 해야하는 곳(아바타랑 Look 같이 보내주기)
+                            mPopupWindow.dismiss();
+                        }
                     });
                 }
             }
+
             public void onNothingSelected(AdapterView<?> arg0) {
                 // TODO Auto-generated method stub
             }
@@ -100,8 +103,9 @@ public class Match extends  Fragment implements View.OnClickListener {
             }
         });
     }
-       // public void Move_to_match_grid() {  // my pick 버튼 누르면 match grid로 이동
-       //        Intent intent = new Intent(getActivity(), Match_Grid.class);
-       //        startActivity(intent);
-      //  }
+
+    public void Move() {  // mypick 버튼 누르면 Match_Grid로 이동
+        Intent intent = new Intent(getContext(), Match_Grid.class);
+        startActivity(intent);
     }
+}

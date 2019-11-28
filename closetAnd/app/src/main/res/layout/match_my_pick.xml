@@ -1,32 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/transparent"
-    android:gravity="center"
-    tools:context=".Match.Match">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="430dp"
-        android:layout_height="626dp"
-        android:background="#ffffff"
-        android:gravity="top"
-        android:orientation="vertical">
-
-
-        <ImageButton
-            android:id="@+id/close"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="right"
-            android:background="#FF0000"
-            android:src="@android:drawable/ic_menu_close_clear_cancel" />
-
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8"
+        android:background="#FFFFFF">
 
         <GridView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/gridview1"
+            android:id="@+id/match_grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:columnWidth="100dp"
@@ -38,6 +23,34 @@
             android:stretchMode="columnWidth"
             android:verticalSpacing="10dp" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:layout_marginBottom="20dp"
+        android:padding="5dp">
+
+        <Button
+            android:id="@+id/remove"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="15dp"
+            android:background="#90ee90"
+            android:text="REMOVE"/>
+
+        <Button
+            android:id="@+id/select"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:background="#90ee90"
+            android:text="SELECT"/>
 
     </LinearLayout>
 

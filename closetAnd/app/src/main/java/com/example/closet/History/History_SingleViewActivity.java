@@ -1,6 +1,7 @@
 package com.example.closet.History;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,8 +27,8 @@ public class History_SingleViewActivity extends AppCompatActivity {
 
         // 확대되는 이미지의 리소스 ID를 인텐트로부터 읽어들이고,
         // 그것을 ImageView 뷰의 이미지 리소스로 설정합니다.
-        int imageID = (Integer) receivedIntent.getExtras().get("image ID");
-        imageView.setImageResource(imageID);
+        Uri imageURL = receivedIntent.getParcelableExtra("image URL");
+        imageView.setImageURI(imageURL);
     }
 
 }

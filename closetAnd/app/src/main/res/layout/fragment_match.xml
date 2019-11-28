@@ -13,7 +13,7 @@
         android:layout_weight="3">
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/match_avatar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -30,7 +30,7 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/My_pick"
+            android:id="@+id/mypick"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="150dp"
@@ -39,7 +39,7 @@
             android:textColor="#000000" />
 
         <Button
-            android:id="@+id/Reset"
+            android:id="@+id/reset"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="50dp"
@@ -48,7 +48,7 @@
             android:textColor="#000000" />
 
         <Button
-            android:id="@+id/Save"
+            android:id="@+id/save"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="50dp"

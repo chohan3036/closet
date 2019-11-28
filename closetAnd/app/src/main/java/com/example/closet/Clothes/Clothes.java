@@ -189,6 +189,7 @@ public class Clothes extends AppCompatActivity {
                 }
                 Intent intent = new Intent(this, Match_Grid.class);
                 intent.putExtra("selected_items",selected_to_match);
+                Toast.makeText(this, "Clothes you choose have been sent!", Toast.LENGTH_LONG).show();
                 startActivity(intent);
                 break;
         }
