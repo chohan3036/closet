@@ -1,5 +1,6 @@
 package com.example.closet.Match;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -58,7 +59,6 @@ public class Match extends  Fragment implements View.OnClickListener {
             }
             case R.id.mypick: {
                 Move(); // match_grid로 이동
-
             }
         }
     }
@@ -105,7 +105,7 @@ public class Match extends  Fragment implements View.OnClickListener {
     }
 
     public void Move() {  // mypick 버튼 누르면 Match_Grid로 이동
-        Intent intent = new Intent(getActivity(), Match_Grid.class);
-        startActivityForResult(intent, 30); //requestCode상수로 만들기
+        Intent intent = new Intent(getContext(), Match_Grid.class);
+        startActivity(intent);
     }
 }
