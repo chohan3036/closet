@@ -81,7 +81,7 @@ public class Match extends  Fragment implements View.OnClickListener {
                     Button ok = (Button) popupView.findViewById(R.id.match_save_Ok);
                     ok.setOnClickListener(new View.OnClickListener() {
                          public void onClick(View v){
-                             //save networkigng 해야하는 곳(아바타랑 Look 같이 보내주기)
+                             //save networkigng 해야하는 곳(아바타랑 Look 같이 보내주기) Look을 text로..
                              mPopupWindow.dismiss();
                          }
                     });
