@@ -3,12 +3,20 @@ package com.example.closet.History;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.closet.Clothes.GridClickListener;
 import com.example.closet.Clothes.UrlToBitmap;
@@ -19,7 +27,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 class History_GridAdapter extends BaseAdapter {
-
+    private PopupWindow mPopupWindow;
     Context context;
     private LayoutInflater inflater;
     private int layout;
@@ -76,11 +84,13 @@ class History_GridAdapter extends BaseAdapter {
 
         viewHolder.imageView.setImageBitmap(photoBitmap.get(i));
         viewHolder.textView.setText(arrayTextList.get(i));
-
-        // 사진 항목들의 클릭을 처리하는 ImageClickListener 객체를 정의합니다.
-        // 그리고 그것을 ImageView의 클릭 리스너로 설정합니다.
-        History_GridClickListener imageViewClickListener = new History_GridClickListener(context, photoBitmap.get(i));
-        viewHolder.imageView.setOnClickListener(imageViewClickListener);
+        
+        viewHolder.imageView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Popup();
+            }
+        });
 
         return view;
     }
@@ -88,6 +98,23 @@ class History_GridAdapter extends BaseAdapter {
     private class ViewHolder {
         private ImageView imageView;
         private TextView textView;
+    }
+
+    protected void Popup() {
+
+        final View popupView = LayoutInflater.from(context).inflate(R.layout.history_pop_up, null);
+        mPopupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        mPopupWindow.setFocusable(true);
+        mPopupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+
+        Button ok = (Button) popupView.findViewById(R.id.single_ok);
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPopupWindow.dismiss();
+            }
+        });
+
     }
 
 }

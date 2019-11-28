@@ -17,6 +17,10 @@ import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import androidx.fragment.app.Fragment;
+
+import java.net.URL;
+import java.util.ArrayList;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -104,7 +108,7 @@ public class Match extends  Fragment implements View.OnClickListener {
         });
     }
 
-    public void Move() {  // mypick 버튼 누르면 Match_Grid로 이동
+    protected void Move() {  // mypick 버튼 누르면 Match_Grid로 이동
         Intent intent = new Intent(getContext(), Match_Grid.class);
         startActivity(intent);
     }

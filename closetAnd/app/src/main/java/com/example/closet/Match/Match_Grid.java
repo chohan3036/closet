@@ -24,7 +24,6 @@ public class Match_Grid extends AppCompatActivity {
         Intent intent = getIntent();
         selected_from_clothes = (ArrayList<URL>) intent.getSerializableExtra("selected_items");
         loadGridView();
-        finish();
     }
 
     private void loadGridView () {

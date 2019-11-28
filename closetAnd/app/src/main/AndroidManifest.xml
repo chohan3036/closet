@@ -59,7 +59,6 @@
         <activity android:name=".LogIn" />
         <activity android:name=".Clothes.Clothes" />
         <activity android:name=".Match.Match_Grid" />
-        <activity android:name=".History.History_SingleViewActivity" />
         <activity android:name=".openCV_test" />
     </application>
 
