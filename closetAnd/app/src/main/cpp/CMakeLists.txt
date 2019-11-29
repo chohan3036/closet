@@ -11,7 +11,11 @@ cmake_minimum_required(VERSION 3.4.1)
 
 
 
+<<<<<<< HEAD
 set(pathPROJECT C:/Users/choha/Desktop/SYSTEM_/closet/closetAnd)
+=======
+set(pathPROJECT C:/Users/beeny/Desktop/closetGit/closet/closetAnd)
+>>>>>>> origin/uiIssue
 set(pathOPENCV ${pathPROJECT}/opencv-3.4.8-android-sdk/OpenCV-android-sdk)
 set(pathLIBOPENCV_JAVA ${pathPROJECT}/app/src/main/JniLibs/${ANDROID_ABI}/libopencv_java3.so)
 

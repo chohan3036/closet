@@ -1,12 +1,15 @@
 package com.example.closet.History;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
@@ -20,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.closet.Clothes.GridClickListener;
 import com.example.closet.Clothes.UrlToBitmap;
+import com.example.closet.MainActivity;
 import com.example.closet.R;
 
 import java.net.URL;
@@ -88,7 +92,22 @@ class History_GridAdapter extends BaseAdapter {
         viewHolder.imageView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Popup();
+                final View popupView = LayoutInflater.from(context).inflate(R.layout.history_pop_up, null);
+
+                mPopupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                mPopupWindow.setFocusable(true);
+                mPopupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+
+                ImageView single_image = (ImageView) popupView.findViewById(R.id.single_iv);
+                Button single_ok = (Button) popupView.findViewById(R.id.single_ok);
+                single_image.setImageBitmap(photoBitmap.get(i));
+
+                single_ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mPopupWindow.dismiss();
+                    }
+                });
             }
         });
 
@@ -98,23 +117,6 @@ class History_GridAdapter extends BaseAdapter {
     private class ViewHolder {
         private ImageView imageView;
         private TextView textView;
-    }
-
-    protected void Popup() {
-
-        final View popupView = LayoutInflater.from(context).inflate(R.layout.history_pop_up, null);
-        mPopupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        mPopupWindow.setFocusable(true);
-        mPopupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
-
-        Button ok = (Button) popupView.findViewById(R.id.single_ok);
-        ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPopupWindow.dismiss();
-            }
-        });
-
     }
 
 }
