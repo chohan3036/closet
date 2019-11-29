@@ -19,7 +19,9 @@ import com.example.closet.R;
 public class Recommend extends Fragment implements View.OnClickListener {
 
     View view;
-
+    final String[] recommend_spinnerNames = new String[]{"Like", "Yes", "No", };
+    int[] recommend_spinnerImages = new int[]{R.drawable.none,R.drawable.thumb_on, R.drawable.thumb_off};
+    int spinner_id = 0;
     public Recommend() {
         // Required empty public constructor
     }
@@ -34,7 +36,7 @@ public class Recommend extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_recommend, container, false);
         setSpinner_sex_age();
-        setSpinner_history();
+        setSpinner_look();
         setSpinner_recommend();
         //Spinner.setEnabled(true);
         return view;
@@ -67,16 +69,16 @@ public class Recommend extends Fragment implements View.OnClickListener {
         });
     }
 
-    private void setSpinner_history() {
-        Spinner spinner_history = (Spinner) view.findViewById(R.id.recommend_spinner_history);
+    private void setSpinner_look() {
+        Spinner spinner_look = (Spinner) view.findViewById(R.id.recommend_spinner_look);
         String[] recommend_array2 = getResources().getStringArray(R.array.recommend_array2);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, recommend_array2);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_history.setAdapter(dataAdapter);
-        spinner_history.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinner_look.setAdapter(dataAdapter);
+        spinner_look.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String history = parent.getItemAtPosition(position).toString();
-                if (!history.equals("History")) {
+                if (!history.equals("Look(Style)")) {
                     Toast.makeText(parent.getContext(), "Selected: " + history, Toast.LENGTH_LONG).show();
                         //photoUrls.clear();
                         //String colorUrl;
@@ -94,27 +96,28 @@ public class Recommend extends Fragment implements View.OnClickListener {
         });
     }
     private void setSpinner_recommend() {
-        Spinner spinner_like = (Spinner) view.findViewById(R.id.recommend_spinner_like);
-        String[] items = getResources().getStringArray(R.array.recommend_array3);
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, items);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_like.setAdapter(dataAdapter);
+        final Spinner spinner_like = (Spinner) view.findViewById(R.id.recommend_spinner_like);
+        RecommendSpinner_Adapter recommendSpinner_adapter = new RecommendSpinner_Adapter(getContext(), recommend_spinnerNames, recommend_spinnerImages);
+        spinner_like.setAdapter(recommendSpinner_adapter);
         spinner_like.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                String like = parent.getItemAtPosition(position).toString();
-                if (like.equals("Like") == false) {
-                    Toast.makeText(parent.getContext(), "Selected: " + like, Toast.LENGTH_LONG).show();
+                spinner_id = spinner_like.getSelectedItemPosition();
+                //spinnerNames[spinner_id] = parent.getItemAtPosition(position).toString();
+                System.out.println(recommend_spinnerNames[spinner_id]);
+                if (!recommend_spinnerNames[spinner_id].equals("Like")) {
+                    // Showing selected spinner item
+                    Toast.makeText(parent.getContext(), "Selected: " + recommend_spinnerNames[spinner_id], Toast.LENGTH_LONG).show();
                     //photoUrls.clear();
                     //String colorUrl;
-                    //if (like.equals("All"))
+                    //if (spinnerNames[spinner_id].equals("All"))
                     //    colorUrl = net_url;
                     //else
-                    //   colorUrl = net_url.concat("&color=" + item1);
+                    //    colorUrl = net_url.concat("&color=" + spinnerNames[spinner_id]);
                     //getClothings(colorUrl);
-                    //loadGridView();}
+                    //loadGridView();
                 }
             }
+
             public void onNothingSelected(AdapterView<?> arg0) {
                 // TODO Auto-generated method stub
             }

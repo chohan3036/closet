@@ -2,13 +2,11 @@
 <resources>
     <string-array name="recommend_array1">
         <item>Sex/Age</item>
-        <item>Coat</item>
-        <item>Dress</item>
-        <item>Jeans</item>
-        <item>Shirt</item>
-        <item>Shorts</item>
-        <item>Skirt</item>
-        <item>Top</item>
-        <item>Trouser</item>
+        <item>10대 여자</item>
+        <item>10대 남자</item>
+        <item>20대 여자</item>
+        <item>20대 남자</item>
+        <item>30대 여자</item>
+        <item>30대 남자</item>
     </string-array>
 </resources>

@@ -10,14 +10,8 @@
 #include <opencv2/imgproc.hpp>
 
 using namespace cv;
-
-extern "C" JNIEXPORT jstring JNICALL
-Java_com_example_closet_MainActivity_stringFromJNI(
-        JNIEnv* env,
-        jobject /* this */) {
-    std::string hello = "Hello from C++";
-    return env->NewStringUTF(hello.c_str());
-}
+using namespace std;
+/*
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_example_closet_openCV_1test_detectEdgeJNI(JNIEnv *env, jobject thiz, jlong input_image,
@@ -29,47 +23,303 @@ Java_com_example_closet_openCV_1test_detectEdgeJNI(JNIEnv *env, jobject thiz, jl
 
     cvtColor(inputMat, outputMat, COLOR_RGB2GRAY);
     Canny(outputMat, outputMat, th1, th2);
-}extern "C"
-JNIEXPORT jint JNICALL
-Java_com_example_closet_openCV_1test_grabcut(JNIEnv *env, jobject thiz) {
-    // TODO: implement grabcut()
-    cv::Mat image= cv::imread("shirts.jpg");
-    //cv::namedWindow("Original Image");
-    //cv::imshow("Original Image",image);
-
-    // 입력 영상에 대한 부분 전경/배경 레이블을 지정하는 방법
-    // 전경 객체 내부를 포함하는 내부 직사각형을 정의
-    cv::Rect rectangle(10, 100, 380, 180);
-    // 경계 직사각형 정의
-    // 직사각형 밖의 화소는 배경으로 레이블링
-
-    // 입력 영상과 자체 분할 영상 외에 cv::grabCut 함수를 호출할 때
-    // 이 알고리즘에 의해 만든 모델을 포함하는 두 행렬의 정의가 필요
-    cv::Mat result; // 분할 (4자기 가능한 값)
-    cv::Mat bgModel, fgModel; // 모델 (초기 사용)
-    cv::grabCut (image,    // 입력 영상
-                 result,    // 분할 결과
-                 rectangle,   // 전경을 포함하는 직사각형
-                 bgModel, fgModel, // 모델
-                 5,     // 반복 횟수
-                 cv::GC_INIT_WITH_RECT); // 직사각형 사용
-    // cv::CC_INT_WITH_RECT 플래그를 이용한 경계 직사각형 모드를 사용하도록 지정
-
-    // cv::GC_PR_FGD 전경에 속할 수도 있는 화소(직사각형 내부의 화소 초기값)
-    // cv::GC_PR_FGD와 동일한 값을 갖는 화소를 추출해 분할한 이진 영상을 얻음
-    cv::compare(result, cv::GC_PR_FGD, result, cv::CMP_EQ);
-    // 전경일 가능성이 있는 화소를 마크한 것을 가져오기
-    cv::Mat foreground(image.size(), CV_8UC3, cv::Scalar(255, 255, 255));
-    // 결과 영상 생성
-    image.copyTo(foreground, result);
-    // 배경 화소는 복사되지 않음
-
-    //cv::namedWindow("Result");
-    //cv::imshow("Result", result);
-
-    //cv::namedWindow("Foreground");
-    //cv::imshow("Foreground", foreground);
-
-    //waitKey(0);
-    return 0;
 }
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_com_example_closet_openCV_1test_grabcut(JNIEnv *env, jobject thiz, jlong input_image,
+                                             jlong output_image) {
+    // TODO: implement grabcut()
+    const Scalar RED = Scalar(0,0,255);
+    const Scalar PINK = Scalar(230,130,255);
+    const Scalar BLUE = Scalar(255,0,0);
+    const Scalar LIGHTBLUE = Scalar(255,255,160);
+    const Scalar GREEN = Scalar(0,255,0);
+    const int BGD_KEY = EVENT_FLAG_CTRLKEY;
+    const int FGD_KEY = EVENT_FLAG_SHIFTKEY;
+    static void getBinMask( const Mat& comMask, Mat& binMask ){
+        if( comMask.empty() || comMask.type()!=CV_8UC1 )
+            CV_Error( Error::StsBadArg, "comMask is empty or has incorrect type (not CV_8UC1)" );
+        if( binMask.empty() || binMask.rows!=comMask.rows || binMask.cols!=comMask.cols )
+            binMask.create( comMask.size(), CV_8UC1 );
+        binMask = comMask & 1;
+    }
+    class GCApplication{
+    public:
+        enum{ NOT_SET = 0, IN_PROCESS = 1, SET = 2 };
+        static const int radius = 2;
+        static const int thickness = -1;
+      void reset();
+       void setImageAndWinName( const Mat& _image, const string& _winName );
+       void showImage() const;
+       void mouseClick( int event, int x, int y, int flags, void* param );
+       int nextIter();
+       int getIterCount() const { return iterCount; }
+    private:
+        void setRectInMask();
+       void setLblsInMask( int flags, Point p, bool isPr );
+        const string* winName;
+        const Mat* image;
+        Mat mask;
+        Mat bgdModel, fgdModel;
+        uchar rectState, lblsState, prLblsState;
+        bool isInitialized;
+        Rect rect;
+        vector<Point> fgdPxls, bgdPxls, prFgdPxls, prBgdPxls;
+        int iterCount;
+    };
+
+    void GCApplication::reset() {
+        if (!mask.empty()) {
+            mask.setTo(Scalar::all(GC_BGD));
+            bgdPxls.clear();
+            fgdPxls.clear();
+            prBgdPxls.clear();
+            prFgdPxls.clear();
+            isInitialized = false;
+            rectState = NOT_SET;
+            lblsState = NOT_SET;
+            prLblsState = NOT_SET;
+            iterCount = 0;
+        }
+    }
+    void GCApplication::setImageAndWinName( const Mat& _image, const string& _winName ){
+        if( _image.empty() || _winName.empty() ) return;
+        image = &_image;
+        winName = &_winName;
+        mask.create( image->size(), CV_8UC1);
+        reset();
+    }
+    void GCApplication::showImage() const
+    {
+        if( image->empty() || winName->empty() )
+            return;
+        Mat res;
+        Mat binMask;
+        if( !isInitialized )
+            image->copyTo( res );
+        else
+        {
+            getBinMask( mask, binMask );
+            image->copyTo( res, binMask );
+        }
+        vector<Point>::const_iterator it;
+        for( it = bgdPxls.begin(); it != bgdPxls.end(); ++it )
+            circle( res, *it, radius, BLUE, thickness );
+        for( it = fgdPxls.begin(); it != fgdPxls.end(); ++it )
+            circle( res, *it, radius, RED, thickness );
+        for( it = prBgdPxls.begin(); it != prBgdPxls.end(); ++it )
+            circle( res, *it, radius, LIGHTBLUE, thickness );
+        for( it = prFgdPxls.begin(); it != prFgdPxls.end(); ++it )
+            circle( res, *it, radius, PINK, thickness );
+        if( rectState == IN_PROCESS || rectState == SET )
+            rectangle( res, Point( rect.x, rect.y ), Point(rect.x + rect.width, rect.y + rect.height ), GREEN, 2);
+        imshow( *winName, res );
+    }
+    void GCApplication::setRectInMask(){
+        CV_Assert( !mask.empty() );
+        mask.setTo( GC_BGD );
+        rect.x = max(0, rect.x);
+        rect.y = max(0, rect.y);
+        rect.width = min(rect.width, image->cols-rect.x);
+        rect.height = min(rect.height, image->rows-rect.y);
+        (mask(rect)).setTo( Scalar(GC_PR_FGD) );
+    }
+    void GCApplication::setLblsInMask( int flags, Point p, bool isPr ){
+        vector<Point> *bpxls, *fpxls;
+        uchar bvalue, fvalue;
+        if( !isPr ){
+            bpxls = &bgdPxls;
+            fpxls = &fgdPxls;
+            bvalue = GC_BGD;
+            fvalue = GC_FGD;
+        }
+        else
+        {
+            bpxls = &prBgdPxls;
+            fpxls = &prFgdPxls;
+            bvalue = GC_PR_BGD;
+            fvalue = GC_PR_FGD;
+        }
+        if( flags & BGD_KEY ){
+            bpxls->push_back(p);
+            circle( mask, p, radius, bvalue, thickness );
+        }
+        if( flags & FGD_KEY ){
+            fpxls->push_back(p);
+            circle( mask, p, radius, fvalue, thickness );
+        }
+    }
+    void GCApplication::mouseClick( int event, int x, int y, int flags, void* )
+    {
+    // TODO add bad args check
+        switch( event )
+        {
+        case EVENT_LBUTTONDOWN: // set rect or GC_BGD(GC_FGD) labels
+            {
+                bool isb = (flags & BGD_KEY) != 0,
+                     isf = (flags & FGD_KEY) != 0;
+                if( rectState == NOT_SET && !isb && !isf ){
+                    rectState = IN_PROCESS;
+                    rect = Rect( x, y, 1, 1 );
+                }
+                if ( (isb || isf) && rectState == SET )
+                    lblsState = IN_PROCESS;
+            }
+            break;
+        case EVENT_RBUTTONDOWN: // set GC_PR_BGD(GC_PR_FGD) labels
+            {
+                bool isb = (flags & BGD_KEY) != 0,
+                     isf = (flags & FGD_KEY) != 0;
+                if ( (isb || isf) && rectState == SET )
+                    prLblsState = IN_PROCESS;
+            }
+            break;
+        case EVENT_LBUTTONUP:
+            if( rectState == IN_PROCESS ){
+                rect = Rect( Point(rect.x, rect.y), Point(x,y) );
+                rectState = SET;
+                setRectInMask();
+                CV_Assert( bgdPxls.empty() && fgdPxls.empty() && prBgdPxls.empty() && prFgdPxls.empty() );
+                showImage();
+            }
+            if( lblsState == IN_PROCESS ){
+                setLblsInMask(flags, Point(x,y), false);
+                lblsState = SET;
+                showImage();
+            }
+            break;
+        case EVENT_RBUTTONUP:
+            if( prLblsState == IN_PROCESS ){
+                setLblsInMask(flags, Point(x,y), true);
+                prLblsState = SET;
+                showImage();
+            }
+            break;
+        case EVENT_MOUSEMOVE:
+            if( rectState == IN_PROCESS ){
+                rect = Rect( Point(rect.x, rect.y), Point(x,y) );
+                CV_Assert( bgdPxls.empty() && fgdPxls.empty() && prBgdPxls.empty() && prFgdPxls.empty() );
+                showImage();
+            }
+            else if( lblsState == IN_PROCESS ){
+                setLblsInMask(flags, Point(x,y), false);
+                showImage();
+            }
+            else if( prLblsState == IN_PROCESS ){
+                setLblsInMask(flags, Point(x,y), true);
+                showImage();
+            }
+            break;
+        }
+    }
+    int GCApplication::nextIter(){
+        if( isInitialized )
+            grabCut( *image, mask, rect, bgdModel, fgdModel, 1 );
+        else
+        {
+            if( rectState != SET )
+                return iterCount;
+            if( lblsState == SET || prLblsState == SET )
+                grabCut( *image, mask, rect, bgdModel, fgdModel, 1, GC_INIT_WITH_MASK );
+            else
+                grabCut( *image, mask, rect, bgdModel, fgdModel, 1, GC_INIT_WITH_RECT );
+            isInitialized = true;
+        }
+        iterCount++;
+        bgdPxls.clear(); fgdPxls.clear();
+        prBgdPxls.clear(); prFgdPxls.clear();
+        return iterCount;
+    }
+
+    GCApplication gcapp;
+
+    static void on_mouse( int event, int x, int y, int flags, void* param ){
+        gcapp.mouseClick( event, x, y, flags, param );
+    }
+
+    int main( int argc, char** argv ){
+        cv::CommandLineParser parser(argc, argv, "{@input| messi5.jpg |}");
+        help();
+        string filename = parser.get<string>("@input");
+        if( filename.empty() ){
+            cout << "\nDurn, empty filename" << endl;
+            return 1;
+        }
+        Mat image = imread(samples::findFile(filename), IMREAD_COLOR);
+        if( image.empty() ){
+            cout << "\n Durn, couldn't read image filename " << filename << endl;
+            return 1;
+        }
+        const string winName = "image";
+        namedWindow( winName, WINDOW_AUTOSIZE );
+        setMouseCallback( winName, on_mouse, 0 );
+        gcapp.setImageAndWinName( image, winName );
+        gcapp.showImage();
+        for(;;){
+            char c = (char)waitKey(0);
+            switch( c )
+            {
+            case '\x1b':
+                cout << "Exiting ..." << endl;
+                goto exit_main;
+            case 'r':
+                cout << endl;
+                gcapp.reset();
+                gcapp.showImage();
+                break;
+            case 'n':
+                int iterCount = gcapp.getIterCount();
+                cout << "<" << iterCount << "... ";
+                int newIterCount = gcapp.nextIter();
+                if( newIterCount > iterCount ){
+                    gcapp.showImage();
+                    cout << iterCount << ">" << endl;
+                }
+                else
+                    cout << "rect must be determined>" << endl;
+                break;
+            }
+        }
+    exit_main:
+        destroyWindow( winName );
+        return 0;
+    }
+}
+/*
+extern "C"
+JNIEXPORT jint JNICALL
+Java_com_example_closet_openCV_1test_seg(JNIEnv *env, jobject thiz) {
+    // TODO: implement seg()
+    //! [load_image]
+    // Load the image
+    //CommandLineParser parser( argc, argv, "{@input | cards.png | input image}" );
+    Mat src = imread('shirts.jpg');
+    if( src.empty() )
+    {
+        cout << "Could not open or find the image!\n" << endl;
+        return -1;
+    }
+
+    // Show source image
+    //imshow("Source Image", src);
+    //! [load_image]
+
+    //! [black_bg]
+    // Change the background from white to black, since that will help later to extract
+    // better results during the use of Distance Transform
+    for ( int i = 0; i < src.rows; i++ ) {
+        for ( int j = 0; j < src.cols; j++ ) {
+            if ( src.at<Vec3b>(i, j) == Vec3b(255,255,255) )
+            {
+                src.at<Vec3b>(i, j)[0] = 0;
+                src.at<Vec3b>(i, j)[1] = 0;
+                src.at<Vec3b>(i, j)[2] = 0;
+            }
+        }
+    }
+
+    // Show output image
+    //imshow("Black Background Image", src);
+    imwrite('result.jpg', src);
+}*/

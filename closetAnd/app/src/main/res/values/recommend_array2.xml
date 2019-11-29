@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="recommend_array2">
-        <item>History</item>
-        <item>Coat</item>
-        <item>Dress</item>
-        <item>Jeans</item>
-        <item>Shirt</item>
-        <item>Shorts</item>
-        <item>Skirt</item>
-        <item>Top</item>
-        <item>Trouser</item>
-    </string-array>
+<string-array name="recommend_array2">
+    <item>Look(Style)</item>
+    <item># Daily look</item>
+    <item># Office look</item>
+    <item># Lovely look</item>
+    <item># Casual look</item>
+    <item># Romantic look</item>
+    <item># Cool look</item>
+    <item># Campus look</item>
+</string-array>
 </resources>

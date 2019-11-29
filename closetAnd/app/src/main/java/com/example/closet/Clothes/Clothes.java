@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 import android.widget.Spinner;
 
@@ -45,6 +46,7 @@ public class Clothes extends AppCompatActivity {
     private Clothes_Adapter adapter;
     ArrayList<URL> photoUrls = new ArrayList<>();
     GridView gridView;
+    int spinner_id =0;
 
     //image to server
     private static final int PICK_FROM_CAMERA = 0;
@@ -68,15 +70,30 @@ public class Clothes extends AppCompatActivity {
         setContentView(R.layout.activity_clothes);
         getClothings(net_url);
         loadGridView();
+        final String[] spinnerNames = new String[]{"Color", "All", "Red", "Orange","Yellow","Yellow Green","Green","Sky Blue",
+                                                      "Blue","Bluish Violet","Khaki","Brown","Beige","White","Black","Gray"};
+        int[] spinnerImages = new int[]{R.drawable.none,R.drawable.all, R.drawable.red , R.drawable.orange
+                , R.drawable.yellow
+                , R.drawable.yellow_green
+                , R.drawable.green
+                , R.drawable.sky_blue
+                , R.drawable.blue
+                , R.drawable.bluish_violet
+                , R.drawable.khaki
+                , R.drawable.brown
+                , R.drawable.beige
+                , R.drawable.white
+                , R.drawable.black
+                , R.drawable.gray};
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
-        Spinner spinner1 = (Spinner) findViewById(R.id.spinner4);
+        final Spinner spinner1 = (Spinner) findViewById(R.id.spinner4);
         String[] items = getResources().getStringArray(R.array.clothes_array);
-        String[] items1 = getResources().getStringArray(R.array.clothes_color_array);
+        //String[] items1 = getResources().getStringArray(R.array.clothes_color_array);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
-        ArrayAdapter<String> dataAdapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items1);
+        //ArrayAdapter<String> dataAdapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items1);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        dataAdapter1.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        //dataAdapter1.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinner.setAdapter(dataAdapter);
         spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
@@ -104,21 +121,23 @@ public class Clothes extends AppCompatActivity {
                 // TODO Auto-generated method stub
             }
         });
-        spinner1.setAdapter(dataAdapter1);
+        CustomSpinner_Adapter customSpinnerAdapter = new CustomSpinner_Adapter(Clothes.this, spinnerNames, spinnerImages);
+        spinner1.setAdapter(customSpinnerAdapter);
         spinner1.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String item1 = parent.getItemAtPosition(position).toString();
-                System.out.println(item1);
-                if (!item1.equals("Color")) {
+                spinner_id = spinner1.getSelectedItemPosition();
+                //spinnerNames[spinner_id] = parent.getItemAtPosition(position).toString();
+                System.out.println(spinnerNames[spinner_id]);
+                if (!spinnerNames[spinner_id].equals("Color")) {
                     // Showing selected spinner item
-                    Toast.makeText(parent.getContext(), "Selected: " + item1, Toast.LENGTH_LONG).show();
+                    Toast.makeText(parent.getContext(), "Selected: " + spinnerNames[spinner_id], Toast.LENGTH_LONG).show();
                     photoUrls.clear();
                     String colorUrl;
-                    if (item1.equals("All"))
+                    if (spinnerNames[spinner_id].equals("All"))
                         colorUrl = net_url;
                     else
-                        colorUrl = net_url.concat("&color=" + item1);
+                        colorUrl = net_url.concat("&color=" + spinnerNames[spinner_id]);
                     getClothings(colorUrl);
                     loadGridView();
                 }
@@ -193,7 +212,7 @@ public class Clothes extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 selected_items.selected_from_clothes = selected_to_match;
-                Toast.makeText(this, "Clothes you choose have been sent!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "선택하신 옷이 전송되었습니다", Toast.LENGTH_LONG).show();
                 /*Intent intent = new Intent(view.getContext(), Match.class);
                 intent.putExtra("selected_items", selected_to_match);
 

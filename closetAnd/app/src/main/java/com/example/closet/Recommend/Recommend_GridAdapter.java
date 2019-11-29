@@ -71,7 +71,7 @@ class Recommend_GridAdapter extends BaseAdapter {
 
             view = inflater.inflate(R.layout.recommend_griditem, viewGroup, false);
             viewHolder.imageView = (ImageView) view.findViewById(R.id.recommend_iv);
-            viewHolder.button = (Button) view.findViewById(R.id.like_button);
+            //viewHolder.button = (Button) view.findViewById(R.id.like_image);
 
             view.setTag(viewHolder);
         } else
