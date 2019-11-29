@@ -17,6 +17,10 @@ import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
 import static org.opencv.core.CvType.CV_8U;
+import static org.opencv.core.CvType.CV_8UC1;
+import static org.opencv.core.CvType.CV_8UC3;
+import static org.opencv.imgproc.Imgproc.COLOR_RGBA2BGRA;
+import static org.opencv.imgproc.Imgproc.CV_RGBA2mRGBA;
 import static org.opencv.imgproc.Imgproc.GC_BGD;
 
 
@@ -25,7 +29,8 @@ public class openCV_test extends AppCompatActivity implements CameraBridgeViewBa
         System.loadLibrary("native-lib");
         System.loadLibrary("opencv_java3");
     }
-    public native int grabcut();
+
+    //public native int seg();
 
     private static final String TAG = "AndroidOpenCv";
     private static final int REQ_CODE_SELECT_IMAGE = 100;
@@ -35,7 +40,9 @@ public class openCV_test extends AppCompatActivity implements CameraBridgeViewBa
     private ImageView mEdgeImageView;
     private boolean mIsOpenCVReady = false;
 
-    public native void detectEdgeJNI(long inputImage, long outputImage, int th1, int th2);
+    //public native int grabcut(long inputImage, long outputImage);
+    //public native void detectEdgeJNI(long inputImage, long outputImage, int th1, int th2);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +50,6 @@ public class openCV_test extends AppCompatActivity implements CameraBridgeViewBa
         mInputImage = BitmapFactory.decodeResource(getResources(),R.drawable.t_shirt);
         mImageView = findViewById(R.id.origin_iv);
         mEdgeImageView = findViewById(R.id.edge_iv);
-
-        //grabCut();
         //detectEdgeUsingJNI();
         //detectEdge();
     }
@@ -66,12 +71,11 @@ public class openCV_test extends AppCompatActivity implements CameraBridgeViewBa
 
     public void detectEdgeUsingJNI(){
         //if(!mlsOpenCVReady)
-
         Mat src = new Mat();
         Utils.bitmapToMat(mInputImage,src);
         mImageView.setImageBitmap(mOriginalImage);
         Mat edge = new Mat();
-        detectEdgeJNI(src.getNativeObjAddr(),edge.getNativeObjAddr(),50,150);
+        //detectEdgeJNI(src.getNativeObjAddr(),edge.getNativeObjAddr(),50,150);
         Utils.matToBitmap(edge,mInputImage);
         mEdgeImageView.setImageBitmap(mInputImage);
     }
@@ -88,39 +92,54 @@ public class openCV_test extends AppCompatActivity implements CameraBridgeViewBa
         mEdgeImageView.setImageBitmap(mInputImage);
     }
 
+    private void getBinMask(Mat comMask, Mat binMask){
+        if( comMask.empty() || comMask.type()!= CV_8UC1 )
+            Log.d("TYPE ERROR", "comMask is empty or has incorrect type (not CV_8UC1)" );
+        if( binMask.empty() || binMask.rows() !=comMask.rows() || binMask.cols() != comMask.cols() )
+            binMask.create( comMask.size(), CV_8UC1 );
+        Core.bitwise_and(comMask, binMask, binMask);
+    }
+
     public void grabCut(){
+        Scalar RED = new Scalar(0,0,255);
+        Scalar PINK = new Scalar(230,130,255);
+        Scalar LIGHTBLUE = new Scalar(255,255,160);
+        Scalar GREEN = new Scalar(0,255,0);
+
         Mat src = new Mat();
+        Mat result = new Mat();
         Mat mask = new Mat();
+        Mat bgdModel = new Mat();
+        Mat fgdModel = new Mat();
 
-        //mask = np.zeros(img.shape[:2], dtype=np.uint8)
-        mask.copySize(src);
-        mask.setTo(Scalar.all(Imgproc.CV_RGBA2mRGBA)); //이값이mask가 아니고원본이미지 설정으로 해야하는것 같기도 함.
-        //mask = ones(src.size(), CV_8U) * GC_BGD;
-
-        Utils.bitmapToMat(mInputImage, src);
-
-        Rect rectangle = new Rect(10, 10, src.cols() - 20, src.rows() - 20);
-
+        Rect rect = new Rect(10, 10, src.cols() - 20, src.rows() - 20);
         int iterCount = 1;
 
-        Mat bgdModel = new Mat(); // extracted features for background
-        Mat fgdModel = new Mat(); // extracted features for foreground
-        Mat source = new Mat(1, 1, CV_8U, new Scalar(0));
+        Utils.bitmapToMat(mInputImage, src);
+        //src.setTo(Scalar.all(Imgproc.CV_RGBA2mRGBA));
+        Imgproc.cvtColor(src, src, COLOR_RGBA2BGRA);
+        src.create(src.size(), CV_8UC3);
+        mask.create(src.size(), CV_8UC3);
+        mask.setTo(Scalar.all(GC_BGD));
+        Mat binMask = new Mat(); getBinMask(mask, binMask);
+        src.copyTo(result, binMask);
 
-        Imgproc.grabCut(src,mask,rectangle,bgdModel,fgdModel,iterCount,Imgproc.GC_INIT_WITH_MASK);
+        //Mat source = new Mat(1, 1, CV_8U, new Scalar(0));
 
-        Utils.matToBitmap(src,mInputImage); //??
+        Imgproc.grabCut(src, mask, rect, bgdModel, fgdModel, iterCount, Imgproc.GC_INIT_WITH_MASK);
+
+        Utils.matToBitmap(src, mInputImage); //??
         src.release();
         mask.release();
-
         mEdgeImageView.setImageBitmap(mInputImage);
     }
+
     public void onButtonClicked(View view) {
         //Intent intent = new Intent(Intent.ACTION_PICK);
         //intent.setType(android.provider.MediaSto`re.Images.Media.CONTENT_TYPE);
         //intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         //startActivityForResult(intent, REQ_CODE_SELECT_IMAGE);
-        grabcut();
+        grabCut();
         Log.d("Log_d Button","ButtonClicked");
     }
 }

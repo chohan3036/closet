@@ -24,7 +24,7 @@
             android:entries="@array/recommend_array1"></Spinner>
 
         <Spinner
-            android:id="@+id/recommend_spinner_history"
+            android:id="@+id/recommend_spinner_look"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
