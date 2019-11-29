@@ -43,12 +43,8 @@
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
+
         <activity
             android:name=".Clothes.AddClothes"
             android:configChanges="keyboardHidden|orientation"
@@ -59,7 +55,12 @@
         <activity android:name=".LogIn" />
         <activity android:name=".Clothes.Clothes" />
         <activity android:name=".Match.Match_Grid" />
-        <activity android:name=".openCV_test" />
+        <activity android:name=".openCV_test">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
