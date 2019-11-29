@@ -25,6 +25,8 @@ public class openCV_test extends AppCompatActivity implements CameraBridgeViewBa
         System.loadLibrary("native-lib");
         System.loadLibrary("opencv_java3");
     }
+    public native int grabcut();
+
     private static final String TAG = "AndroidOpenCv";
     private static final int REQ_CODE_SELECT_IMAGE = 100;
     private Bitmap mInputImage;
@@ -42,7 +44,7 @@ public class openCV_test extends AppCompatActivity implements CameraBridgeViewBa
         mImageView = findViewById(R.id.origin_iv);
         mEdgeImageView = findViewById(R.id.edge_iv);
 
-        grabCut();
+        //grabCut();
         //detectEdgeUsingJNI();
         //detectEdge();
     }
@@ -118,6 +120,7 @@ public class openCV_test extends AppCompatActivity implements CameraBridgeViewBa
         //intent.setType(android.provider.MediaSto`re.Images.Media.CONTENT_TYPE);
         //intent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         //startActivityForResult(intent, REQ_CODE_SELECT_IMAGE);
+        grabcut();
         Log.d("Log_d Button","ButtonClicked");
     }
 }

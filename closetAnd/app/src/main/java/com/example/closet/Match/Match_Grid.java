@@ -3,10 +3,13 @@ package com.example.closet.Match;
 import android.os.Bundle;
 import android.content.Intent;
 import android.widget.GridView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.closet.Clothes.selected_items;
 import com.example.closet.R;
+
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -26,10 +29,14 @@ public class Match_Grid extends AppCompatActivity {
         loadGridView();
     }
 
-    private void loadGridView () {
+    private void loadGridView() {
         gridView = (GridView) findViewById(R.id.match_grid);
-        adapter = new Match_Adapter(this, R.layout.match_griditem, selected_from_clothes);
-        gridView.setAdapter(adapter);
+        if (selected_from_clothes == null) {
+            Toast.makeText(this, "선택된 옷이 없어요", Toast.LENGTH_LONG).show();
+        } else {
+            adapter = new Match_Adapter(this, R.layout.match_griditem, selected_from_clothes);
+            gridView.setAdapter(adapter);
+        }
     }
 }
 
