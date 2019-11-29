@@ -118,7 +118,7 @@ public class GetaLocation extends AppCompatActivity implements View.OnClickListe
             Networking_Get networking = new Networking_Get(url);
             networking.execute();
             weatherResult = String.valueOf(networking.get());
-            //Log.d("Log_d_From_weatherAPI", weatherResult);
+            Log.d("Log_d_From_weatherAPI", weatherResult);
             // {"grid":{"latitude":"37.53376","longitude":"126.98864","city":"서울","county":"용산구","village":"용산동4가"},"wind":{"wdir":"252.00","wspd":"1.60"},"precipitation":{"sinceOntime":"0.00","type":"0"},"sky":{"code":"SKY_O01","name":"맑음"},"temperature":{"tc":"11.20","tmax":"13.00","tmin":"4.00"},"humidity":"61.00","lightning":"0","timeRelease":"2019-11-26 16:00:00"}
             returnToHome();
         } catch (MalformedURLException e) {
