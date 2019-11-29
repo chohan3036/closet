@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -70,7 +69,9 @@ public class Match extends Fragment implements View.OnClickListener {
             case R.id.reset: {
             }
             case R.id.mypick: {
-                Move(); // match_grid로 이동
+                Intent intent = new Intent(getContext(), Match_Grid.class);
+                //intent.putExtra("selected_items", selected_from_clothes);
+                startActivity(intent); // match_grid로 이동
             }
         }
     }
@@ -96,7 +97,7 @@ public class Match extends Fragment implements View.OnClickListener {
                     ok.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
                             //save networkigng 해야하는 곳(아바타랑 Look 같이 보내주기)
-                            //mPopupWindow.dismiss();
+                            mPopupWindow.dismiss();
                         }
                     });
                 }
@@ -114,11 +115,5 @@ public class Match extends Fragment implements View.OnClickListener {
                 mPopupWindow.dismiss();
             }
         });
-    }
-
-    protected void Move() {  // mypick 버튼 누르면 Match_Grid로 이동
-        Intent intent = new Intent(getContext(), Match_Grid.class);
-        //intent.putExtra("selected_items", selected_from_clothes);
-        startActivity(intent);
     }
 }
