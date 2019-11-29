@@ -193,7 +193,7 @@ public class Clothes extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 selected_items.selected_from_clothes = selected_to_match;
-                Toast.makeText(this, "Clothes you choose have been sent!", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "선택하신 옷이 전송되었습니다", Toast.LENGTH_LONG).show();
                 /*Intent intent = new Intent(view.getContext(), Match.class);
                 intent.putExtra("selected_items", selected_to_match);
 
