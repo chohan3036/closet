@@ -3,6 +3,7 @@ package com.example.closet.Match;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
 
+import com.example.closet.Networking;
 import com.example.closet.R;
 
 import android.widget.GridView;
@@ -19,8 +21,13 @@ import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
 import androidx.fragment.app.Fragment;
 
@@ -85,7 +92,7 @@ public class Match extends Fragment implements View.OnClickListener {
                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         // On selecting a spinner item
-                        String Look = parent.getItemAtPosition(position).toString();
+                        final String Look = parent.getItemAtPosition(position).toString();
                         if (!Look.equals("Look")) {
                             Toast.makeText(parent.getContext(), "Selected: " + Look, Toast.LENGTH_LONG).show();
                             Button ok = (Button) popupView.findViewById(R.id.match_save_Ok);
@@ -93,6 +100,28 @@ public class Match extends Fragment implements View.OnClickListener {
                                 public void onClick(View v) {
                                     //save networkigng 해야하는 곳(아바타랑 Look 같이 보내주기)
                                     //mPopupWindow.dismiss();
+                                    //save networkigng 해야하는 곳(아바타랑 Look 같이 보내주기)
+                                    try {
+                                        URL url = new URL("http://52.78.194.160:3030/storeHistory");
+                                        HashMap<String,String > arguments = new HashMap<>();
+                                        arguments.put("uid","3");
+                                        arguments.put("outer_cid","28");
+                                        arguments.put("up_cid","26");
+                                        arguments.put("down_cid","27");
+                                        arguments.put("look_name",Look);
+                                        //들어가는 값 다 처리해야 함.
+                                        Networking networking = new Networking(url,arguments);
+                                        networking.execute();
+                                        JSONObject result = networking.get();
+                                        Log.d("Log_dStoreHistory", String.valueOf(result));
+
+                                    } catch (MalformedURLException e) {
+                                        e.printStackTrace();
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    } catch (ExecutionException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             });
                         }
@@ -111,7 +140,7 @@ public class Match extends Fragment implements View.OnClickListener {
                     }
                 });
 
-            break;
+                break;
             case R.id.reset: break;
 
         }
