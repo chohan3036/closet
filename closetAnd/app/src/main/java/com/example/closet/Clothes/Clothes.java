@@ -198,8 +198,6 @@ public class Clothes extends AppCompatActivity {
                 intent.putExtra("selected_items", selected_to_match);
 
                 view.getContext().startActivity(intent);*/
-
-
                 break;
         }
     }

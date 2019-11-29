@@ -115,7 +115,7 @@ public class Match extends Fragment implements View.OnClickListener {
         });
     }
 
-    public void Move() {  // mypick 버튼 누르면 Match_Grid로 이동
+    protected void Move() {  // mypick 버튼 누르면 Match_Grid로 이동
         Intent intent = new Intent(getContext(), Match_Grid.class);
         //intent.putExtra("selected_items", selected_from_clothes);
         startActivity(intent);

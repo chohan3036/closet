@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.PopupWindow;
 
 import com.example.closet.Networking_Get;
 import com.example.closet.R;
@@ -25,6 +26,7 @@ import java.util.concurrent.ExecutionException;
 
 public class History extends Fragment {
 
+    private PopupWindow mPopupWindow;
     private Context context;
     ArrayList<URL> photoUrls = new ArrayList<>();
     private ArrayList<String> arrayTextList;
