@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -95,7 +96,7 @@ public class Match extends Fragment implements View.OnClickListener {
                     ok.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
                             //save networkigng 해야하는 곳(아바타랑 Look 같이 보내주기)
-                            mPopupWindow.dismiss();
+                            //mPopupWindow.dismiss();
                         }
                     });
                 }

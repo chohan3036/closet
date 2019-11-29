@@ -26,7 +26,6 @@ import java.util.concurrent.ExecutionException;
 
 public class History extends Fragment {
 
-    private PopupWindow mPopupWindow;
     private Context context;
     ArrayList<URL> photoUrls = new ArrayList<>();
     private ArrayList<String> arrayTextList;

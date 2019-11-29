@@ -101,7 +101,7 @@ class History_GridAdapter extends BaseAdapter {
     }
 
     protected void Popup() {
-
+        
         final View popupView = LayoutInflater.from(context).inflate(R.layout.history_pop_up, null);
         mPopupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setFocusable(true);
