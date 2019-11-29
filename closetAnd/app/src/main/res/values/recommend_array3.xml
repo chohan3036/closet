@@ -2,13 +2,8 @@
 <resources>
     <string-array name="recommend_array3">
         <item>Like</item>
-        <item>Coat</item>
-        <item>Dress</item>
-        <item>Jeans</item>
-        <item>Shirt</item>
-        <item>Shorts</item>
-        <item>Skirt</item>
-        <item>Top</item>
-        <item>Trouser</item>
+        <item>Yes</item>
+        <item>No</item>
+
     </string-array>
 </resources>

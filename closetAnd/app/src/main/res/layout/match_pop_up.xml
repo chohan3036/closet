@@ -14,7 +14,7 @@
         android:orientation="vertical">
 
         <Spinner
-            android:id="@+id/match_save_spinner"
+            android:id="@+id/match_spinner"
             android:layout_width="match_parent"
             android:layout_height="73dp"
             android:layout_gravity="center"
