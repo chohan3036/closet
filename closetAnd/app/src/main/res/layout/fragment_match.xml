@@ -26,7 +26,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="#FFEB3B"
+        android:background="#ece6cc"
         android:orientation="vertical">
 
         <Button
@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="150dp"
-            android:background="#90ee90"
+            android:background="#eee6c4"
             android:text="My Pick"
             android:textColor="#000000" />
 
@@ -43,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="50dp"
-            android:background="#90ee90"
+            android:background="#eee6c4"
             android:text="Reset"
             android:textColor="#000000" />
 
@@ -52,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="50dp"
-            android:background="#90ee90"
+            android:background="#eee6c4"
             android:text="Save"
             android:textColor="#000000" />
 
