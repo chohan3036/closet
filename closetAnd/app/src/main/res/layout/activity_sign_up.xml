@@ -64,12 +64,14 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:text="취소"
+            android:background="#eee6c4"
             android:id="@+id/cancel_signUp"/>
         <Button
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:text="확인"
+            android:background="#eee6c4"
             android:id="@+id/ok_singUp"/>
     </LinearLayout>
 </LinearLayout>

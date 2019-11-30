@@ -88,7 +88,7 @@ public class Recommend extends Fragment implements View.OnClickListener {
                         //   colorUrl = net_url.concat("&color=" + item1);
                         //getClothings(colorUrl);
                         //loadGridView();}
-                }
+        }
             }
             public void onNothingSelected(AdapterView<?> arg0) {
                 // TODO Auto-generated method stub

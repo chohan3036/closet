@@ -11,19 +11,36 @@
             android:layout_alignParentTop="true" />
 
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" >
+        android:layout_width="105dp"
+        android:layout_height="124dp"
+        android:layout_alignParentBottom="true">
 
-        <Button
+        <ImageView
+            android:id="@+id/like_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:padding="12dp"
+            android:src="@drawable/like" />
+
+        <ImageView
+            android:id="@+id/empty_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/emptylike"
+
+            />
+
+        <!--<Button
             android:id="@+id/like_button"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="#F9D0C7"
-            android:textSize="50sp"
-            android:padding="20dp"
+            android:background="#eee6c4"
             android:drawableStart="@drawable/imgbtn_status"
-            android:text="I Like it!"/>
+            android:padding="20dp"
+            android:text="I Like it!"
+            android:textSize="50sp" />-->
+
     </RelativeLayout>
 
 </RelativeLayout>

@@ -31,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="#90ee90"
+                android:background="#eee6c4"
                 android:text="Cancel" />
 
             <View
@@ -44,7 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="#90ee90"
+                android:background="#eee6c4"
                 android:text="Ok" />
 
         </LinearLayout>
