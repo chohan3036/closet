@@ -27,7 +27,7 @@
             android:id="@+id/empty_like"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scr="@drawble/emptylike"
+            android:src="@drawable/emptylike"
             />
 
         <!--<Button

@@ -134,9 +134,12 @@ public class Home extends Fragment implements View.OnClickListener {
             String [] cold = new String[] {"밖이 추워요! 외투를 잊지 마세요~", "밖이 추워요! 코트를 잊지 마세요.", "한파 주위! 롱패딩은 필수에요~"};
             String [] warm = new String[] {"날이 따스하네요. 소풍 가기 좋은 날이에요!", "비교적 따뜻한 날씨입니다. 가벼운 옷차림을 추천해요!"};
             String [] hot = new String [] {"너무 더운 날이에요. 물을 자주 드세요!", "폭염 주의! 모자와 선글라스를 챙기시는 게 어떠세요?"};
-            String advice = null; String result = null;
+            String advice = null;
+            String result = null;
 
-            int rv = (int)(Math.random()*3);
+            //Log.d("Random", String.valueOf(Math.random()));//0~1사이 소수
+            //int rv = (int)(Math.random()*3);
+            int rv = 1;
             String stmax = temp.get("tmax").toString();
             double tmax = Double.parseDouble(stmax);
             if(tmax < 0)

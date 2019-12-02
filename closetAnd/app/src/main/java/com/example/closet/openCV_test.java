@@ -52,6 +52,7 @@ public class openCV_test extends AppCompatActivity implements CameraBridgeViewBa
         mEdgeImageView = findViewById(R.id.edge_iv);
         //detectEdgeUsingJNI();
         //detectEdge();
+        grabCut();
     }
 
     @Override
@@ -121,14 +122,14 @@ public class openCV_test extends AppCompatActivity implements CameraBridgeViewBa
         src.create(src.size(), CV_8UC3);
         mask.create(src.size(), CV_8UC3);
         mask.setTo(Scalar.all(GC_BGD));
-        Mat binMask = new Mat(); getBinMask(mask, binMask);
+        Mat binMask = new Mat(); getBinMask(mask, binMask); //둘이 크기 맞춰줘야 하는듯?
         src.copyTo(result, binMask);
 
         //Mat source = new Mat(1, 1, CV_8U, new Scalar(0));
 
         Imgproc.grabCut(src, mask, rect, bgdModel, fgdModel, iterCount, Imgproc.GC_INIT_WITH_MASK);
 
-        Utils.matToBitmap(src, mInputImage); //??
+        Utils.matToBitmap(mask, mInputImage); //??
         src.release();
         mask.release();
         mEdgeImageView.setImageBitmap(mInputImage);
