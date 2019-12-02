@@ -30,7 +30,6 @@
             android:entries="@array/recommend_array1"></Spinner>
 
 
-<<<<<<< HEAD
         <Spinner
             android:id="@+id/recommend_spinner_like"
             android:layout_width="0dp"
@@ -39,8 +38,7 @@
             android:layout_weight="1"
             android:entries="@array/recommend_array3"></Spinner>
         />
-=======
->>>>>>> 0991799888b33cd648578b18c669f1f25ff0ffab
+
     </LinearLayout>
 
 
