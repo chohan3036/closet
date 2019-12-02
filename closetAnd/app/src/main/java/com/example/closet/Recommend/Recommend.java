@@ -32,8 +32,8 @@ import java.util.concurrent.ExecutionException;
 public class Recommend extends Fragment {
 
     View view;
-    final String[] recommend_spinnerNames = new String[]{"Like", "Yes", "No",};
-    int[] recommend_spinnerImages = new int[]{R.drawable.none, R.drawable.thumb_on, R.drawable.thumb_off};
+    final String[] recommend_spinnerNames = new String[]{"Like", "Yes", "No", };
+    int[] recommend_spinnerImages = new int[]{R.drawable.recommend_beige,R.drawable.thumb_on, R.drawable.thumb_off};
     int spinner_id = 0;
     URL url = null;
     String uid = "2"; //수정하기

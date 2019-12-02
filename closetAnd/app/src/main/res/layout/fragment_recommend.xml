@@ -30,6 +30,15 @@
             android:entries="@array/recommend_array1"></Spinner>
 
 
+        <Spinner
+            android:id="@+id/recommend_spinner_like"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:layout_weight="1"
+            android:entries="@array/recommend_array3"></Spinner>
+        />
+
     </LinearLayout>
 
 

@@ -5,16 +5,14 @@
 
     <ImageView
         android:id="@+id/imageview_spinner_image"
-        android:layout_width="30dp"
-        android:layout_height="30dp" />
+        android:layout_width="32dp"
+        android:layout_height="32dp" />
 
     <TextView
         android:id="@+id/textview_spinner_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/imageview_spinner_image"
-        android:layout_marginTop="15dp"
-        android:padding="3dp"
+        android:padding="5dp"
         android:text=""
         android:textColor="@color/quantum_black_text"
         android:textSize="16sp" />
