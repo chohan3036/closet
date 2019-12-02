@@ -15,19 +15,18 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 
+import com.example.closet.GetLocation;
 import com.example.closet.GetaLocation;
 import com.example.closet.Clothes.Clothes;
-import com.example.closet.LogIn;
+import com.example.closet.User.LogIn;
 import com.example.closet.R;
-import com.example.closet.SignUp;
+import com.example.closet.User.SignUp;
 import com.example.closet.openCV_test;
-import com.example.closet.storeClothingNetworking;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.MalformedURLException;
+import java.util.concurrent.ExecutionException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,7 +35,6 @@ public class Home extends Fragment implements View.OnClickListener {
     private static final int GET_WEATHER_IS_OK = 3000;
 
     View view;
-    Button singUp, logIn;
     ImageButton BtnMove;
     Button map;
     TextView weather_info_textView;
@@ -58,39 +56,48 @@ public class Home extends Fragment implements View.OnClickListener {
         view = inflater.inflate(R.layout.fragment_home, container, false);
         map = (Button) view.findViewById(R.id.mapButton);
         map.setOnClickListener(this);
-        singUp = (Button) view.findViewById(R.id.signUp);
         BtnMove = (ImageButton) view.findViewById(R.id.BtnActivityOne);
-
-        singUp.setOnClickListener(this);
         BtnMove.setOnClickListener(this);
-
-        logIn = (Button) view.findViewById(R.id.login_button);
-        logIn.setOnClickListener(this);
-
         weather_info_textView = (TextView)view.findViewById(R.id.weather_text);
-
         testCv = (Button)view.findViewById(R.id.testCV);
         testCv.setOnClickListener(this);
+
+        //setWeather_info(weather_info);
         return view;
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        getWeatherOnBackground();
+    }
+
+    private void getWeatherOnBackground() {
+        String weather_info = null;
+        GetLocation getLocation = new GetLocation(getActivity());
+        getLocation.execute(); //여기안에서 networking을 또 해서 asyncTask가 또있음 null
+        try {
+            weather_info = getLocation.get();
+            //setWeather_info(weather_info);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+    @Override
     public void onClick(View view) {
         //로그인 , 회원가입하고 startForResult로 uid받기 !!
-        if (view == singUp) {
-            Intent intent = new Intent(getActivity(), SignUp.class);
-            startActivity(intent); //requestCode상수로 만들기
-        } else if (view == map) {
+       if (view == map) {
+           //필요 없음
             Intent intent = new Intent(getActivity(), GetaLocation.class);
             //startActivity(intent);
             startActivityForResult(intent,GET_WEATHER_IS_OK);
             //startActivitiyForReuslt =Activity로 호출받게 됨.
             //Fragment를 불러들인 mainActivity가 있다면 거기서 받을 수가 있겠죠.
             //메인에서 받은 값을 Fragment에서 재 캐치하는 방법으로 했었던게 기억납니다.
-        } else if (view == logIn) {
-            Intent intent = new Intent(getActivity(), LogIn.class);
-            startActivity(intent);
-        } else if (view == BtnMove) {
+        } if (view == BtnMove) {
             Intent intent = new Intent(getActivity(), Clothes.class);
             startActivityForResult(intent, 30);
         }else if (view == testCv){
@@ -103,10 +110,7 @@ public class Home extends Fragment implements View.OnClickListener {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         //super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 30) {
-            Log.d("Log.dSD", "회원가입 완료");
-        } else if (requestCode == GET_WEATHER_IS_OK) {
-            Log.d("Log_DDSF", "위치 얻기 완료");
+       if (requestCode == GET_WEATHER_IS_OK) {
             String weather_info = data.getStringExtra("result");
             Log.d("Log_dHomeWeather",weather_info);
             setWeather_info(weather_info);

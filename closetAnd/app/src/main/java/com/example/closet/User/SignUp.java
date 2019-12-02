@@ -1,10 +1,12 @@
-package com.example.closet;
+package com.example.closet.User;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +16,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.example.closet.MainActivity;
+import com.example.closet.Networking;
+import com.example.closet.R;
+import com.example.closet.SaveSharedPreference;
 import com.google.gson.JsonObject;
 
 import org.json.JSONException;
@@ -38,12 +44,13 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
     EditText nickName, id, pwd, age;
     RadioGroup radioGroup;
     RadioButton female, male;
-
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        context = this; //fragment에서 this를 하면 안되지않나?,
         setting();
     }
 
@@ -106,11 +113,12 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                     Log.d("Log_dResult", String.valueOf(result));
                     //각자 그 이후 결과 알려주고 intent
                     if(result.get("status").equals(201)){
-                    //class java.lang.Integer 로 오네
-                        Log.d("Log_d 회원가입 성공","ㄴㄻㄹ");
-                        Intent intent  = new Intent(this,MainActivity.class);
+                    //uid가 class java.lang.Integer 로 오네
+                        //SaveSharedPreference.setString(context,"uid", String.valueOf(result.get("Uid"))); //그냥 int로 받아야하나?
+                        //회원가입하자마자 자동로그인으로 해줘야하나?
+                        Toast.makeText(this,"회원가입이 완료되었습니다. 로그인 후 이용해주시기 바랍니다.",Toast.LENGTH_LONG);
+                        Intent intent  = new Intent(this, MainActivity.class);
                         startActivity(intent);
-                        //uid 정보 put해서 전달하고 저장.
                     }
                 } catch (MalformedURLException e) {
                     e.printStackTrace();

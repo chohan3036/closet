@@ -1,14 +1,21 @@
-package com.example.closet;
+package com.example.closet.User;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+
+import com.example.closet.MainActivity;
+import com.example.closet.Networking;
+import com.example.closet.R;
+import com.example.closet.SaveSharedPreference;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,6 +37,8 @@ import java.util.concurrent.ExecutionException;
 public class LogIn extends AppCompatActivity implements View.OnClickListener {
     EditText id, pwd;
     Button ok;
+    CheckBox automatic;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +48,8 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
         pwd = (EditText) findViewById(R.id.login_pwd);
         ok = (Button) findViewById(R.id.login_ok);
         ok.setOnClickListener(this);
+        context = this;
+        automatic = (CheckBox)findViewById(R.id.automatic_login_check);
     }
 
     @Override
@@ -57,11 +68,17 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
                     networking.execute();
                     JSONObject result = networking.get();
                     if(result.get("status").equals(201)){
-                        //class java.lang.Integer 로 오네
-                        Log.d("Log_d 로그인 성공","ㄴㄻㄹ");
-                        Intent intent  = new Intent(this,MainActivity.class);
+                        //uid는 class java.lang.Integer 로 오네
+                        Log.d("Log_dLogIn", String.valueOf(result));
+
+                        if(automatic.isChecked()){
+                            //shared에 저장.
+                            SaveSharedPreference.setString(context,"uid", String.valueOf(result.get("Uid"))); //그냥 int로 받아야하나?
+
+                        }
+
+                        Intent intent  = new Intent(this, MainActivity.class);
                         startActivity(intent);
-                        //uid 정보 put해서 전달하고 저장
                     }
 
                 } catch (MalformedURLException e) {

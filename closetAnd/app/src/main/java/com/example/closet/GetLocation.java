@@ -17,11 +17,17 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.location.FusedLocationProviderClient;
 
-public class GetLocation extends AsyncTask<Void, Void, Void> {
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.concurrent.ExecutionException;
+
+public class GetLocation extends AsyncTask<Void, Void, String> {
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 2002;
     FusedLocationProviderClient mFusedLocationProviderClient;
     Boolean mLocationPermissionGranted = false;
     Activity activity;
+    String lat, lng;
+    String weatherResult;
 
     public GetLocation(Activity activity) {
 
@@ -45,7 +51,9 @@ public class GetLocation extends AsyncTask<Void, Void, Void> {
                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         }
     }
-    /*@Override
+
+    /*
+    @Override
     public void onRequestPermissionsResult(int requestCode,@NonNull String permissions[], @NonNull int[] grantResults) {
         mLocationPermissionGranted = false;
         switch (requestCode) {
@@ -57,7 +65,8 @@ public class GetLocation extends AsyncTask<Void, Void, Void> {
                 }
             }
         }
-    }*/
+    }
+    */
 
     private void getDeviceLocation() {
         /*
@@ -66,20 +75,22 @@ public class GetLocation extends AsyncTask<Void, Void, Void> {
          */
         try {
             if (mLocationPermissionGranted) {
-                final Task locationResult = mFusedLocationProviderClient.getLastLocation();
-
+                Task locationResult = mFusedLocationProviderClient.getLastLocation();
+                //locationResult.addOnSuccessListener(){}
                 locationResult.addOnCompleteListener(activity, new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()) {
-                            Log.d("Log_D_TASK.RETRESULT", task.getResult().toString());
+                            // Set the map's camera position to the current location of the device.
+                            //mLastKnownLocation = task.getResult();
+                            //Log.d("Log_D_TASK.RETRESULT", task.getResult().toString());
                             String result = task.getResult().toString();
-                            String[] rr = result.split(" ");
-                            System.out.println(rr[0]);
-                            System.out.println(rr[1]);
-                            Log.d("Log_D_TASK.RETRESULT111", rr[0]);
-                            Log.d("Log_D_TASK.RETRESULT222", rr[1]);
+                            String[] LatLng = result.split(" ")[1].split(",");
+                            lat = LatLng[0];
+                            lng = LatLng[1];
+                            Log.d("Log_dLocation", lat + "\n" + lng);
                             //Location[fused 37.544685,126.965041 hAcc=15 et=+11d4h25m39s888ms alt=80.5 vAcc=2 sAcc=??? bAcc=??? {Bundle[mParcelledData.dataSize=52]}]
+                            getWeather();
                         } else {
                             Log.d("Task Is not Successful", "Current location is null. Using defaults.");
                             Log.e("Task Is not Successful", "Exception: %s", task.getException());
@@ -91,9 +102,36 @@ public class GetLocation extends AsyncTask<Void, Void, Void> {
             Log.e("Exception: %s", e.getMessage());
         }
     }
+    public void getWeather() {
+        try {
+            URL url = new URL("http://52.78.194.160:3030/weather?lat=" + lat + "&lng=" + lng);
+            Networking_Get networking = new Networking_Get(url);
+            networking.execute();
+            weatherResult = String.valueOf(networking.get());
+            Log.d("Log_d_From_weatherAPI", weatherResult);
+            // {"grid":{"latitude":"37.53376","longitude":"126.98864","city":"서울","county":"용산구","village":"용산동4가"},"wind":{"wdir":"252.00","wspd":"1.60"},"precipitation":{"sinceOntime":"0.00","type":"0"},"sky":{"code":"SKY_O01","name":"맑음"},"temperature":{"tc":"11.20","tmax":"13.00","tmin":"4.00"},"humidity":"61.00","lightning":"0","timeRelease":"2019-11-26 16:00:00"}
+            //returnToHome();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    protected String doInBackground(Void... voids) {
+        getLocationPermission();
+        getDeviceLocation();
+        //return 은 weather result로
+
+        return weatherResult;
+    }
 
     @Override
-    protected Void doInBackground(Void... voids) {
-        return null;
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
     }
+
+
 }
