@@ -20,7 +20,7 @@ public class Recommend extends Fragment implements View.OnClickListener {
 
     View view;
     final String[] recommend_spinnerNames = new String[]{"Like", "Yes", "No", };
-    int[] recommend_spinnerImages = new int[]{R.drawable.none,R.drawable.thumb_on, R.drawable.thumb_off};
+    int[] recommend_spinnerImages = new int[]{R.drawable.recommend_beige,R.drawable.thumb_on, R.drawable.thumb_off};
     int spinner_id = 0;
     public Recommend() {
         // Required empty public constructor
