@@ -9,4 +9,11 @@
         <item>30대 여자</item>
         <item>30대 남자</item>
     </string-array>
+
+    <string-array name="recommend">
+        <item>나이/성별</item>
+        <item>코디 기반</item>
+        <item>좋아요 순</item>
+    </string-array>
+
 </resources>

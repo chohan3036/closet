@@ -29,7 +29,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/emptylike"
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0991799888b33cd648578b18c669f1f25ff0ffab
             />
 
         <!--<Button

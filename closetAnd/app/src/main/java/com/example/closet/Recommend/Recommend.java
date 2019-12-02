@@ -2,7 +2,10 @@ package com.example.closet.Recommend;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,37 +14,94 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.example.closet.Networking_Get;
 import com.example.closet.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.concurrent.ExecutionException;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Recommend extends Fragment implements View.OnClickListener {
+public class Recommend extends Fragment {
 
     View view;
     final String[] recommend_spinnerNames = new String[]{"Like", "Yes", "No", };
     int[] recommend_spinnerImages = new int[]{R.drawable.recommend_beige,R.drawable.thumb_on, R.drawable.thumb_off};
     int spinner_id = 0;
+    URL url = null;
+    String uid = "2"; //수정하기
+
     public Recommend() {
         // Required empty public constructor
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_recommend, container, false);
-        setSpinner_sex_age();
-        setSpinner_look();
-        setSpinner_recommend();
+        //setSpinner_sex_age();
+        //setSpinner_look();
+        //setSpinner_recommend();
         //Spinner.setEnabled(true);
+        Spinner recom_spinner = (Spinner) view.findViewById(R.id.recommend_spinner);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.recommend));
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        recom_spinner.setAdapter(dataAdapter);
+        recom_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String string = adapterView.getItemAtPosition(i).toString();
+                //처음에 들어갔을 때 어떻게 보여주지?
+                try {
+                    if (string.equals("나이/성별")) {
+
+                        url = new URL("http://52.78.194.160:3030/recommendByUserInfo?uid=" + uid);
+                    } else if (string.equals("코디 기반")) {
+                        url = new URL("http://52.78.194.160:3030/recommendByLookTable?uid=" + uid);
+
+                    } else if (string.equals("좋아요 순")) {
+                        url = new URL("http://52.78.194.160:3000/closet/like/recommendByLike");
+                    }
+                    Networking_Get networking = new Networking_Get(url);
+                    networking.execute();
+                    JSONObject result = networking.get();
+                    Log.d("Log_dRECOMMEND",result.toString());
+
+                    JSONArray jsonArray = result.getJSONArray("result");
+                    Log.d("Log_dResultArray",jsonArray.toString());
+                    //[{"down_cid":22,"hid":18,"like":4,"look_name":"romantic,office,daily","outer_cid":0,"photo_look":null,"uid":2,"up_cid":20},{"down_cid":21,"hid":22,"like":3,"look_name":"office,daily
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         return view;
     }
-
+/*
     private void  setSpinner_sex_age() {
         Spinner spinner_sex_age = (Spinner) view.findViewById(R.id.recommend_spinner_sex_age);
         String[] recommend_array1 = getResources().getStringArray(R.array.recommend_array1);
@@ -124,7 +184,5 @@ public class Recommend extends Fragment implements View.OnClickListener {
         });
     }
 
-    public void onClick(View view) {
-
-    }
+    */
 }

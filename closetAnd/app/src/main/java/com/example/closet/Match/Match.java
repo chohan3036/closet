@@ -187,57 +187,10 @@ public class Match extends Fragment implements View.OnClickListener  {
                 break;
             case R.id.match_camera:
                 intent1 = new Intent(getContext(), Match_camera.class);
-                //intent.putExtra("selected_items", selected_from_clothes);
                 startActivity(intent1);
-                //Intent intent1 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                //startActivityForResult(intent1, REQUEST_CAMERA);
-                    break;
+                break;
         }
     }
-       // public void launchCameraActivity() {
-       //     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-       //     startActivityForResult(intent, REQUEST_CAMERA);
-      //  }
-
-/*
-        @Override
-        public void onActivityResult(int requestCode, int resultCode, Intent data) {
-            super.onActivityResult(requestCode, resultCode, data);
-
-          //  if (resultCode != Activity.RESULT_OK) {
-          //      return;
-           //
-           if(requestCode == REQUEST_CAMERA) {
-               if (resultCode == Activity.RESULT_OK) {
-
-                   Bitmap bmp = (Bitmap) data.getExtras().get("data");
-                   ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
-                   bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                   byte[] byteArray = stream.toByteArray();
-
-                   // convert byte array to Bitmap
-
-                   Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0,
-                           byteArray.length);
-
-                   iv.setImageBitmap(bitmap);
-               }
-
-
-               //switch (requestCode) {
-               //case REQUEST_CAMERA:
-               //Log.i("", "[snowdeer] REQUEST_CAMERA !!");
-               //  iv.setImageURI(data.getData());
-               //Bundle extras = data.getExtras();
-               //GlobalVariable.bitmap = (Bitmap) extras.get("data");
-
-               //Intent intent = new Intent(Match.this, ImageActivity.class);
-               //startActivity(intent);
-
-           }
-            }
-*/
-        }
+}
 
 

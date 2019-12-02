@@ -2,12 +2,11 @@
 <resources>
     <string-array name="match_array">
         <item>Look(Style)</item>
-        <item># Daily look</item>
-        <item># Office look</item>
-        <item># Lovely look</item>
-        <item># Casual look</item>
-        <item># Romantic look</item>
-        <item># Cool look</item>
-        <item># Campus look</item>
+        <item>daily</item>
+        <item>office</item>
+        <item>lovely</item>
+        <item>casual</item>
+        <item>romantic</item>
+        <item>campus</item>
     </string-array>
 </resources>

@@ -184,7 +184,7 @@ public class Match_camera extends AppCompatActivity {
         intent2 = new Intent("android.media.action.IMAGE_CAPTURE");
         startActivityForResult(intent2, MY_PERMISSIONS_REQUEST_CAMERA);
     }
-
+/* imageview에 띄우는 코드(화질 관련 수정중)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) { // 이미지 띄워주기
         super.onActivityResult(requestCode, resultCode, data);
@@ -208,4 +208,5 @@ public class Match_camera extends AppCompatActivity {
 
         }
     }
+    */
 }
