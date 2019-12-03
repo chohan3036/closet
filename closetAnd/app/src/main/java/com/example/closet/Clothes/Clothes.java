@@ -314,8 +314,10 @@ public class Clothes extends AppCompatActivity {
             } else {
                 uri = data.getData();
                 currentImagePath = DocumentsContract.getDocumentId(uri);
+                Log.d("currentImagePath", currentImagePath);
                 String[] realPath = currentImagePath.split(":");
                 selectedImagesPaths = realPath[1];
+                Log.d("selectedImagesPaths", selectedImagesPaths);
                 imagesSelected = true;
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);

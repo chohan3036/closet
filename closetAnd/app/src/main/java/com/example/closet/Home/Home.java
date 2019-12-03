@@ -69,7 +69,6 @@ public class Home extends Fragment implements View.OnClickListener {
     @Override
     public void onStart() {
         super.onStart();
-        getWeatherOnBackground();
     }
 
     private void getWeatherOnBackground() {

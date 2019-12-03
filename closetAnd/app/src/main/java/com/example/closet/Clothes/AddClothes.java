@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -99,7 +100,7 @@ public class AddClothes extends AppCompatActivity {
             return;
         }
 
-        String postUrl = "http://" + ipv4Address + ":" + portNumber + "/";
+        String postUrl = "http://" + ipv4Address + ":" + portNumber + "/saveClothes";
 
         MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
 
@@ -118,10 +119,17 @@ public class AddClothes extends AppCompatActivity {
 
         multipartBodyBuilder.addFormDataPart("photo", "Android_Flask_.jpg",
                 RequestBody.create(MediaType.parse("image/*jpg"), byteArray));
+        multipartBodyBuilder.addFormDataPart("uid", "3");
+        multipartBodyBuilder.addFormDataPart("name", "blue");
+        multipartBodyBuilder.addFormDataPart("colorR", "201");
+        multipartBodyBuilder.addFormDataPart("colorG", "201");
+        multipartBodyBuilder.addFormDataPart("colorB", "201");
+        multipartBodyBuilder.addFormDataPart("category", "jeans");
+        multipartBodyBuilder.addFormDataPart("description","descriptionTest");
 
-        RequestBody postBodyImage = multipartBodyBuilder.build();
+        RequestBody postBody = multipartBodyBuilder.build();
 
-        postRequest(postUrl, postBodyImage);
+        postRequest(postUrl, postBody);
     }
 
     void postRequest(String postUrl, RequestBody postBody) {
@@ -131,6 +139,7 @@ public class AddClothes extends AppCompatActivity {
                 .url(postUrl)
                 .post(postBody)
                 .build();
+
         client.newCall(request).enqueue(new Callback() {
 
             @Override
@@ -148,6 +157,7 @@ public class AddClothes extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
+                /*
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -157,7 +167,8 @@ public class AddClothes extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
-                });
+                });*/
+                System.out.println("Server's Response\n" + response.body().string());
             }
         });
     }
