@@ -3,6 +3,7 @@ package com.example.closet.Clothes;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ import com.example.closet.Match.Match_Grid;
 import com.example.closet.Networking_Get;
 import com.example.closet.R;
 import com.example.closet.SaveSharedPreference;
+import com.example.closet.storeClothingNetworking;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,7 +64,7 @@ public class Clothes extends AppCompatActivity {
     Bitmap bitmap;
     //image to server
 
-    String uid = "1"; // 들어오는  유저 index저장 하기.
+    String uid = "3"; // 들어오는  유저 index저장 하기.
     private String net_url = "http://52.78.194.160:3000/closet/show/personalCloset?uid=" + uid;
 
     ArrayList<Integer> checked_items;
@@ -81,7 +83,7 @@ public class Clothes extends AppCompatActivity {
     }
 
     private void getUid() {
-        uid = SaveSharedPreference.getString(this,"uid"); //이걸 메인에서 받아서 intent로 넘겨줘야하나?
+        uid = SaveSharedPreference.getString(this, "uid"); //이걸 메인에서 받아서 intent로 넘겨줘야하나?
     }
 
     private void setSpinner() {
@@ -304,18 +306,27 @@ public class Clothes extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String filePath = null;
         if (requestCode == PICK_FROM_CAMERA) {
 
         } else if (requestCode == PICK_FROM_ALBUM) {
+
             String currentImagePath;
             //selectedImagesPaths = new ArrayList<>();
             if (data == null) {
                 Log.d("Log_d data", "data is null");
             } else {
                 uri = data.getData();
+                Log.d("LLLLLLLLLLLL", String.valueOf(uri));
+                Log.d("LLLLsasfLL", uri.getPath());
                 currentImagePath = DocumentsContract.getDocumentId(uri);
+                Log.d("LLLLLLLLLLLL", currentImagePath);
                 String[] realPath = currentImagePath.split(":");
                 selectedImagesPaths = realPath[1];
+                Log.d("LLLLLLLLLLLL", selectedImagesPaths);
+
+                filePath = getRealPathFromURI(uri);
+                Log.d("LLLLLLFIle", filePath);
                 imagesSelected = true;
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
@@ -325,8 +336,34 @@ public class Clothes extends AppCompatActivity {
                 }
             }
         }
-        AddClothes sendImage = new AddClothes(imagesSelected, selectedImagesPaths, bitmap);
-        sendImage.connectServer();
+        try {
+            storeClothingNetworking networking = new storeClothingNetworking(filePath);
+            networking.execute();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        //AddClothes sendImage = new AddClothes(imagesSelected, selectedImagesPaths, bitmap);
+        //sendImage.connectServer();
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+    private String getRealPathFromURI(Uri contentUri) {
+        if (contentUri.getPath().startsWith("/storage")) {
+            return contentUri.getPath();
+        }
+        String id = DocumentsContract.getDocumentId(contentUri).split(":")[1];
+        String[] columns = {MediaStore.Files.FileColumns.DATA};
+        String selection = MediaStore.Files.FileColumns._ID + " = " + id;
+        Cursor cursor = getContentResolver().query(MediaStore.Files.getContentUri("external"), columns, selection, null, null);
+        try {
+            int columnIndex = cursor.getColumnIndex(columns[0]);
+            if (cursor.moveToFirst()) {
+                return cursor.getString(columnIndex);
+            }
+        } finally {
+            cursor.close();
+        }
+        return null;
+    }
+
 }

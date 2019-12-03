@@ -38,7 +38,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
+        <activity android:name=".Test.Horizon_grid"></activity>
         <activity android:name=".Test.GridItem" />
         <activity android:name=".Test.GridMain" />
         <activity
@@ -46,22 +46,22 @@
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".Clothes.AddClothes"
             android:configChanges="keyboardHidden|orientation"
-            android:networkSecurityConfig="@xml/network_security_config"></activity>
+            android:networkSecurityConfig="@xml/network_security_config" />
         <activity android:name=".GetaLocation" />
         <activity android:name=".Splash" />
         <activity android:name=".User.SignUp" />
         <activity android:name=".User.LogIn" />
         <activity android:name=".Clothes.Clothes" />
         <activity android:name=".Match.Match_Grid" />
-        <activity android:name=".openCV_test"></activity>
-        <activity android:name=".Match.Match_camera"></activity>
+        <activity android:name=".openCV_test" />
+        <activity android:name=".Match.Match_camera" />
     </application>
 
 </manifest>

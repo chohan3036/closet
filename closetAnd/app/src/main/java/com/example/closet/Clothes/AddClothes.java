@@ -90,8 +90,10 @@ public class AddClothes extends AppCompatActivity {
         System.out.println(selectedImagesPaths);
         System.out.println("Sending the Files. Please Wait ...");
 
-        String ipv4Address = "10.101.26.57";
+        String ipv4Address = "52.78.194.160";
         String portNumber = "3030";
+        String url = "http://52.78.194.160:3030/saveClothes";
+
 
         Matcher matcher = IP_ADDRESS.matcher(ipv4Address);
         if (!matcher.matches()) {
@@ -99,7 +101,7 @@ public class AddClothes extends AppCompatActivity {
             return;
         }
 
-        String postUrl = "http://" + ipv4Address + ":" + portNumber + "/";
+        String postUrl = "http://" + ipv4Address + ":" + portNumber + "/saveClothes";
 
         MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
 
