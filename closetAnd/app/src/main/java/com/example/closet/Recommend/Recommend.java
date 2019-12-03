@@ -66,11 +66,9 @@ public class Recommend extends Fragment {
                 //처음에 들어갔을 때 어떻게 보여주지?
                 try {
                     if (string.equals("나이/성별")) {
-
                         url = new URL("http://52.78.194.160:3030/recommendByUserInfo?uid=" + uid);
                     } else if (string.equals("코디 기반")) {
                         url = new URL("http://52.78.194.160:3030/recommendByLookTable?uid=" + uid);
-
                     } else if (string.equals("좋아요 순")) {
                         url = new URL("http://52.78.194.160:3000/closet/like/recommendByLike");
                     }
