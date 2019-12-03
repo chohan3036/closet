@@ -5,6 +5,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -66,14 +67,15 @@ import androidx.fragment.app.Fragment;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Match extends Fragment implements View.OnClickListener  {
+public class Match extends Fragment implements View.OnClickListener {
     private PopupWindow mPopupWindow;
     View view;
     ImageButton btn_camera;
     Button save, pick, reset;
     ArrayList<URL> selected_from_clothes = new ArrayList<>();
-
+    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1888;
     Intent intent, intent1;
+    ImageView iv;
 
     public Match() {
         // Required empty public constructor
@@ -95,7 +97,7 @@ public class Match extends Fragment implements View.OnClickListener  {
         btn_camera = (ImageButton) view.findViewById(R.id.match_camera);
         btn_camera.setOnClickListener(this);
 
-        //iv = (ImageView)view.findViewById(R.id.match_avatar);
+        iv = (ImageView) view.findViewById(R.id.match_avatar);
 
         pick = (Button) view.findViewById(R.id.pick);
         pick.setOnClickListener(this);
@@ -112,7 +114,7 @@ public class Match extends Fragment implements View.OnClickListener  {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.pick:
-                 intent = new Intent(getContext(), Match_Grid.class);
+                intent = new Intent(getContext(), Match_Grid.class);
                 //intent.putExtra("selected_items", selected_from_clothes);
                 startActivity(intent); // match_grid로 이동
                 break;
@@ -183,11 +185,36 @@ public class Match extends Fragment implements View.OnClickListener  {
             case R.id.reset:
                 break;
             case R.id.match_camera:
-                intent1 = new Intent(getContext(), Match_camera.class);
-                startActivity(intent1);
+                Intent intent1 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent1,
+                        CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+                //intent1 = new Intent(getContext(), Match_camera.class);
+                //startActivity(intent1);
                 break;
+        }
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+
+                Bitmap bmp = (Bitmap) data.getExtras().get("data");
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+
+                // convert byte array to Bitmap
+
+                Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0,
+                        byteArray.length);
+
+                iv.setImageBitmap(bitmap);
+
+            }
         }
     }
 }
-
 
