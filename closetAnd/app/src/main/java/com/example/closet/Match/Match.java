@@ -2,6 +2,8 @@ package com.example.closet.Match;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,7 +42,6 @@ public class Match extends Fragment implements View.OnClickListener {
     Button save, pick, reset;
     ArrayList<URL> selected_from_clothes = new ArrayList<>();
 
-
     public Match() {
         // Required empty public constructor
     }
@@ -57,6 +58,12 @@ public class Match extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.fragment_match, container, false);
+
+        ArrayList <Integer> arrayList = getArguments().getIntegerArrayList("photo");
+        Bitmap bmp = BitmapFactory.decodeByteArray(arrayList, 0, arrayList.size());
+        Bitmap image4 = BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.hello);
+        image1.setImageBitmap(image4);
+
 
         pick = (Button) view.findViewById(R.id.pick);
         pick.setOnClickListener(this);

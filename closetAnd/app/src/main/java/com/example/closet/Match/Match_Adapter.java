@@ -30,7 +30,7 @@ class Match_Adapter extends BaseAdapter {
     ArrayList<Bitmap> photoBitmap = new ArrayList<>();
     UrlToBitmap urlToBitmap;
 
-    static public ArrayList<Integer> checked_items = new ArrayList<>();
+    static public ArrayList<Integer> match_checked_items = new ArrayList<>(); //match에서 쓸 수 있게 static
 
     public Match_Adapter(Context context, int layout, ArrayList<URL> selected_from_clothes) {
 
@@ -129,10 +129,10 @@ class Match_Adapter extends BaseAdapter {
 
         if (value) {
             mSelectedItemsIds.put(position, true);
-            checked_items.add((Integer)position);
+            match_checked_items.add((Integer)position);
         } else {
             mSelectedItemsIds.delete(position);
-            checked_items.remove((Integer)position);
+            match_checked_items.remove((Integer)position);
         }
         notifyDataSetChanged();
         //for(int i =0 ; i <checked_items.size() ; i++)
