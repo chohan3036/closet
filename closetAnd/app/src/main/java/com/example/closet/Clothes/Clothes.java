@@ -1,11 +1,16 @@
 package com.example.closet.Clothes;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -23,9 +28,14 @@ import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 import android.widget.Spinner;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -46,13 +56,15 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class Clothes extends AppCompatActivity {
+    String[] REQUESTED_PEERMISSIONS = {Manifest.permission.READ_EXTERNAL_STORAGE};
+
     private Clothes_Adapter adapter;
     ArrayList<URL> photoUrls = new ArrayList<>();
     GridView gridView;
     int spinner_id = 0;
     private Context context;
 
-    //image to server
+    //****image to server
     private static final int PICK_FROM_CAMERA = 0;
     private static final int PICK_FROM_ALBUM = 1;
 
@@ -60,7 +72,7 @@ public class Clothes extends AppCompatActivity {
     boolean imagesSelected = false;
     private Uri uri;
     Bitmap bitmap;
-    //image to server
+    //****image to server
 
     String uid = "1"; // 들어오는  유저 index저장 하기.
     private String net_url = "http://52.78.194.160:3000/closet/show/personalCloset?uid=" + uid;
@@ -78,6 +90,25 @@ public class Clothes extends AppCompatActivity {
         loadGridView();
         setSpinner();
 
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(getApplicationContext(), "이 앱을 실행하려면 외부 저장소 접근 권한이 필요합니다.", Toast.LENGTH_SHORT).show();
+            ActivityCompat.requestPermissions(Clothes.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getApplicationContext(), "Access to Storage Permission Granted. Thanks.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Access to Storage Permission Denied.", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+        }
     }
 
     private void getUid() {
@@ -240,7 +271,8 @@ public class Clothes extends AppCompatActivity {
 
     protected void addPopup() {
         View addPopupView = getLayoutInflater().inflate(R.layout.activity_clothes3, null);
-        addPopupWindow = new PopupWindow(addPopupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        addPopupWindow = new PopupWindow(addPopupView, LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
         //popupView 에서 (LinearLayout 을 사용) 레이아웃이 둘러싸고 있는 컨텐츠의 크기 만큼 팝업 크기를 지정
         addPopupWindow.setFocusable(true);
         // 외부 영역 선택시 PopUp 종료
@@ -279,7 +311,8 @@ public class Clothes extends AppCompatActivity {
 
     protected void infoPopup() {
         View popupView = getLayoutInflater().inflate(R.layout.activity_clothes2, null);
-        infoPopupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        infoPopupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
         //popupView 에서 (LinearLayout 을 사용) 레이아웃이 둘러싸고 있는 컨텐츠의 크기 만큼 팝업 크기를 지정
         infoPopupWindow.setFocusable(true);
         // 외부 영역 선택시 PopUp 종료
@@ -306,29 +339,122 @@ public class Clothes extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PICK_FROM_CAMERA) {
 
-        } else if (requestCode == PICK_FROM_ALBUM) {
-            String currentImagePath;
-            //selectedImagesPaths = new ArrayList<>();
+        }
+
+        else if (requestCode == PICK_FROM_ALBUM) {
             if (data == null) {
                 Log.d("Log_d data", "data is null");
             } else {
                 uri = data.getData();
-                currentImagePath = DocumentsContract.getDocumentId(uri);
-                Log.d("currentImagePath", currentImagePath);
-                String[] realPath = currentImagePath.split(":");
-                selectedImagesPaths = realPath[1];
-                Log.d("selectedImagesPaths", selectedImagesPaths);
+                Log.d("UIR is ", uri.toString());
+                selectedImagesPaths = getRealPathFromURI(this, uri);
+                Log.d("Real file path is", selectedImagesPaths);
                 imagesSelected = true;
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-                    Log.d("Log_d bitmap객체 : ", bitmap.toString());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
         }
-        AddClothes sendImage = new AddClothes(imagesSelected, selectedImagesPaths, bitmap);
+
+        AddClothes sendImage = new AddClothes(imagesSelected, selectedImagesPaths);
         sendImage.connectServer();
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public static String getRealPathFromURI(final Context context, final Uri uri) {
+
+        if (DocumentsContract.isDocumentUri(context, uri)) {
+
+            if (isExternalStorageDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+                if ("primary".equalsIgnoreCase(type)) {
+                    return Environment.getExternalStorageDirectory() + "/"
+                            + split[1];
+                } else {
+                    String SDcardpath = getRemovableSDCardPath(context).split("/Android")[0];
+                    return SDcardpath +"/"+ split[1];
+                }
+            }
+            else if (isDownloadsDocument(uri)) {
+                final String id = DocumentsContract.getDocumentId(uri);
+                final Uri contentUri = ContentUris.withAppendedId(
+                        Uri.parse("content://downloads/public_downloads"),
+                        Long.valueOf(id));
+                return getDataColumn(context, contentUri, null, null);
+            }
+            else if (isMediaDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+
+                Uri contentUri = null;
+                if ("image".equals(type)) {
+                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                } else if ("video".equals(type)) {
+                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                } else if ("audio".equals(type)) {
+                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                }
+
+                final String selection = "_id=?";
+                final String[] selectionArgs = new String[] { split[1] };
+
+                return getDataColumn(context, contentUri, selection,
+                        selectionArgs);
+            }
+        }
+        else if ("content".equalsIgnoreCase(uri.getScheme())) {
+            // Return the remote address
+            if (isGooglePhotosUri(uri))
+                return uri.getLastPathSegment();
+            return getDataColumn(context, uri, null, null);
+        }
+        else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+        return null;
+    }
+
+    public static String getRemovableSDCardPath(Context context) {
+        File[] storages = ContextCompat.getExternalFilesDirs(context, null);
+        if (storages.length > 1 && storages[0] != null && storages[1] != null)
+            return storages[1].toString();
+        else
+            return "";
+    }
+
+    public static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+        Cursor cursor = null;
+        final String column = "_data";
+        final String[] projection = { column };
+
+        try {
+            cursor = context.getContentResolver().query(uri, projection,
+                    selection, selectionArgs, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                final int index = cursor.getColumnIndexOrThrow(column);
+                return cursor.getString(index);
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return null;
+    }
+
+    public static boolean isExternalStorageDocument(Uri uri) {
+        return "com.android.externalstorage.documents".equals(uri
+                .getAuthority());
+    }
+    public static boolean isDownloadsDocument(Uri uri) {
+        return "com.android.providers.downloads.documents".equals(uri
+                .getAuthority());
+    }
+    public static boolean isMediaDocument(Uri uri) {
+        return "com.android.providers.media.documents".equals(uri
+                .getAuthority());
+    }
+    public static boolean isGooglePhotosUri(Uri uri) {
+        return "com.google.android.apps.photos.content".equals(uri
+                .getAuthority());
     }
 }
