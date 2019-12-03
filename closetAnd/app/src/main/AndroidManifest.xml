@@ -63,7 +63,6 @@
             android:exported="true"/>
         <activity android:name=".Match.Match_Grid" />
         <activity android:name=".openCV_test"></activity>
-        <activity android:name=".Match.Match_camera"></activity>
     </application>
 
 </manifest>

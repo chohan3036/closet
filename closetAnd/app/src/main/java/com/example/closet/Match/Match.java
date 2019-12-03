@@ -6,8 +6,10 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +66,8 @@ import java.util.concurrent.ExecutionException;
 
 import androidx.fragment.app.Fragment;
 
+import static android.graphics.BitmapFactory.decodeByteArray;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -72,6 +76,8 @@ public class Match extends Fragment implements View.OnClickListener {
     View view;
     ImageButton btn_camera;
     Button save, pick, reset;
+    private final int REQUEST_WIDTH = 512;
+    private final int REQUEST_HEIGHT = 512;
     ArrayList<URL> selected_from_clothes = new ArrayList<>();
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1888;
     Intent intent, intent1;
@@ -188,17 +194,18 @@ public class Match extends Fragment implements View.OnClickListener {
                 Intent intent1 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(intent1,
                         CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-                //intent1 = new Intent(getContext(), Match_camera.class);
-                //startActivity(intent1);
+
                 break;
         }
 
     }
-
+        // 압축률 문제 -) 사진 갤러리에 저장하거나 drawable에 저장 후 setimgaeview를 유지시켜야함
+        // 사진 저장후 inSampleSize로 화질 조정해보기 -) 서버 연결(open pose, background 처리) -) 다시 안드로이드로
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
+
 
                 Bitmap bmp = (Bitmap) data.getExtras().get("data");
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -210,11 +217,28 @@ public class Match extends Fragment implements View.OnClickListener {
 
                 Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0,
                         byteArray.length);
-
                 iv.setImageBitmap(bitmap);
 
             }
+            }
         }
+    // 이미지 Resize 함수
+   /* private int setSimpleSize(BitmapFactory.Options options, int requestWidth, int requestHeight){
+        // 이미지 사이즈를 체크할 원본 이미지 가로/세로 사이즈를 임시 변수에 대입.
+        int originalWidth = options.outWidth;
+        int originalHeight = options.outHeight;
+
+        // 원본 이미지 비율인 1로 초기화
+        int size = 1;
+
+        // 해상도가 깨지지 않을만한 요구되는 사이즈까지 2의 배수의 값으로 원본 이미지를 나눈다.
+        while(requestWidth < originalWidth || requestHeight < originalHeight){
+            originalWidth = originalWidth / 2;
+            originalHeight = originalHeight / 2;
+
+            size = size * 2;
+        }
+        return size;
+    }*/
     }
-}
 
