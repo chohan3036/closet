@@ -13,50 +13,45 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#FFEB3B">
+        android:background="#ece6cc"
+        android:layout_gravity="center">
+
+        <TextView
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="추천 기준을 선택해 주세요(임시)" />
 
         <Spinner
-            android:id="@+id/recommend_spinner_sex_age"
+            android:id="@+id/recommend_spinner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
             android:layout_weight="1"
             android:entries="@array/recommend_array1"></Spinner>
 
-        <Spinner
-            android:id="@+id/recommend_spinner_look"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_weight="1"
-            android:entries="@array/recommend_array2"></Spinner>
-
+<!--
         <Spinner
             android:id="@+id/recommend_spinner_like"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="17dp"
             android:layout_weight="1"
             android:entries="@array/recommend_array3"></Spinner>
         />
+-->
     </LinearLayout>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8">
 
         <GridView
             android:id="@+id/recommend_grid"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="9"
             android:background="@android:color/transparent"
             android:gravity="center"
             android:horizontalSpacing="10dp"
             android:numColumns="2"
             android:stretchMode="columnWidth"
             android:verticalSpacing="10dp" />
-
-    </LinearLayout>
 
 </LinearLayout>

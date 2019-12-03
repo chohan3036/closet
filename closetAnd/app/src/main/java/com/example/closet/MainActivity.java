@@ -20,6 +20,7 @@ import com.example.closet.History.History;
 import com.example.closet.Home.Home;
 import com.example.closet.Match.Match;
 import com.example.closet.Recommend.Recommend;
+import com.example.closet.User.User;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void init() {
-        int[] tabIcons = new int[]{R.drawable.home, R.drawable.match, R.drawable.history, R.drawable.recommand};
+        int[] tabIcons = new int[]{R.drawable.home, R.drawable.match, R.drawable.history, R.drawable.recommand,R.drawable.user};
         for (int i = 0; i < tabIcons.length; i++) {
 
 
@@ -79,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             fragmentList.add(new Match());
             fragmentList.add(new History());
             fragmentList.add(new Recommend());
+            fragmentList.add(new User());
         }
 
         @NonNull

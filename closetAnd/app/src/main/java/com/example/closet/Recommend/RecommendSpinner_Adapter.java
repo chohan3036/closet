@@ -17,7 +17,7 @@ public class RecommendSpinner_Adapter extends ArrayAdapter<String>{
     Context mContext;
 
     public RecommendSpinner_Adapter(Context context, String[] names, int[] images) {
-        super(context, R.layout.spinner_row);
+        super(context, R.layout.spinner_row2);
 
         this.spinnerNames = names;
         this.spinnerImages = images;

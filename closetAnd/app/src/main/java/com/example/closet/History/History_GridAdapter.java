@@ -108,5 +108,4 @@ class History_GridAdapter extends BaseAdapter {
         private ImageView imageView;
         private TextView textView;
     }
-
 }

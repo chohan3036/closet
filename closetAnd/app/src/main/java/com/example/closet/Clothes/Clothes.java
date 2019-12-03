@@ -1,10 +1,12 @@
 package com.example.closet.Clothes;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -31,6 +33,7 @@ import com.example.closet.Match.Match;
 import com.example.closet.Match.Match_Grid;
 import com.example.closet.Networking_Get;
 import com.example.closet.R;
+import com.example.closet.SaveSharedPreference;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,7 +49,8 @@ public class Clothes extends AppCompatActivity {
     private Clothes_Adapter adapter;
     ArrayList<URL> photoUrls = new ArrayList<>();
     GridView gridView;
-    int spinner_id =0;
+    int spinner_id = 0;
+    private Context context;
 
     //image to server
     private static final int PICK_FROM_CAMERA = 0;
@@ -59,7 +63,7 @@ public class Clothes extends AppCompatActivity {
     //image to server
 
     String uid = "1"; // 들어오는  유저 index저장 하기.
-    String net_url = "http://52.78.194.160:3000/closet/show/personalCloset?uid=" + uid;
+    private String net_url = "http://52.78.194.160:3000/closet/show/personalCloset?uid=" + uid;
 
     ArrayList<Integer> checked_items;
     JSONArray clothingResults;
@@ -68,11 +72,22 @@ public class Clothes extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clothes);
+        context = this; //context오는지 확인해야 할 듯
         getClothings(net_url);
+        getUid();
         loadGridView();
-        final String[] spinnerNames = new String[]{"Color", "All", "Red", "Orange","Yellow","Yellow Green","Green","Sky Blue",
-                                                      "Blue","Bluish Violet","Khaki","Brown","Beige","White","Black","Gray"};
-        int[] spinnerImages = new int[]{R.drawable.none,R.drawable.all, R.drawable.red , R.drawable.orange
+        setSpinner();
+
+    }
+
+    private void getUid() {
+        uid = SaveSharedPreference.getString(this,"uid"); //이걸 메인에서 받아서 intent로 넘겨줘야하나?
+    }
+
+    private void setSpinner() {
+        final String[] spinnerNames = new String[]{"Color", "All", "Red", "Orange", "Yellow", "Yellow Green", "Green", "Sky Blue",
+                "Blue", "Bluish Violet", "Khaki", "Brown", "Beige", "White", "Black", "Gray"};
+        int[] spinnerImages = new int[]{R.drawable.none, R.drawable.all, R.drawable.red, R.drawable.orange
                 , R.drawable.yellow
                 , R.drawable.yellow_green
                 , R.drawable.green
@@ -151,7 +166,6 @@ public class Clothes extends AppCompatActivity {
 
     private void getClothings(String net_url) {
         try {
-            //uid = "1"; //임시 ! 바꿔야함
             URL url = new URL(net_url);
             Networking_Get networking = new Networking_Get(url);
             networking.execute();

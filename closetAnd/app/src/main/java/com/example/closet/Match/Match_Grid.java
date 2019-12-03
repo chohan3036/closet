@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.closet.Clothes.Clothes_Adapter;
 import com.example.closet.Clothes.selected_items;
 import com.example.closet.R;
 
@@ -57,23 +56,6 @@ public class Match_Grid extends AppCompatActivity {
                 Match match = new Match();
                 match.setArguments(bundle);
                 Toast.makeText(this, "옷이 선택되었습니다", Toast.LENGTH_LONG).show();
-
-                checked_items = Clothes_Adapter.checked_items;
-                try {
-                    for (int i = 0; i < match_checked_items.size(); i++) {
-                        //Log.d("Log_dDDaaaaa", i + ":" + (checked_items.get(i)));
-                        JSONObject eachClothing = null;
-                        //int check_index = checked_items.get(i);
-                        eachClothing = clothingResults.getJSONObject(checked_items.get(i));
-                        String photoFile = eachClothing.getString("photo");
-                        selected_to_match.add(new URL(photoFile));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-
                 break;
         }
     }
