@@ -1,29 +1,19 @@
 package com.example.closet.History;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.Image;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.example.closet.Clothes.GridClickListener;
 import com.example.closet.Clothes.UrlToBitmap;
-import com.example.closet.MainActivity;
 import com.example.closet.R;
 
 import java.net.URL;
@@ -118,5 +108,4 @@ class History_GridAdapter extends BaseAdapter {
         private ImageView imageView;
         private TextView textView;
     }
-
 }

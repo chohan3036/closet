@@ -2,6 +2,7 @@ package com.example.closet.Match;
 
 import android.os.Bundle;
 import android.content.Intent;
+import android.view.View;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -32,10 +33,17 @@ public class Match_Grid extends AppCompatActivity {
     private void loadGridView() {
         gridView = (GridView) findViewById(R.id.match_grid);
         if (selected_from_clothes == null) {
-            Toast.makeText(this, "선택된 옷이 없어요", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "선택된 옷이 없습니다", Toast.LENGTH_LONG).show();
         } else {
             adapter = new Match_Adapter(this, R.layout.match_griditem, selected_from_clothes);
             gridView.setAdapter(adapter);
+        }
+    }
+
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.select:
+                break;
         }
     }
 }

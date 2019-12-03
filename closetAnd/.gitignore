@@ -9,6 +9,8 @@
 /.idea/assetWizardSettings.xml
 /app/src/main/res/values/map_key_api.xml
 /app/src/main/cpp/CMakeLists.txt
+app/src/main/cpp/CMakeLists.txt
+app/src/main/res/values/map_key_api.xml
 .DS_Store
 /build
 /captures

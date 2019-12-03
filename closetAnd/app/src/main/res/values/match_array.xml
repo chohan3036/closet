@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="match_array">
-        <item>Look</item>
+        <item>Look(Style)</item>
         <item>daily</item>
         <item>office</item>
         <item>lovely</item>
         <item>casual</item>
         <item>romantic</item>
-        <item>cool</item>
+        <item>campus</item>
     </string-array>
 </resources>
