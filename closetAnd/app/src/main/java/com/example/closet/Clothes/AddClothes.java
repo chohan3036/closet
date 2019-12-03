@@ -90,7 +90,7 @@ public class AddClothes extends AppCompatActivity {
         System.out.println(selectedImagesPaths);
         System.out.println("Sending the Files. Please Wait ...");
 
-        String ipv4Address = "10.101.26.57";
+        String ipv4Address = "52.78.194.160";
         String portNumber = "3030";
 
         Matcher matcher = IP_ADDRESS.matcher(ipv4Address);
@@ -116,7 +116,7 @@ public class AddClothes extends AppCompatActivity {
         }
         byte[] byteArray = stream.toByteArray();
 
-        multipartBodyBuilder.addFormDataPart("image", "Android_Flask_.jpg",
+        multipartBodyBuilder.addFormDataPart("photo", "Android_Flask_.jpg",
                 RequestBody.create(MediaType.parse("image/*jpg"), byteArray));
 
         RequestBody postBodyImage = multipartBodyBuilder.build();

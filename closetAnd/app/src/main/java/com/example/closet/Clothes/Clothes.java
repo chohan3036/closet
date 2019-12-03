@@ -202,8 +202,8 @@ public class Clothes extends AppCompatActivity {
         }
     }
 
-    private PopupWindow infoPopupWindow;
     private PopupWindow addPopupWindow;
+    private PopupWindow infoPopupWindow;
 
     protected void addPopup() {
         View addPopupView = getLayoutInflater().inflate(R.layout.activity_clothes3, null);
