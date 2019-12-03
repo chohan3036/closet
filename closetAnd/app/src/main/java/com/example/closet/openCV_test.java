@@ -16,6 +16,7 @@ import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
+import static org.opencv.core.CvType.CV_64FC1;
 import static org.opencv.core.CvType.CV_8U;
 import static org.opencv.core.CvType.CV_8UC1;
 import static org.opencv.core.CvType.CV_8UC3;
@@ -97,30 +98,29 @@ public class openCV_test extends AppCompatActivity implements CameraBridgeViewBa
         if( comMask.empty() || comMask.type()!= CV_8UC1 )
             Log.d("TYPE ERROR", "comMask is empty or has incorrect type (not CV_8UC1)" );
         if( binMask.empty() || binMask.rows() !=comMask.rows() || binMask.cols() != comMask.cols() )
-            binMask.create( comMask.size(), CV_8UC1 );
+            binMask.create( comMask.size(), CV_8UC3 );
         Core.bitwise_and(comMask, binMask, binMask);
     }
 
     public void grabCut(){
-        Scalar RED = new Scalar(0,0,255);
-        Scalar PINK = new Scalar(230,130,255);
-        Scalar LIGHTBLUE = new Scalar(255,255,160);
-        Scalar GREEN = new Scalar(0,255,0);
-
         Mat src = new Mat();
         Mat result = new Mat();
         Mat mask = new Mat();
         Mat bgdModel = new Mat();
         Mat fgdModel = new Mat();
 
-        Rect rect = new Rect(10, 10, src.cols() - 20, src.rows() - 20);
-        int iterCount = 1;
+        Rect rect = new Rect(20, 20, src.cols() - 20, src.rows() - 20);
+        int iterCount = 5;
 
-        Utils.bitmapToMat(mInputImage, src);
-        //src.setTo(Scalar.all(Imgproc.CV_RGBA2mRGBA));
-        Imgproc.cvtColor(src, src, COLOR_RGBA2BGRA);
         src.create(src.size(), CV_8UC3);
         mask.create(src.size(), CV_8UC3);
+        result.create(src.size(), CV_8UC3);
+        fgdModel.create(src.size(), CV_64FC1);
+        bgdModel.create(src.size(), CV_64FC1);
+
+        Utils.bitmapToMat(mInputImage, src);
+        Imgproc.cvtColor(src, src, COLOR_RGBA2BGRA);
+
         mask.setTo(Scalar.all(GC_BGD));
         Mat binMask = new Mat(); getBinMask(mask, binMask); //둘이 크기 맞춰줘야 하는듯?
         src.copyTo(result, binMask);

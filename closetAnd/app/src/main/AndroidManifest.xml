@@ -55,6 +55,7 @@
             android:configChanges="keyboardHidden|orientation"
             android:networkSecurityConfig="@xml/network_security_config" />
         <activity android:name=".GetaLocation" />
+
         <activity android:name=".Splash" />
         <activity android:name=".User.SignUp" />
         <activity android:name=".User.LogIn" />

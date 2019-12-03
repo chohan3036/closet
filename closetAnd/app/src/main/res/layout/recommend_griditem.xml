@@ -1,43 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    >
+    android:layout_height="wrap_content" >
 
         <ImageView
             android:id="@+id/recommend_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true" />
+            android:scaleType="centerCrop"
+            android:src="@drawable/example_01"
+            android:layout_alignParentTop="true"
+            android:visibility="visible" />
 
     <RelativeLayout
-        android:layout_width="105dp"
-        android:layout_height="124dp"
-        android:layout_alignParentBottom="true">
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_alignParentBottom="true" >
 
-        <ImageView
-            android:id="@+id/like_image"
+        <ImageButton
+            android:id="@+id/like"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:padding="12dp"
-            android:src="@drawable/like" />
-
-        <ImageView
-            android:id="@+id/empty_like"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/emptylike"></ImageView>
- <!--<Button
-            android:id="@+id/like_button"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="#eee6c4"
-            android:drawableStart="@drawable/imgbtn_status"
-            android:padding="20dp"
-            android:text="I Like it!"
-            android:textSize="50sp" />-->
+            android:background="#FFFFFF"
+            android:src="@drawable/emptylike"
+            android:scaleType="centerInside" />
 
     </RelativeLayout>
 

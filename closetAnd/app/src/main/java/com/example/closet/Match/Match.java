@@ -5,8 +5,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -74,6 +72,7 @@ public class Match extends Fragment implements View.OnClickListener  {
     ImageButton btn_camera;
     Button save, pick, reset;
     ArrayList<URL> selected_from_clothes = new ArrayList<>();
+
     Intent intent, intent1;
 
     public Match() {
@@ -85,7 +84,6 @@ public class Match extends Fragment implements View.OnClickListener  {
         super.onCreate(savedInstanceState);
         Intent intent = getActivity().getIntent();
         selected_from_clothes = (ArrayList<URL>) intent.getSerializableExtra("selected_items");
-
     }
 
     @Override
@@ -98,7 +96,6 @@ public class Match extends Fragment implements View.OnClickListener  {
         btn_camera.setOnClickListener(this);
 
         //iv = (ImageView)view.findViewById(R.id.match_avatar);
-
 
         pick = (Button) view.findViewById(R.id.pick);
         pick.setOnClickListener(this);

@@ -237,8 +237,8 @@ public class Clothes extends AppCompatActivity {
         }
     }
 
-    private PopupWindow infoPopupWindow;
     private PopupWindow addPopupWindow;
+    private PopupWindow infoPopupWindow;
 
     protected void addPopup() {
         View addPopupView = getLayoutInflater().inflate(R.layout.activity_clothes3, null);
@@ -317,16 +317,15 @@ public class Clothes extends AppCompatActivity {
                 Log.d("Log_d data", "data is null");
             } else {
                 uri = data.getData();
-                Log.d("LLLLLLLLLLLL", String.valueOf(uri));
-                Log.d("LLLLsasfLL", uri.getPath());
+
                 currentImagePath = DocumentsContract.getDocumentId(uri);
-                Log.d("LLLLLLLLLLLL", currentImagePath);
                 String[] realPath = currentImagePath.split(":");
                 selectedImagesPaths = realPath[1];
-                Log.d("LLLLLLLLLLLL", selectedImagesPaths);
 
-                filePath = getRealPathFromURI(uri);
-                Log.d("LLLLLLFIle", filePath);
+                //filePath = getRealPathFromURI(uri);
+
+                Log.d("selectedImagesPaths", selectedImagesPaths);
+
                 imagesSelected = true;
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
@@ -336,14 +335,14 @@ public class Clothes extends AppCompatActivity {
                 }
             }
         }
-        try {
+        /*try {
             storeClothingNetworking networking = new storeClothingNetworking(filePath);
             networking.execute();
         } catch (MalformedURLException e) {
             e.printStackTrace();
-        }
-        //AddClothes sendImage = new AddClothes(imagesSelected, selectedImagesPaths, bitmap);
-        //sendImage.connectServer();
+        }*/
+        AddClothes sendImage = new AddClothes(imagesSelected, selectedImagesPaths, bitmap);
+        sendImage.connectServer();
         super.onActivityResult(requestCode, resultCode, data);
     }
 
