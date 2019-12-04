@@ -8,10 +8,35 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.UUID;
+
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -33,10 +58,13 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import android.widget.Spinner;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import org.json.JSONArray;
@@ -47,6 +75,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 import com.example.closet.Networking;
 import com.example.closet.R;
@@ -67,12 +96,15 @@ import java.util.concurrent.ExecutionException;
 import androidx.fragment.app.Fragment;
 
 import static android.graphics.BitmapFactory.decodeByteArray;
+import static android.widget.Toast.LENGTH_LONG;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class Match extends Fragment implements View.OnClickListener {
     private PopupWindow mPopupWindow;
+    private String pictureFilePath;
+    private String deviceIdentifier;
     View view;
     ImageButton btn_camera;
     Button save, pick, reset;
@@ -141,7 +173,7 @@ public class Match extends Fragment implements View.OnClickListener {
                         // On selecting a spinner item
                         final String Look = parent.getItemAtPosition(position).toString();
                         if (!Look.equals("Look(Style)")) {
-                            Toast.makeText(parent.getContext(), "Selected: " + Look, Toast.LENGTH_LONG).show();
+                            Toast.makeText(parent.getContext(), "Selected: " + Look, LENGTH_LONG).show();
                             Button ok = (Button) popupView.findViewById(R.id.match_save_Ok);
                             ok.setOnClickListener(new View.OnClickListener() {
                                 public void onClick(View v) {
@@ -191,23 +223,71 @@ public class Match extends Fragment implements View.OnClickListener {
             case R.id.reset:
                 break;
             case R.id.match_camera:
-                Intent intent1 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent1,
-                        CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+                intent1 = new Intent(getContext(), Match_camera.class);
+                startActivity(intent1);
+        }
+    }
+}
+                //Intent intent1 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                //startActivityForResult(intent1,
+                //        CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+                // File pictureFile = null;
+                //pictureFile = getPictureFile();
+               /* Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                cameraIntent.putExtra( MediaStore.EXTRA_FINISH_ON_COMPLETION, true);
+                if (cameraIntent.resolveActivity(getContext().getPackageManager()) != null) {
+                    startActivityForResult(cameraIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+
+                    File pictureFile = null;
+                    try {
+                        pictureFile = createImageFile();
+                    } catch (IOException ex) {
+
+                        return;
+                    }
+                    if (pictureFile != null) {
+                        Uri photoURI = FileProvider.getUriForFile(getContext(), getContext().getPackageName()+ ".provider", pictureFile);
+                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                        startActivityForResult(cameraIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+                    }
+                }
 
                 break;
         }
 
     }
-        // 압축률 문제 -) 사진 갤러리에 저장하거나 drawable에 저장 후 setimgaeview를 유지시켜야함
-        // 사진 저장후 inSampleSize로 화질 조정해보기 -) 서버 연결(open pose, background 처리) -) 다시 안드로이드로
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
+
+    String currentPhotoPath;
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+      //          ".jpg",         /* suffix */
+      //          storageDir      /* directory */
+     //   );
+
+        // Save a file: path for use with ACTION_VIEW intents
+  //     currentPhotoPath = image.getAbsolutePath();
+ //       return image;
+ //   }
+
+    // 압축률 문제 -) 사진 갤러리에 저장하거나 drawable에 저장 후 setimgaeview를 유지시켜야함
+    // 사진 저장후 inSampleSize로 화질 조정해보기 -) 서버 연결(open pose, background 처리) -) 다시 안드로이드로
+   // @Override
+    //public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    //    // System.gc();
+    //    if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+     //       if (resultCode == Activity.RESULT_OK) {
+     //           File imgFile = new File(pictureFilePath);
+     //           if (imgFile.exists()) {
+    //                iv.setImageURI(Uri.fromFile(imgFile));
 
 
-                Bitmap bmp = (Bitmap) data.getExtras().get("data");
+               /* Bitmap bmp = (Bitmap) data.getExtras().get("data");
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
                 bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -218,10 +298,28 @@ public class Match extends Fragment implements View.OnClickListener {
                 Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0,
                         byteArray.length);
                 iv.setImageBitmap(bitmap);
+                */
+          //      }
+       //     }
+     //   }
+  //  }
 
-            }
-            }
-        }
+
+ //   public View.OnClickListener saveGallery = new View.OnClickListener() {
+  //      @Override
+   //     public void onClick(View view) {
+ //           addToGallery();
+ //       }
+ //   };
+ //   public void addToGallery() {
+  //      Intent galleryIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+  //      File f = new File(pictureFilePath);
+   //     Uri picUri = Uri.fromFile(f);
+   //     galleryIntent.setData(picUri);
+  //      getContext().sendBroadcast(galleryIntent);
+ //   }
+//}
+
     // 이미지 Resize 함수
    /* private int setSimpleSize(BitmapFactory.Options options, int requestWidth, int requestHeight){
         // 이미지 사이즈를 체크할 원본 이미지 가로/세로 사이즈를 임시 변수에 대입.
@@ -240,5 +338,3 @@ public class Match extends Fragment implements View.OnClickListener {
         }
         return size;
     }*/
-    }
-
