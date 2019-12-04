@@ -62,12 +62,7 @@
         <activity android:name=".Clothes.Clothes"
             android:exported="true"/>
         <activity android:name=".Match.Match_Grid" />
-<<<<<<< HEAD
         <activity android:name=".openCV_test" />
-        <activity android:name=".Match.Match_camera" />
-=======
-        <activity android:name=".openCV_test"></activity>
->>>>>>> af746211c8b6645e748a7d09e8281b4b4c92c670
     </application>
 
 </manifest>

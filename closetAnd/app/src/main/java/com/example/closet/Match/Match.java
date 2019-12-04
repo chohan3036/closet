@@ -1,4 +1,5 @@
 package com.example.closet.Match;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.Manifest;
@@ -32,13 +33,16 @@ import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import android.widget.Spinner;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,6 +52,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
+
+import com.example.closet.Clothes.selected_items;
 import com.example.closet.Networking;
 import com.example.closet.R;
 
@@ -83,6 +89,10 @@ public class Match extends Fragment implements View.OnClickListener {
     Intent intent, intent1;
     ImageView iv;
 
+    GridView bb;
+    ArrayList<URL> selected_from_clothes2 = new ArrayList<>();
+    ArrayList<Integer> match_checked_items;
+
     public Match() {
         // Required empty public constructor
     }
@@ -91,7 +101,7 @@ public class Match extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getActivity().getIntent();
-        selected_from_clothes = (ArrayList<URL>) intent.getSerializableExtra("selected_items");
+        //selected_from_clothes = (ArrayList<URL>) intent.getSerializableExtra("selected_items");
     }
 
     @Override
@@ -100,21 +110,49 @@ public class Match extends Fragment implements View.OnClickListener {
         super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.fragment_match, container, false);
 
-        btn_camera = (ImageButton) view.findViewById(R.id.match_camera);
-        btn_camera.setOnClickListener(this);
+        setting();
 
-        iv = (ImageView) view.findViewById(R.id.match_avatar);
-
-        pick = (Button) view.findViewById(R.id.pick);
-        pick.setOnClickListener(this);
-
-        save = (Button) view.findViewById(R.id.save);
-        save.setOnClickListener(this);
-
-        reset = (Button) view.findViewById(R.id.reset);
-        reset.setOnClickListener(this);
+        bb = (GridView) view.findViewById(R.id.bbbb);
 
         return view;
+    }
+
+    public void setGrid() {
+
+        Match_Adapter adapter;
+        Log.d("Log_dMAtchAdapter", String.valueOf(selected_from_clothes));
+        Log.d("Log_dMAtchAdapter", String.valueOf(selected_from_clothes2));
+
+
+        selected_from_clothes2 = selected_items.selected_from_clothes;
+
+        if (selected_from_clothes2 == null) {
+            Toast.makeText(getContext(), "선택된 옷이 없습니다", Toast.LENGTH_LONG).show();
+        } else {
+            adapter = new Match_Adapter(getActivity(), R.layout.match_griditem, selected_from_clothes2);
+            bb.setAdapter(adapter);
+        }
+
+
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser)
+            setGrid();
+    }
+
+    private void setting() {
+        btn_camera = (ImageButton) view.findViewById(R.id.match_camera);
+        btn_camera.setOnClickListener(this);
+        iv = (ImageView) view.findViewById(R.id.match_avatar);
+        pick = (Button) view.findViewById(R.id.pick);
+        pick.setOnClickListener(this);
+        save = (Button) view.findViewById(R.id.save);
+        save.setOnClickListener(this);
+        reset = (Button) view.findViewById(R.id.reset);
+        reset.setOnClickListener(this);
     }
 
     public void onClick(View view) {
@@ -199,8 +237,9 @@ public class Match extends Fragment implements View.OnClickListener {
         }
 
     }
-        // 압축률 문제 -) 사진 갤러리에 저장하거나 drawable에 저장 후 setimgaeview를 유지시켜야함
-        // 사진 저장후 inSampleSize로 화질 조정해보기 -) 서버 연결(open pose, background 처리) -) 다시 안드로이드로
+
+    // 압축률 문제 -) 사진 갤러리에 저장하거나 drawable에 저장 후 setimgaeview를 유지시켜야함
+    // 사진 저장후 inSampleSize로 화질 조정해보기 -) 서버 연결(open pose, background 처리) -) 다시 안드로이드로
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
@@ -220,8 +259,8 @@ public class Match extends Fragment implements View.OnClickListener {
                 iv.setImageBitmap(bitmap);
 
             }
-            }
         }
+    }
     // 이미지 Resize 함수
    /* private int setSimpleSize(BitmapFactory.Options options, int requestWidth, int requestHeight){
         // 이미지 사이즈를 체크할 원본 이미지 가로/세로 사이즈를 임시 변수에 대입.
@@ -240,5 +279,5 @@ public class Match extends Fragment implements View.OnClickListener {
         }
         return size;
     }*/
-    }
+}
 

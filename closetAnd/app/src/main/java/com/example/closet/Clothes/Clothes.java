@@ -75,7 +75,7 @@ public class Clothes extends AppCompatActivity {
     Bitmap bitmap;
     //****image to server
 
-    String uid = "3"; // 들어오는  유저 index저장 하기.
+    String uid = "1"; // 들어오는  유저 index저장 하기.
     private String net_url = "http://52.78.194.160:3000/closet/show/personalCloset?uid=" + uid;
 
     ArrayList<Integer> checked_items;
@@ -259,10 +259,9 @@ public class Clothes extends AppCompatActivity {
                 }
                 selected_items.selected_from_clothes = selected_to_match;
                 Toast.makeText(this, "선택하신 옷이 전송되었습니다", Toast.LENGTH_LONG).show();
-                /*Intent intent = new Intent(view.getContext(), Match.class);
-                intent.putExtra("selected_items", selected_to_match);
-
-                view.getContext().startActivity(intent);*/
+                //Intent intent = new Intent(view.getContext(), Match.class);
+                //intent.putExtra("selected_items", selected_to_match);
+                //view.getContext().startActivity(intent);
                 break;
         }
     }
