@@ -81,8 +81,6 @@
 
         <activity android:name=".openCV_test"></activity>
 
-
-
     </application>
 
 

@@ -1,63 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
+
     tools:context="Match.Match">
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="4">
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="200dp"
-            android:layout_height="50dp">
+        <Button
+            android:id="@+id/reset"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:background="#EDC6C6"
+            android:text="Reset"
+            android:textColor="#000000" />
 
-            <Button
-                android:id="@+id/reset"
-                android:layout_width="50dp"
-                android:layout_height="40dp"
-                android:background="#EDC6C6"
-                android:text="Reset"
-                android:textColor="#000000" />
+        <Button
+            android:id="@+id/save"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="100dp"
+            android:background="#FFD8D8"
+            android:text="Save"
+            android:textColor="#000000" />
 
-            <Button
-                android:id="@+id/save"
-                android:layout_width="50dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="20dp"
-                android:background="#FFD8D8"
-                android:text="Save"
-                android:textColor="#000000" />
+        <ImageButton
+            android:layout_marginLeft="200dp"
+            android:id="@+id/match_camera"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/camera" />
 
 
-            <ImageButton
-                android:id="@+id/match_camera"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:scaleType="fitXY"
-                android:src="@drawable/camera" />
+    <ImageView
+        android:id="@+id/match_avatar"
+        android:layout_width="300dp"
+        android:layout_height="700dp"
+        android:layout_marginTop="50dp"
 
-            <ImageView
-                android:id="@+id/match_avatar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:scaleType="fitXY" />
-        </LinearLayout>
-    </LinearLayout>
+        android:scaleType="fitXY" />
 
     <GridView
         android:id="@+id/match_gridView"
-        android:layout_width="0dp"
+        android:layout_width="140dp"
         android:layout_height="match_parent"
-        android:layout_weight="2"
+        android:layout_marginLeft="300dp"
         android:numColumns="1" />
+</RelativeLayout>
 
 
-</LinearLayout>
+
+

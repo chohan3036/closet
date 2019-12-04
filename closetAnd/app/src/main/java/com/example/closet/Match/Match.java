@@ -75,6 +75,7 @@ import android.widget.GridView;
 
 import java.util.HashMap;
 
+import static android.app.Activity.RESULT_OK;
 import static android.graphics.BitmapFactory.decodeByteArray;
 import static android.widget.Toast.LENGTH_LONG;
 
@@ -83,13 +84,12 @@ import static android.widget.Toast.LENGTH_LONG;
  */
 public class Match extends Fragment implements View.OnClickListener {
     private PopupWindow mPopupWindow;
+    public static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
     private String pictureFilePath;
     private String deviceIdentifier;
     View view;
     ImageButton btn_camera;
     Button save, pick, reset;
-    private final int REQUEST_WIDTH = 512;
-    private final int REQUEST_HEIGHT = 512;
     ArrayList<URL> selected_from_clothes = new ArrayList<>();
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1888;
     Intent intent, intent1;
@@ -226,49 +226,31 @@ public class Match extends Fragment implements View.OnClickListener {
             case R.id.reset:
                 break;
             case R.id.match_camera:
-                intent1 = new Intent(getContext(), Match_camera.class);
-                startActivity(intent1);
-        }
-    }
-}
-                //Intent intent1 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                //startActivityForResult(intent1,
-                //        CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-                // File pictureFile = null;
-                //pictureFile = getPictureFile();
-               /* Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                cameraIntent.putExtra( MediaStore.EXTRA_FINISH_ON_COMPLETION, true);
-                if (cameraIntent.resolveActivity(getContext().getPackageManager()) != null) {
-                    startActivityForResult(cameraIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-
-                    File pictureFile = null;
-                    try {
-                        pictureFile = createImageFile();
-                    } catch (IOException ex) {
-
-                        return;
-                    }
-                    if (pictureFile != null) {
-                        Uri photoURI = FileProvider.getUriForFile(getContext(), getContext().getPackageName()+ ".provider", pictureFile);
-                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                        startActivityForResult(cameraIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-                    }
-                }
-
+               dispatchTakePictureIntent();
                 break;
         }
-
     }
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getContext().getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
 
-    // 압축률 문제 -) 사진 갤러리에 저장하거나 drawable에 저장 후 setimgaeview를 유지시켜야함
-    // 사진 저장후 inSampleSize로 화질 조정해보기 -) 서버 연결(open pose, background 처리) -) 다시 안드로이드로
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
-
-
-
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(getContext(),
+                        "com.example.closet.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, MY_PERMISSIONS_REQUEST_CAMERA);
+            }
+        }
+    }
     String currentPhotoPath;
 
     private File createImageFile() throws IOException {
@@ -278,78 +260,22 @@ public class Match extends Fragment implements View.OnClickListener {
         File storageDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
-      //          ".jpg",         /* suffix */
-      //          storageDir      /* directory */
-     //   );
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
 
         // Save a file: path for use with ACTION_VIEW intents
-  //     currentPhotoPath = image.getAbsolutePath();
- //       return image;
- //   }
-
-    // 압축률 문제 -) 사진 갤러리에 저장하거나 drawable에 저장 후 setimgaeview를 유지시켜야함
-    // 사진 저장후 inSampleSize로 화질 조정해보기 -) 서버 연결(open pose, background 처리) -) 다시 안드로이드로
-   // @Override
-    //public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    //    // System.gc();
-    //    if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
-     //       if (resultCode == Activity.RESULT_OK) {
-     //           File imgFile = new File(pictureFilePath);
-     //           if (imgFile.exists()) {
-    //                iv.setImageURI(Uri.fromFile(imgFile));
-
-
-               /* Bitmap bmp = (Bitmap) data.getExtras().get("data");
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
-                bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                byte[] byteArray = stream.toByteArray();
-
-                // convert byte array to Bitmap
-
-                Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0,
-                        byteArray.length);
-                iv.setImageBitmap(bitmap);
-                */
-          //      }
-       //     }
-     //   }
-  //  }
-
-
- //   public View.OnClickListener saveGallery = new View.OnClickListener() {
-  //      @Override
-   //     public void onClick(View view) {
- //           addToGallery();
- //       }
- //   };
- //   public void addToGallery() {
-  //      Intent galleryIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-  //      File f = new File(pictureFilePath);
-   //     Uri picUri = Uri.fromFile(f);
-   //     galleryIntent.setData(picUri);
-  //      getContext().sendBroadcast(galleryIntent);
- //   }
-//}
-
-
-    // 이미지 Resize 함수
-   /* private int setSimpleSize(BitmapFactory.Options options, int requestWidth, int requestHeight){
-        // 이미지 사이즈를 체크할 원본 이미지 가로/세로 사이즈를 임시 변수에 대입.
-        int originalWidth = options.outWidth;
-        int originalHeight = options.outHeight;
-
-        // 원본 이미지 비율인 1로 초기화
-        int size = 1;
-
-        // 해상도가 깨지지 않을만한 요구되는 사이즈까지 2의 배수의 값으로 원본 이미지를 나눈다.
-        while(requestWidth < originalWidth || requestHeight < originalHeight){
-            originalWidth = originalWidth / 2;
-            originalHeight = originalHeight / 2;
-
-            size = size * 2;
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == MY_PERMISSIONS_REQUEST_CAMERA && resultCode == RESULT_OK) {
+            File imgFile = new File(currentPhotoPath );
+            if (imgFile.exists()) {
+                iv.setImageURI(Uri.fromFile(imgFile));
+            }
         }
-        return size;
-<<<<<<< HEAD
-    }*/
-
+    }
+}
