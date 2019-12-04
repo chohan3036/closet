@@ -54,6 +54,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 public class Clothes extends AppCompatActivity {
@@ -68,6 +69,7 @@ public class Clothes extends AppCompatActivity {
     //****image to server
     private static final int PICK_FROM_CAMERA = 0;
     private static final int PICK_FROM_ALBUM = 1;
+    public static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
 
     String selectedImagesPaths;
     boolean imagesSelected = false;
@@ -75,7 +77,7 @@ public class Clothes extends AppCompatActivity {
     Bitmap bitmap;
     //****image to server
 
-    String uid = "1"; // 들어오는  유저 index저장 하기.
+    String uid = "3"; // 들어오는  유저 index저장 하기.
     private String net_url = "http://52.78.194.160:3000/closet/show/personalCloset?uid=" + uid;
 
     ArrayList<Integer> checked_items;
@@ -290,10 +292,29 @@ public class Clothes extends AppCompatActivity {
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Camera", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                intent.setType("image/*");
-                startActivityForResult(intent, PICK_FROM_CAMERA);
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                // Ensure that there's a camera activity to handle the intent
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    // Create the File where the photo should go
+                    File photoFile = null;
+                    try {
+                        photoFile = createImageFile();
+                    } catch (IOException ex) {
+
+                    }
+                    // Continue only if the File was successfully created
+                    if (photoFile != null) {
+                        Uri photoURI = FileProvider.getUriForFile(getApplicationContext(),
+                                "com.example.closet.fileprovider",
+                                photoFile);
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                        startActivityForResult(takePictureIntent, MY_PERMISSIONS_REQUEST_CAMERA);
+                    }
+                }
+                //Toast.makeText(getApplicationContext(), "Camera", Toast.LENGTH_SHORT).show();
+                //Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                //intent.setType("image/*");
+                //startActivityForResult(intent, PICK_FROM_CAMERA);
             }
         });
 
@@ -334,12 +355,29 @@ public class Clothes extends AppCompatActivity {
             }
         });
     }
+    String currentPhotoPath;
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == PICK_FROM_CAMERA) {
-
+        if (requestCode ==MY_PERMISSIONS_REQUEST_CAMERA ) {
+            File imgFile = new File(currentPhotoPath);
 
         } else if (requestCode == PICK_FROM_ALBUM) {
 
