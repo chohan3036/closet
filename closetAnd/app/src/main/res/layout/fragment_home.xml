@@ -8,6 +8,13 @@
     android:orientation="vertical">
 
     <Button
+        android:layout_gravity="top"
+        android:id="@+id/gridViewTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="그리드뷰 " />
+
+    <Button
         android:layout_gravity="center"
         android:id="@+id/mapButton"
         android:layout_width="wrap_content"

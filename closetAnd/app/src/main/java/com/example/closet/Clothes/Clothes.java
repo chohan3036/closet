@@ -44,6 +44,7 @@ import com.example.closet.Match.Match_Grid;
 import com.example.closet.Networking_Get;
 import com.example.closet.R;
 import com.example.closet.SaveSharedPreference;
+import com.example.closet.storeClothingNetworking;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -74,7 +75,7 @@ public class Clothes extends AppCompatActivity {
     Bitmap bitmap;
     //****image to server
 
-    String uid = "1"; // 들어오는  유저 index저장 하기.
+    String uid = "3"; // 들어오는  유저 index저장 하기.
     private String net_url = "http://52.78.194.160:3000/closet/show/personalCloset?uid=" + uid;
 
     ArrayList<Integer> checked_items;
@@ -86,7 +87,7 @@ public class Clothes extends AppCompatActivity {
         setContentView(R.layout.activity_clothes);
         context = this; //context오는지 확인해야 할 듯
         getClothings(net_url);
-        getUid();
+        //getUid();
         loadGridView();
         setSpinner();
 
@@ -112,7 +113,7 @@ public class Clothes extends AppCompatActivity {
     }
 
     private void getUid() {
-        uid = SaveSharedPreference.getString(this,"uid"); //이걸 메인에서 받아서 intent로 넘겨줘야하나?
+        uid = SaveSharedPreference.getString(this, "uid"); //이걸 메인에서 받아서 intent로 넘겨줘야하나?
     }
 
     private void setSpinner() {
@@ -258,10 +259,9 @@ public class Clothes extends AppCompatActivity {
                 }
                 selected_items.selected_from_clothes = selected_to_match;
                 Toast.makeText(this, "선택하신 옷이 전송되었습니다", Toast.LENGTH_LONG).show();
-                /*Intent intent = new Intent(view.getContext(), Match.class);
-                intent.putExtra("selected_items", selected_to_match);
-
-                view.getContext().startActivity(intent);*/
+                //Intent intent = new Intent(view.getContext(), Match.class);
+                //intent.putExtra("selected_items", selected_to_match);
+                //view.getContext().startActivity(intent);
                 break;
         }
     }
@@ -337,11 +337,14 @@ public class Clothes extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         if (requestCode == PICK_FROM_CAMERA) {
 
-        }
 
-        else if (requestCode == PICK_FROM_ALBUM) {
+        } else if (requestCode == PICK_FROM_ALBUM) {
+
+            String currentImagePath;
+            //selectedImagesPaths = new ArrayList<>();
             if (data == null) {
                 Log.d("Log_d data", "data is null");
             } else {
@@ -352,8 +355,8 @@ public class Clothes extends AppCompatActivity {
                 imagesSelected = true;
             }
         }
-
         AddClothes sendImage = new AddClothes(imagesSelected, selectedImagesPaths);
+
         sendImage.connectServer();
         super.onActivityResult(requestCode, resultCode, data);
     }
