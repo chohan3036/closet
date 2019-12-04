@@ -6,8 +6,14 @@
 6
 7    <uses-sdk
 8        android:minSdkVersion="8"
+<<<<<<< HEAD
 8-->C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
 9        android:targetSdkVersion="26" />
 9-->C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
+=======
+8-->C:\Users\Administrator\Desktop\closet\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
+9        android:targetSdkVersion="26" />
+9-->C:\Users\Administrator\Desktop\closet\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
+>>>>>>> af746211c8b6645e748a7d09e8281b4b4c92c670
 10
 11</manifest>

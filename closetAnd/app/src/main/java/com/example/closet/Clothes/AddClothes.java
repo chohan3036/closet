@@ -29,7 +29,6 @@ import okhttp3.Response;
 
 public class AddClothes extends AppCompatActivity {
     private static final int PERMISSIONS_REQUEST_CODE = 100;
-    String[] REQUESTED_PEERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     private static final Pattern IP_ADDRESS
             = Pattern.compile(
@@ -42,11 +41,11 @@ public class AddClothes extends AppCompatActivity {
     boolean imagesSelected; // Whether the user selected at least an image or not.
     Bitmap bitmap;
 
-    public AddClothes (boolean imagesSelected, String selectedImagesPaths, Bitmap bitmap)
+    public AddClothes (boolean imagesSelected, String selectedImagesPaths)
     {
         this.imagesSelected = imagesSelected;
         this.selectedImagesPaths = selectedImagesPaths;
-        this.bitmap = bitmap;
+        //this.bitmap = bitmap;
     }
 
     @Override
