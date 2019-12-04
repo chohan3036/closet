@@ -75,7 +75,7 @@ public class Clothes extends AppCompatActivity {
     Bitmap bitmap;
     //****image to server
 
-    String uid = "1"; // 들어오는  유저 index저장 하기.
+    String uid = "3"; // 들어오는  유저 index저장 하기.
     private String net_url = "http://52.78.194.160:3000/closet/show/personalCloset?uid=" + uid;
 
     ArrayList<Integer> checked_items;

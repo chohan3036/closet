@@ -1,16 +1,10 @@
 package com.example.closet.Match;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.Manifest;
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,36 +15,21 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
-import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-import android.widget.Spinner;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import com.example.closet.Clothes.selected_items;
@@ -58,19 +37,8 @@ import com.example.closet.Networking;
 import com.example.closet.R;
 
 import android.widget.GridView;
-import android.view.Gravity;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import org.json.JSONObject;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
-
-import androidx.fragment.app.Fragment;
 
 import static android.graphics.BitmapFactory.decodeByteArray;
 
@@ -88,8 +56,7 @@ public class Match extends Fragment implements View.OnClickListener {
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1888;
     Intent intent, intent1;
     ImageView iv;
-
-    GridView bb;
+    GridView gridView;
     ArrayList<URL> selected_from_clothes2 = new ArrayList<>();
     ArrayList<Integer> match_checked_items;
 
@@ -112,7 +79,7 @@ public class Match extends Fragment implements View.OnClickListener {
 
         setting();
 
-        bb = (GridView) view.findViewById(R.id.bbbb);
+        gridView = (GridView) view.findViewById(R.id.match_gridView);
 
         return view;
     }
@@ -130,7 +97,7 @@ public class Match extends Fragment implements View.OnClickListener {
             Toast.makeText(getContext(), "선택된 옷이 없습니다", Toast.LENGTH_LONG).show();
         } else {
             adapter = new Match_Adapter(getActivity(), R.layout.match_griditem, selected_from_clothes2);
-            bb.setAdapter(adapter);
+            gridView.setAdapter(adapter);
         }
 
 
@@ -147,8 +114,6 @@ public class Match extends Fragment implements View.OnClickListener {
         btn_camera = (ImageButton) view.findViewById(R.id.match_camera);
         btn_camera.setOnClickListener(this);
         iv = (ImageView) view.findViewById(R.id.match_avatar);
-        pick = (Button) view.findViewById(R.id.pick);
-        pick.setOnClickListener(this);
         save = (Button) view.findViewById(R.id.save);
         save.setOnClickListener(this);
         reset = (Button) view.findViewById(R.id.reset);
@@ -157,12 +122,6 @@ public class Match extends Fragment implements View.OnClickListener {
 
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.pick:
-                intent = new Intent(getContext(), Match_Grid.class);
-                //intent.putExtra("selected_items", selected_from_clothes);
-                startActivity(intent); // match_grid로 이동
-                break;
-
             case R.id.save:
                 final View popupView = getLayoutInflater().inflate(R.layout.match_pop_up, null);
                 mPopupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
