@@ -122,10 +122,10 @@ public class AddClothes extends AppCompatActivity {
         multipartBodyBuilder.addFormDataPart("photo", "Android_Flask_.jpg",
                 RequestBody.create(MediaType.parse("image/*jpg"), byteArray));
         multipartBodyBuilder.addFormDataPart("uid", "3");
-        multipartBodyBuilder.addFormDataPart("name", "blue");
-        multipartBodyBuilder.addFormDataPart("colorR", "201");
-        multipartBodyBuilder.addFormDataPart("colorG", "201");
-        multipartBodyBuilder.addFormDataPart("colorB", "201");
+        multipartBodyBuilder.addFormDataPart("name", "red");
+        multipartBodyBuilder.addFormDataPart("colorR", "211");
+        multipartBodyBuilder.addFormDataPart("colorG", "11");
+        multipartBodyBuilder.addFormDataPart("colorB", "10");
         multipartBodyBuilder.addFormDataPart("category", "jeans");
         multipartBodyBuilder.addFormDataPart("description","descriptionTest");
 

@@ -76,7 +76,7 @@ public class Clothes extends AppCompatActivity {
         setContentView(R.layout.activity_clothes);
         context = this; //context오는지 확인해야 할 듯
         getClothings(net_url);
-        getUid();
+        //getUid();
         loadGridView();
         setSpinner();
 
@@ -306,7 +306,7 @@ public class Clothes extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        String filePath = null;
+
         if (requestCode == PICK_FROM_CAMERA) {
 
         } else if (requestCode == PICK_FROM_ALBUM) {
@@ -317,15 +317,10 @@ public class Clothes extends AppCompatActivity {
                 Log.d("Log_d data", "data is null");
             } else {
                 uri = data.getData();
-
                 currentImagePath = DocumentsContract.getDocumentId(uri);
                 String[] realPath = currentImagePath.split(":");
                 selectedImagesPaths = realPath[1];
-
                 //filePath = getRealPathFromURI(uri);
-
-                Log.d("selectedImagesPaths", selectedImagesPaths);
-
                 imagesSelected = true;
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
