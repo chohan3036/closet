@@ -12,9 +12,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.example.closet.Networking_Get;
 import com.example.closet.R;
 
@@ -24,6 +24,7 @@ import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -32,12 +33,14 @@ import java.util.concurrent.ExecutionException;
 public class Recommend extends Fragment {
 
     View view;
-    final String[] recommend_spinnerNames = new String[]{"Like", "Yes", "No", };
-    int[] recommend_spinnerImages = new int[]{R.drawable.recommend_beige,R.drawable.thumb_on, R.drawable.thumb_off};
+    int[] recommend_spinnerImages = new int[]{R.drawable.recommend_beige, R.drawable.thumb_on, R.drawable.thumb_off};
     int spinner_id = 0;
     URL url = null;
     String uid = "2"; //수정하기
 
+    ArrayList<URL> photoUrls = new ArrayList<>();
+
+    GridView gridView;
     public Recommend() {
         // Required empty public constructor
     }
@@ -51,10 +54,14 @@ public class Recommend extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_recommend, container, false);
-        //setSpinner_sex_age();
-        //setSpinner_look();
-        //setSpinner_recommend();
-        //Spinner.setEnabled(true);
+
+        setting();
+        return view;
+    }
+
+    private void setting(){
+        gridView = (GridView)view.findViewById(R.id.recommend_grid);
+
         Spinner recom_spinner = (Spinner) view.findViewById(R.id.recommend_spinner);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.recommend));
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -75,11 +82,14 @@ public class Recommend extends Fragment {
                     Networking_Get networking = new Networking_Get(url);
                     networking.execute();
                     JSONObject result = networking.get();
-                    Log.d("Log_dRECOMMEND",result.toString());
 
-                    JSONArray jsonArray = result.getJSONArray("result");
-                    Log.d("Log_dResultArray",jsonArray.toString());
-                    //[{"down_cid":22,"hid":18,"like":4,"look_name":"romantic,office,daily","outer_cid":0,"photo_look":null,"uid":2,"up_cid":20},{"down_cid":21,"hid":22,"like":3,"look_name":"office,daily
+                    if (!result.equals(null)) {
+                        Log.d("Log_dRECOMMEND", result.toString());
+                        JSONArray jsonArray = result.getJSONArray("result");
+                        Log.d("Log_dResultArray", jsonArray.toString());
+                        showRecommendList(jsonArray);
+                        //[{"down_cid":22,"hid":18,"like":4,"look_name":"romantic,office,daily","outer_cid":0,"photo_look":null,"uid":2,"up_cid":20},{"down_cid":21,"hid":22,"like":3,"look_name":"office,daily
+                    }
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
@@ -96,8 +106,23 @@ public class Recommend extends Fragment {
 
             }
         });
+    }
+    public void showRecommendList(JSONArray jsonArray) {
 
-        return view;
+        for(int i=0 ; i<jsonArray.length() ; i++){
+            try {
+                JSONObject eachRecommendedClothing = jsonArray.getJSONObject(i);
+                String photoFIle = eachRecommendedClothing.getString("photo_look");
+                if(!photoFIle.equals(null))
+                    photoUrls.add(new URL(photoFIle));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+
+        }
+
     }
 /*
     private void  setSpinner_sex_age() {
