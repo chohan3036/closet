@@ -33,7 +33,7 @@
                 android:layout_weight="1"
                 android:background="#eee6c4"
                 android:text="Cancel"
-                android:fontFamily="@font/montaga"/>
+                android:fontFamily="@font/nanum"/>
 
             <View
                 android:layout_width="1dp"
@@ -46,7 +46,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#eee6c4"
-                android:fontFamily="@font/montaga"
+                android:fontFamily="@font/nanum"
                 android:text="Ok" />
 
         </LinearLayout>

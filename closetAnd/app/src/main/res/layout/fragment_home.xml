@@ -7,16 +7,6 @@
     tools:context=".Home.Home"
     android:orientation="vertical">
 
-
-    <Button
-        android:id="@+id/mapButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:layout_marginLeft="50dp"
-        android:background="@android:color/transparent"
-        android:text="오늘 뭐 입지?" />
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
@@ -41,9 +31,9 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-black"
+        android:fontFamily="@font/nanum"
         android:foregroundTint="#2196F3"
-        android:textSize="25sp"
+        android:textSize="30sp"
         android:layout_gravity="right|center_vertical"
         android:layout_marginRight="20dp"
         android:text="Click!"
@@ -51,15 +41,38 @@
 
     <ImageButton
         android:id="@+id/BtnActivityOne"
-        android:layout_width="50dp"
-        android:layout_height="100dp"
-        android:scaleType="fitXY"
+        android:layout_width="58dp"
+        android:layout_height="68dp"
         android:layout_alignParentBottom="true"
         android:layout_gravity="right|center_vertical"
-        android:src="@drawable/finger"
         android:layout_marginTop="70dp"
         android:layout_marginRight="20dp"
-        android:background="#00000000"/>
+        android:background="#00000000"
+        android:scaleType="fitXY"
+        android:src="@drawable/tap_finger" />
 
+
+    <ImageView
+        android:id="@+id/mapButton"
+        android:layout_width="89dp"
+        android:layout_height="69dp"
+        android:layout_gravity="top"
+        android:clickable="true"
+        android:layout_marginLeft="20dp"
+        android:src="@drawable/lightbulb"
+        android:text="코디 팁!" />
+
+    <TextView
+        android:layout_marginTop="70dp"
+        android:id="@+id/tip_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginLeft="20dp"
+        android:fontFamily="@font/nanum"
+        android:foregroundTint="#2196F3"
+        android:text="오늘의 코디 팁!"
+        android:textColor="@android:color/black"
+        android:textSize="25sp"/>
 
 </FrameLayout>

@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -40,7 +41,7 @@ public class Home extends Fragment implements View.OnClickListener {
 
     View view;
     ImageButton BtnMove;
-    Button map;
+    ImageView map;
     TextView weather_info_textView;
 
     String weather_info;
@@ -64,7 +65,7 @@ public class Home extends Fragment implements View.OnClickListener {
     }
 
     private void setting(){
-        map = (Button) view.findViewById(R.id.mapButton);
+        map = (ImageView) view.findViewById(R.id.mapButton);
         map.setOnClickListener(this);
         BtnMove = (ImageButton) view.findViewById(R.id.BtnActivityOne);
         BtnMove.setOnClickListener(this);

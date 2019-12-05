@@ -259,6 +259,11 @@ public class Match extends Fragment implements View.OnClickListener {
             }
         }
     }
+<<<<<<< HEAD
+
+
+}
+=======
     String currentPhotoPath;
 
     private File createImageFile() throws IOException {
@@ -306,3 +311,4 @@ public class Match extends Fragment implements View.OnClickListener {
     }*/
 }
 
+>>>>>>> origin/uiIssue

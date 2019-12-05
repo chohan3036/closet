@@ -78,7 +78,6 @@ class Recommend_GridAdapter extends BaseAdapter {
             view.setTag(viewHolder);
         } else
             viewHolder = (ViewHolder) view.getTag();
-
         viewHolder.imageView.setImageBitmap(photoBitmap.get(i));
         viewHolder.textView.setText("코디 정보? ");
         viewHolder.imageButton.setOnClickListener(new ImageButton.OnClickListener() {
@@ -101,6 +100,7 @@ class Recommend_GridAdapter extends BaseAdapter {
         return view;
     }
 
+
     public void likeList(){
         //네트워킹해서 해당 uid가 좋아요 한 목록 뽑고 ,, 비교해서 하트 이미지 설정
 
@@ -114,6 +114,7 @@ class Recommend_GridAdapter extends BaseAdapter {
 
            for (int j = 0 ; j<photoBitmap.size();j++){
                Log.d("Log_dPhotoBitmap",i+"\n"+photoBitmap);         */
+
     private class ViewHolder {
         private ImageView imageView;
         private ImageButton imageButton;

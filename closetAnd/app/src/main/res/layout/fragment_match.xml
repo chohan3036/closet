@@ -17,6 +17,7 @@
             android:layout_width="60dp"
             android:layout_height="50dp"
             android:background="#EDC6C6"
+            android:fontFamily="@font/nanum"
             android:text="Reset"
             android:textColor="#000000" />
 
@@ -28,6 +29,7 @@
             android:layout_height="50dp"
             android:layout_marginLeft="100dp"
             android:background="#FFD8D8"
+            android:fontFamily="@font/nanum"
             android:text="Save"
             android:textColor="#000000" />
 
