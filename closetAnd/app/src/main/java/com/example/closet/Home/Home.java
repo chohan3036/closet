@@ -1,6 +1,8 @@
 package com.example.closet.Home;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
