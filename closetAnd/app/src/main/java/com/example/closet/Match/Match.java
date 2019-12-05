@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.closet.Clothes.AddClothes;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
@@ -98,6 +99,9 @@ public class Match extends Fragment implements View.OnClickListener {
     ArrayList<URL> selected_from_clothes2 = new ArrayList<>();
     ArrayList<Integer> match_checked_items;
 
+    String avatarPhotoPath;
+    boolean avatarSelected = false;
+
     public Match() {
         // Required empty public constructor
     }
@@ -128,17 +132,13 @@ public class Match extends Fragment implements View.OnClickListener {
         Log.d("Log_dMAtchAdapter", String.valueOf(selected_from_clothes));
         Log.d("Log_dMAtchAdapter", String.valueOf(selected_from_clothes2));
 
-
         selected_from_clothes2 = selected_items.selected_from_clothes;
-
         if (selected_from_clothes2 == null) {
             Toast.makeText(getContext(), "선택된 옷이 없습니다", Toast.LENGTH_LONG).show();
         } else {
             adapter = new Match_Adapter(getActivity(), R.layout.match_griditem, selected_from_clothes2);
             gridView.setAdapter(adapter);
         }
-
-
     }
 
     @Override
@@ -260,13 +260,12 @@ public class Match extends Fragment implements View.OnClickListener {
             }
         }
     }
-    String currentPhotoPath;
 
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
@@ -274,17 +273,20 @@ public class Match extends Fragment implements View.OnClickListener {
         );
 
         // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
+        avatarPhotoPath = image.getAbsolutePath();
         return image;
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == MY_PERMISSIONS_REQUEST_CAMERA && resultCode == RESULT_OK) {
-            File imgFile = new File(currentPhotoPath );
-            if (imgFile.exists()) {
-                iv.setImageURI(Uri.fromFile(imgFile));
-            }
+            avatarSelected = true;
+            //File imgFile = new File(avatarPhotoPath);
+            //if (imgFile.exists()) {
+            //    iv.setImageURI(Uri.fromFile(imgFile));
+            //}
         }
+        AddClothes sendImage = new AddClothes(avatarSelected, avatarPhotoPath);
+        sendImage.connectServer();
     }
 }
