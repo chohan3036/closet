@@ -41,6 +41,7 @@ public class Recommend extends Fragment {
     int spinner_id = 0;
     URL url = null;
     String uid = "2"; //수정하기
+    Spinner recom_spinner;
 
     ArrayList<URL> photoUrls = new ArrayList<>();
     private Context context;
@@ -56,22 +57,31 @@ public class Recommend extends Fragment {
         this.context = context;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_recommend, container, false);
+        view =  inflater.inflate(R.layout.fragment_recommend, container, false);
+        setting();
+        loadGridView();
+        return  view;
     }
-
+/*
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setting();
         loadGridView(view);
     }
-
+*/
     private void setting(){
 
-        Spinner recom_spinner = (Spinner) view.findViewById(R.id.recommend_spinner);
+        recom_spinner = (Spinner) view.findViewById(R.id.recommend_spinner);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.recommend));
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         recom_spinner.setAdapter(dataAdapter);
@@ -85,15 +95,16 @@ public class Recommend extends Fragment {
                         url = new URL("http://52.78.194.160:3030/recommendByUserInfo?uid=" + uid);
                     } else if (string.equals("코디 기반")) {
                         url = new URL("http://52.78.194.160:3030/recommendByLookTable?uid=" + uid);
-                    } else if (string.equals("좋아요 순")) {
+                    } else {
                         url = new URL("http://52.78.194.160:3000/closet/like/recommendByLike");
                     }
                     Networking_Get networking = new Networking_Get(url);
                     networking.execute();
                     JSONObject result = networking.get();
 
-                    if (!result.equals(null)) {
+                    if (result!=null) {
                         Log.d("Log_dRECOMMEND", result.toString());
+                        //: {"message":"successfully selected","result":[{"hid":37,"uid":3,"like":11,"look_name":"daily,campus","pho
                         JSONArray jsonArray = result.getJSONArray("result");
                         Log.d("Log_dResultArray", jsonArray.toString());
                         showRecommendList(jsonArray);
@@ -118,108 +129,31 @@ public class Recommend extends Fragment {
     }
 
     public void showRecommendList(JSONArray jsonArray) {
-
+    //들어올 때 마다 photoUrl clear
+        photoUrls.clear();
         for(int i=0 ; i<jsonArray.length() ; i++){
             try {
                 JSONObject eachRecommendedClothing = jsonArray.getJSONObject(i);
                 String photoFIle = eachRecommendedClothing.getString("photo_look");
-                if(!photoFIle.equals(null))
+                //Log.d("Log_dPhotoFile",photoFIle);
+                if("null".equals(photoFIle)){
+                    //Log.d("Log_dNULLSTRINGhhhhhhhh",photoFIle);
+                }
+                else {
+                    Log.d("Log_dISITNOTNULL",photoFIle);
                     photoUrls.add(new URL(photoFIle));
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
+            loadGridView();
         }
     }
-
-    private void loadGridView(View view) {
+    private void loadGridView() {
         GridView gridView = (GridView) view.findViewById(R.id.recommend_grid);
-        adapter = new Recommend_GridAdapter(context, photoUrls);
+        adapter = new Recommend_GridAdapter(getContext(), photoUrls);
         gridView.setAdapter(adapter);
     }
-/*
-    private void  setSpinner_sex_age() {
-        Spinner spinner_sex_age = (Spinner) view.findViewById(R.id.recommend_spinner_sex_age);
-        String[] recommend_array1 = getResources().getStringArray(R.array.recommend_array1);
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, recommend_array1);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_sex_age.setAdapter(dataAdapter);
-        spinner_sex_age.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String sex_age = parent.getItemAtPosition(position).toString();
-                if (!sex_age.equals("Sex/Age") ) {
-                    Toast.makeText(parent.getContext(), "Selected: " +sex_age, Toast.LENGTH_LONG).show();
-                    //photoUrls.clear();
-                    //String colorUrl;
-                    //if (sex_age.equals("All"))
-                    //    colorUrl = net_url;
-                    //else
-                     //   colorUrl = net_url.concat("&color=" + item1);
-                    //getClothings(colorUrl);
-                    //loadGridView();}
-                }
-            }
-            public void onNothingSelected(AdapterView<?> arg0) {
-                // TODO Auto-generated method stub
-            }
-        });
-    }
-
-    private void setSpinner_look() {
-        Spinner spinner_look = (Spinner) view.findViewById(R.id.recommend_spinner_look);
-        String[] recommend_array2 = getResources().getStringArray(R.array.recommend_array2);
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, recommend_array2);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_look.setAdapter(dataAdapter);
-        spinner_look.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String history = parent.getItemAtPosition(position).toString();
-                if (!history.equals("Look(Style)")) {
-                    Toast.makeText(parent.getContext(), "Selected: " + history, Toast.LENGTH_LONG).show();
-                        //photoUrls.clear();
-                        //String colorUrl;
-                        //if (history.equals("All"))
-                        //    colorUrl = net_url;
-                        //else
-                        //   colorUrl = net_url.concat("&color=" + item1);
-                        //getClothings(colorUrl);
-                        //loadGridView();}
-        }
-            }
-            public void onNothingSelected(AdapterView<?> arg0) {
-                // TODO Auto-generated method stub
-            }
-        });
-    }
-    private void setSpinner_recommend() {
-        final Spinner spinner_like = (Spinner) view.findViewById(R.id.recommend_spinner_like);
-        RecommendSpinner_Adapter recommendSpinner_adapter = new RecommendSpinner_Adapter(getContext(), recommend_spinnerNames, recommend_spinnerImages);
-        spinner_like.setAdapter(recommendSpinner_adapter);
-        spinner_like.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                spinner_id = spinner_like.getSelectedItemPosition();
-                //spinnerNames[spinner_id] = parent.getItemAtPosition(position).toString();
-                System.out.println(recommend_spinnerNames[spinner_id]);
-                if (!recommend_spinnerNames[spinner_id].equals("Like")) {
-                    // Showing selected spinner item
-                    Toast.makeText(parent.getContext(), "Selected: " + recommend_spinnerNames[spinner_id], Toast.LENGTH_LONG).show();
-                    //photoUrls.clear();
-                    //String colorUrl;
-                    //if (spinnerNames[spinner_id].equals("All"))
-                    //    colorUrl = net_url;
-                    //else
-                    //    colorUrl = net_url.concat("&color=" + spinnerNames[spinner_id]);
-                    //getClothings(colorUrl);
-                    //loadGridView();
-                }
-            }
-
-            public void onNothingSelected(AdapterView<?> arg0) {
-                // TODO Auto-generated method stub
-            }
-        });
-    }
-
-    */
 }

@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.example.closet.GetLocation;
 import com.example.closet.GetaLocation;
 import com.example.closet.Clothes.Clothes;
-import com.example.closet.Test.Horizon_grid;
 import com.example.closet.User.LogIn;
 import com.example.closet.R;
 import com.example.closet.User.SignUp;
@@ -42,8 +41,6 @@ public class Home extends Fragment implements View.OnClickListener {
 
     Button testCv;
 
-    Button gridTest;
-
     public Home() {
         // Required empty public constructor
     }
@@ -66,8 +63,6 @@ public class Home extends Fragment implements View.OnClickListener {
         testCv.setOnClickListener(this);
 
         //setWeather_info(weather_info);
-        gridTest = (Button) view.findViewById(R.id.gridViewTest);
-        gridTest.setOnClickListener(this);
         return view;
     }
 
@@ -94,10 +89,6 @@ public class Home extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         //로그인 , 회원가입하고 startForResult로 uid받기 !!
-        if(view == gridTest){
-            Intent intent = new Intent(getActivity(), Horizon_grid.class);
-            startActivity(intent);
-        }
        if (view == map) {
            //필요 없음
             Intent intent = new Intent(getActivity(), GetaLocation.class);
