@@ -15,66 +15,81 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
-public class storeClothingNetworking extends AsyncTask<Void,Void,Void> {
+public class storeClothingNetworking extends AsyncTask<Void, Void, Void> {
 
-    URL url ;
-    HttpURLConnection conn ;
+    URL url;
+    HttpURLConnection conn;
     OutputStream outputStream = null;
-    PrintWriter writer ;
+    PrintWriter writer;
+    String filePath;
     //uid,name(color),colorR,colorG,ColorB,category,description,photo
 
-    public storeClothingNetworking() throws MalformedURLException {
-        url = new URL("http://52.78.194.160:3000/closet/storeClothing");
+    public storeClothingNetworking(String file) throws MalformedURLException {
+        url = new URL("http://52.78.194.160:3030/saveClothes");
+        this.filePath = file;
+
     }
 
     @Override
     protected Void doInBackground(Void... voids) {
         try {
-            String boundary = "-----";
+            //String boundary = "-----";
+            String boundary="*****";
             String LINE_FEED = "\r\n";
             JSONObject result = null;
 
-            conn = (HttpURLConnection)url.openConnection();
-            conn.setRequestProperty("Content-type","multipart/form-data;charset=UTF-8");
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Content-type", "multipart/form-data;charset=UTF-8");
             conn.setRequestMethod("POST");
             conn.setDoInput(true);
             conn.setDoOutput(true);
 
             outputStream = conn.getOutputStream();
-            writer  = new PrintWriter(new OutputStreamWriter(outputStream,"UTF-8"),true);
+            writer = new PrintWriter(new OutputStreamWriter(outputStream, "UTF-8"), true);
 
-            HashMap<String,String> params = new HashMap<>(); //들어오는 값으로 수정하기
-            params.put("uid","3");
-            params.put("name","blue");
-            params.put("color_R","201");
-            params.put("color_G","201");
-            params.put("color_B","201");
-            params.put("category","jeans");
-            params.put("description","descriptionTest");
+            HashMap<String, String> params = new HashMap<>(); //들어오는 값으로 수정하기
+            params.put("uid", "3");
+            params.put("name", "blue");
+            params.put("colorR", "201");
+            params.put("colorG", "201");
+            params.put("colorB", "201");
+            params.put("category", "jeans");
+            params.put("description", "descriptionTest");
 
-            //body에 data
-            writer.append("--"+boundary).append(LINE_FEED);
-            writer.append("Content-Disposirion: form-data; name=\""+"uid"+"\"").append(LINE_FEED);
-            writer.append("Content-Type: text/plain; charset=" +"UTF-8").append(LINE_FEED);
-            writer.append(LINE_FEED);
-            writer.append("데이터값").append(LINE_FEED);
-            writer.flush();
-            //왜이렇게 해야하지..? 안해도될것같은데
+            Set set= params.keySet();
+            Iterator iterator =set.iterator();
 
+            while(iterator.hasNext()){
+                //body에 data
+                String key = (String)iterator.next();
+
+                writer.append("--" + boundary).append(LINE_FEED);
+                writer.append("Content-Disposirion: form-data; name=\"" + key + "\"").append(LINE_FEED);
+                writer.append("Content-Type: text/plain; charset=" + "UTF-8").append(LINE_FEED);
+                writer.append(LINE_FEED);
+                writer.append(params.get(key)).append(LINE_FEED);
+                writer.flush();
+                //왜이렇게 해야하지..? 안해도될것같은데
+            }
             /** 파일 데이터를 넣는 부분**/
 
-            File file = new File("/C:Users/beeny/Desktop/request.PNG"); //파일 못찾음 어떤식으로 보낼지,,
-
+            ///File file = new File("/C:Users/beeny/Desktop/request.PNG"); //파일 못찾음 어떤식으로 보낼지,,
+            File file = new File(filePath);
+            Log.d("llllllllllll", String.valueOf(file));
             writer.append("--" + boundary).append(LINE_FEED);
-            writer.append("Content-Disposition: form-data; name=\"photo\"; filename=\"" + "/C:/Users/beeny/Desktop/request.PNG" + "\"").append(LINE_FEED);
+            writer.append("Content-Disposition: form-data; name=\"photo\"; filename=\"" + filePath + "\"").append(LINE_FEED);
+            Log.d("llllllll", String.valueOf(writer));
+            writer.append("Content-Type:multipart/form-data;").append(LINE_FEED); //이거는..?흠
             //writer.append("Content-Type: " + URLConnection.guessContentTypeFromName(file.getName())).append(LINE_FEED);
             writer.append("Content-Transfer-Encoding: binary").append(LINE_FEED);
             writer.append(LINE_FEED);
             writer.flush();
 
             FileInputStream inputStream = new FileInputStream(file);
-            byte[] buffer = new byte[(int)file.length()];
+            byte[] buffer = new byte[(int) file.length()];
             int bytesRead = -1;
             while ((bytesRead = inputStream.read(buffer)) != -1) {
                 outputStream.write(buffer, 0, bytesRead);

@@ -24,7 +24,6 @@ class History_GridAdapter extends BaseAdapter {
     private PopupWindow mPopupWindow;
     Context context;
     private LayoutInflater inflater;
-    private int layout;
 
     ArrayList<URL> photoUrls;
     ArrayList<Bitmap> photoBitmap = new ArrayList<>();
@@ -108,5 +107,4 @@ class History_GridAdapter extends BaseAdapter {
         private ImageView imageView;
         private TextView textView;
     }
-
 }

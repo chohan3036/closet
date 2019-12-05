@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.view.View.OnClickListener;
 
@@ -25,21 +26,16 @@ class Recommend_GridAdapter extends BaseAdapter {
 
     Context context;
     private LayoutInflater inflater;
-    private int layout;
-
     ArrayList<URL> photoUrls;
-    ArrayList<Bitmap> photoBitmap = new ArrayList<>();
-    UrlToBitmap urlToBitmap;
-    ArrayList<String> arrayTextList;
+    private ArrayList<Bitmap> photoBitmap = new ArrayList<>();
+    private UrlToBitmap urlToBitmap;
+    private ViewHolder viewHolder = new ViewHolder();
+    boolean showing = false;
 
-    public Recommend_GridAdapter(Context context, ArrayList<URL> photoUrls, ArrayList<String> arrayTextList) {
-
+    public Recommend_GridAdapter(Context context, ArrayList<URL> photoUrls) {
         this.context = context;
         inflater = LayoutInflater.from(context);
-
         this.photoUrls = photoUrls;
-        this.arrayTextList = arrayTextList;
-
         urlToBitmap = new UrlToBitmap(photoUrls);
         urlToBitmap.execute();
         try {
@@ -50,7 +46,6 @@ class Recommend_GridAdapter extends BaseAdapter {
             e.printStackTrace();
         }
     }
-
     public int getCount() {
         return photoUrls.size();
     }
@@ -64,28 +59,43 @@ class Recommend_GridAdapter extends BaseAdapter {
     }
 
     public View getView(final int i, View view, ViewGroup viewGroup) {
-        ViewHolder viewHolder;
 
         if (view == null) {
-            viewHolder = new ViewHolder();
 
             view = inflater.inflate(R.layout.recommend_griditem, viewGroup, false);
             viewHolder.imageView = (ImageView) view.findViewById(R.id.recommend_iv);
-            //viewHolder.button = (Button) view.findViewById(R.id.like_image);
+            viewHolder.imageButton = (ImageButton) view.findViewById(R.id.likeit);
 
             view.setTag(viewHolder);
         } else
             viewHolder = (ViewHolder) view.getTag();
 
-        viewHolder.imageView.setImageBitmap(photoBitmap.get(i));
 
+<<<<<<< HEAD
+=======
+        for (int j = 0 ; j<photoUrls.size();j++){
+            Log.d("Log_dPhotoUrls",i+"\n"+photoUrls);
+        }
+
+        for (int j = 0 ; j<photoBitmap.size();j++){
+            Log.d("Log_dPhotoBitmap",i+"\n"+photoBitmap);
+        }
+
+        viewHolder.imageView.setImageBitmap(photoBitmap.get(i));
+        viewHolder.imageButton.setOnClickListener(new ImageButton.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                viewHolder.imageButton.setSelected(!viewHolder.imageButton.isSelected());
+            }
+        });
+>>>>>>> origin/uiIssue
 
         return view;
     }
 
     private class ViewHolder {
         private ImageView imageView;
-        private Button button;
+        private ImageButton imageButton;
     }
 
 }

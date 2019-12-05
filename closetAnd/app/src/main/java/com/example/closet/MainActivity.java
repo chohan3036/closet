@@ -17,12 +17,17 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.closet.History.History;
 import com.example.closet.Home.Home;
 import com.example.closet.Match.Match;
 import com.example.closet.Recommend.Recommend;
+<<<<<<< HEAD
 import com.example.closet.Test.GridAdapter;
+=======
+import com.example.closet.User.User;
+>>>>>>> origin/uiIssue
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -51,9 +56,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void init() {
-        int[] tabIcons = new int[]{R.drawable.home, R.drawable.match, R.drawable.history, R.drawable.recommand};
-        for (int i = 0; i < tabIcons.length; i++) {
+        int[] tabIcons = new int[]{R.drawable.icon_home, R.drawable.icon_match, R.drawable.icon_history, R.drawable.icon_recommend, R.drawable.icon_mypage};
 
+        for (int i = 0; i < tabIcons.length; i++) {
 
             ImageView imageView = new ImageView(this);
             imageView.setBackgroundColor(Color.TRANSPARENT);
@@ -82,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             fragmentList.add(new Match());
             fragmentList.add(new History());
             fragmentList.add(new Recommend());
+            fragmentList.add(new User());
         }
 
         @NonNull

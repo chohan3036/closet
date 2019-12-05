@@ -4,23 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LogIn"
+    android:weightSum="7"
+    tools:context=".User.LogIn"
     android:orientation="vertical">
 
     <LinearLayout
+        android:layout_marginTop="200dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"></View>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:gravity="bottom">
 
         <ImageView
             android:id="@+id/imageView2"
@@ -43,7 +36,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:layout_marginTop="30dp"
+        android:gravity="top">
 
         <ImageView
             android:id="@+id/imageView1"
@@ -62,6 +57,13 @@
             android:hint="Password"></EditText>
 
     </LinearLayout>
+    <CheckBox
+        android:id="@+id/automatic_login_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:text="자동 로그인"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -76,6 +78,7 @@
             android:layout_marginBottom="20dp"
             android:layout_weight="1"
             android:background="#eee6c4"
+            android:fontFamily="@font/montaga"
             android:text="Login" />
 
         <Button
@@ -87,15 +90,10 @@
             android:layout_marginBottom="20dp"
             android:layout_weight="1"
             android:background="#eee6c4"
-            android:text="sign up" />
+            android:fontFamily="@font/montaga"
+            android:text="Sign up" />
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"        >
-
-    </LinearLayout>
 
 </LinearLayout>
