@@ -57,8 +57,6 @@ class Recommend_GridAdapter extends BaseAdapter {
         return i;
     }
 
-
-
     public View getView(final int i, View view, ViewGroup viewGroup) {
 
         if (view == null) {
@@ -71,14 +69,15 @@ class Recommend_GridAdapter extends BaseAdapter {
         } else
             viewHolder = (ViewHolder) view.getTag();
 
-
+        /*
         for (int j = 0 ; j<photoUrls.size();j++){
             Log.d("Log_dPhotoUrls",i+"\n"+photoUrls);
         }
 
         for (int j = 0 ; j<photoBitmap.size();j++){
             Log.d("Log_dPhotoBitmap",i+"\n"+photoBitmap);
-        }
+        }*/
+
         viewHolder.imageView.setImageBitmap(photoBitmap.get(i));
         viewHolder.imageButton.setOnClickListener(new ImageButton.OnClickListener(){
             @Override
