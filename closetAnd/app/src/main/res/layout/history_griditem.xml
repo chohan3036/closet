@@ -19,6 +19,7 @@
             android:id="@+id/history_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/montaga"
             android:gravity="center"/>
     </RelativeLayout>
 

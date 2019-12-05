@@ -29,26 +29,6 @@
         android:scaleType="fitXY"
         android:src="@drawable/mainbackground" />
 
-    <ImageButton
-        android:id="@+id/BtnActivityOne"
-        android:layout_width="42dp"
-        android:layout_height="100dp"
-        android:layout_marginLeft="340dp"
-        android:layout_marginTop="280dp"
-        android:background="#4FFFC107"
-        android:scaleType="fitXY"
-        android:src="@drawable/finger" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="330dp"
-        android:layout_marginTop="260dp"
-        android:fontFamily="sans-serif-black"
-        android:foregroundTint="#2196F3"
-        android:text="Click!" />
-
     <TextView
         android:id="@+id/weather_text"
         android:layout_width="wrap_content"
@@ -57,7 +37,33 @@
         android:layout_marginLeft="150dp"
         android:background="@android:color/black"
         android:text="오늘의 날씨는 ..."
+        android:fontFamily="@font/nanum"
+        android:layout_gravity="top|center_vertical"
+        android:textSize="20sp"
         android:textColor="@android:color/white" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:foregroundTint="#2196F3"
+        android:textSize="25sp"
+        android:layout_gravity="right|center_vertical"
+        android:layout_marginRight="10dp"
+        android:text="Click!" />
+
+    <ImageButton
+        android:id="@+id/BtnActivityOne"
+        android:layout_width="50dp"
+        android:layout_height="100dp"
+        android:scaleType="fitXY"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="right|center_vertical"
+        android:src="@drawable/finger"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="10dp"
+        android:background="#00000000"/>
 
     <Button
         android:id="@+id/testCV"
