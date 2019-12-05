@@ -23,11 +23,9 @@ import com.example.closet.History.History;
 import com.example.closet.Home.Home;
 import com.example.closet.Match.Match;
 import com.example.closet.Recommend.Recommend;
-<<<<<<< HEAD
-import com.example.closet.Test.GridAdapter;
-=======
+
 import com.example.closet.User.User;
->>>>>>> origin/uiIssue
+
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
