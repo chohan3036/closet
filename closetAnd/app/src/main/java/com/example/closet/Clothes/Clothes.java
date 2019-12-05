@@ -54,6 +54,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 public class Clothes extends AppCompatActivity {
@@ -68,6 +69,7 @@ public class Clothes extends AppCompatActivity {
     //****image to server
     private static final int PICK_FROM_CAMERA = 0;
     private static final int PICK_FROM_ALBUM = 1;
+    public static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
 
     String selectedImagesPaths;
     boolean imagesSelected = false;
@@ -75,7 +77,7 @@ public class Clothes extends AppCompatActivity {
     Bitmap bitmap;
     //****image to server
 
-    String uid = "1"; // 들어오는  유저 index저장 하기.
+    String uid = "3"; // 들어오는  유저 index저장 하기.
     private String net_url = "http://52.78.194.160:3000/closet/show/personalCloset?uid=" + uid;
 
     ArrayList<Integer> checked_items;
@@ -92,9 +94,10 @@ public class Clothes extends AppCompatActivity {
         setSpinner();
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(getApplicationContext(), "이 앱을 실행하려면 외부 저장소 접근 권한이 필요합니다.", Toast.LENGTH_SHORT).show();
-            ActivityCompat.requestPermissions(Clothes.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED ) {
+            ActivityCompat.requestPermissions(Clothes.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 1);
         }
     }
 
@@ -103,9 +106,25 @@ public class Clothes extends AppCompatActivity {
         switch (requestCode) {
             case 1: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getApplicationContext(), "Access to Storage Permission Granted. Thanks.", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "Access to Storage Permission Granted. Thanks.", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Access to Storage Permission Denied.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Access to Storage read Permission Denied.", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+            case 2: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //Toast.makeText(getApplicationContext(), "Access to Camera Permission Granted. Thanks.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Access to Camera Permission Denied.", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+            case 3: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //Toast.makeText(getApplicationContext(), "Access to Camera Permission Granted. Thanks.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Access to Storage write Permission Denied.", Toast.LENGTH_SHORT).show();
                 }
                 return;
             }
@@ -290,10 +309,21 @@ public class Clothes extends AppCompatActivity {
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Camera", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                intent.setType("image/*");
-                startActivityForResult(intent, PICK_FROM_CAMERA);
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    File photoFile = null;
+                    try {
+                        photoFile = createImageFile();
+                    } catch (IOException ex) {
+                        Toast.makeText(getApplicationContext(), "No picture", Toast.LENGTH_SHORT).show();
+                    }
+                    if (photoFile != null) {
+                        Uri photoURI = FileProvider.getUriForFile(getApplicationContext(),
+                                "com.example.closet.fileprovider", photoFile);
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                        startActivityForResult(takePictureIntent, PICK_FROM_CAMERA);
+                    }
+                }
             }
         });
 
@@ -334,17 +364,29 @@ public class Clothes extends AppCompatActivity {
             }
         });
     }
+    //String currentPhotoPath;
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        selectedImagesPaths = image.getAbsolutePath();
+        return image;
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode == PICK_FROM_CAMERA) {
-
-
-        } else if (requestCode == PICK_FROM_ALBUM) {
-
-            String currentImagePath;
-            //selectedImagesPaths = new ArrayList<>();
+        if (requestCode == PICK_FROM_CAMERA ) {
+            //File imgFile = new File(selectedImagesPaths);
+            imagesSelected = true;
+        }
+        else if (requestCode == PICK_FROM_ALBUM) {
             if (data == null) {
                 Log.d("Log_d data", "data is null");
             } else {
@@ -355,8 +397,8 @@ public class Clothes extends AppCompatActivity {
                 imagesSelected = true;
             }
         }
-        AddClothes sendImage = new AddClothes(imagesSelected, selectedImagesPaths);
 
+        AddClothes sendImage = new AddClothes(imagesSelected, selectedImagesPaths);
         sendImage.connectServer();
         super.onActivityResult(requestCode, resultCode, data);
     }

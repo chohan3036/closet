@@ -52,7 +52,7 @@ public class AddClothes extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
                 != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(getApplicationContext(), "이 앱을 실행하려면 인터넷과 외부 저장소 접근 권한이 필요합니다.", Toast.LENGTH_SHORT).show();
             ActivityCompat.requestPermissions(AddClothes.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);

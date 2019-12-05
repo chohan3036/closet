@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:src="@drawable/closet" />
+        android:src="@drawable/mainbackground" />
 
     <ImageButton
         android:id="@+id/BtnActivityOne"
@@ -37,7 +37,7 @@
         android:layout_marginTop="280dp"
         android:background="#4FFFC107"
         android:scaleType="fitXY"
-        android:src="@drawable/handle" />
+        android:src="@drawable/finger" />
 
     <TextView
         android:id="@+id/textView"
