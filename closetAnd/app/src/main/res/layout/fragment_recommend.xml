@@ -20,7 +20,7 @@
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="추천 기준을 선택해 주세요(임시)" />
+            android:text="추천 기준을 선택해 주세요" />
 
         <Spinner
             android:id="@+id/recommend_spinner"
