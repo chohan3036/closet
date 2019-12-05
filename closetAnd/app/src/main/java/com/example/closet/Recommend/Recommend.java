@@ -1,8 +1,10 @@
 package com.example.closet.Recommend;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -15,6 +17,8 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.example.closet.Recommend.Recommend_GridAdapter;
 import com.example.closet.Networking_Get;
 import com.example.closet.R;
 
@@ -39,28 +43,33 @@ public class Recommend extends Fragment {
     String uid = "2"; //수정하기
 
     ArrayList<URL> photoUrls = new ArrayList<>();
+    private Context context;
+    private Recommend_GridAdapter adapter;
 
-    GridView gridView;
     public Recommend() {
         // Required empty public constructor
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_recommend, container, false);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_recommend, container, false);
-
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         setting();
-        return view;
+        loadGridView(view);
     }
 
     private void setting(){
-        gridView = (GridView)view.findViewById(R.id.recommend_grid);
 
         Spinner recom_spinner = (Spinner) view.findViewById(R.id.recommend_spinner);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.recommend));
@@ -107,6 +116,7 @@ public class Recommend extends Fragment {
             }
         });
     }
+
     public void showRecommendList(JSONArray jsonArray) {
 
         for(int i=0 ; i<jsonArray.length() ; i++){
@@ -120,9 +130,13 @@ public class Recommend extends Fragment {
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
-
         }
+    }
 
+    private void loadGridView(View view) {
+        GridView gridView = (GridView) view.findViewById(R.id.recommend_grid);
+        adapter = new Recommend_GridAdapter(context, photoUrls);
+        gridView.setAdapter(adapter);
     }
 /*
     private void  setSpinner_sex_age() {

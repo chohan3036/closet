@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void init() {
-        int[] tabIcons = new int[]{R.drawable.home, R.drawable.match, R.drawable.history, R.drawable.recommand,R.drawable.user};
+        int[] tabIcons = new int[]{R.drawable.icon_home, R.drawable.icon_match, R.drawable.icon_history, R.drawable.icon_recommend,R.drawable.icon_mypage};
         for (int i = 0; i < tabIcons.length; i++) {
 
 

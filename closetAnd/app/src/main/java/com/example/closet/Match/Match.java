@@ -168,7 +168,6 @@ public class Match extends Fragment implements View.OnClickListener {
             //    //intent.putExtra("selected_items", selected_from_clothes);
             //    startActivity(intent); // match_grid로 이동
             //    break;
-
             case R.id.save:
                 final View popupView = getLayoutInflater().inflate(R.layout.match_pop_up, null);
                 mPopupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -289,4 +288,23 @@ public class Match extends Fragment implements View.OnClickListener {
         AddClothes sendImage = new AddClothes(avatarSelected, avatarPhotoPath);
         sendImage.connectServer();
     }
+    // 이미지 Resize 함수
+   /* private int setSimpleSize(BitmapFactory.Options options, int requestWidth, int requestHeight){
+        // 이미지 사이즈를 체크할 원본 이미지 가로/세로 사이즈를 임시 변수에 대입.
+        int originalWidth = options.outWidth;
+        int originalHeight = options.outHeight;
+
+        // 원본 이미지 비율인 1로 초기화
+        int size = 1;
+
+        // 해상도가 깨지지 않을만한 요구되는 사이즈까지 2의 배수의 값으로 원본 이미지를 나눈다.
+        while(requestWidth < originalWidth || requestHeight < originalHeight){
+            originalWidth = originalWidth / 2;
+            originalHeight = originalHeight / 2;
+
+            size = size * 2;
+        }
+        return size;
+    }*/
 }
+
