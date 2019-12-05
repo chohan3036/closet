@@ -14,12 +14,17 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.view.View.OnClickListener;
+import android.widget.TextView;
 
 import com.example.closet.Clothes.UrlToBitmap;
+import com.example.closet.Networking;
+import com.example.closet.Networking_Get;
 import com.example.closet.R;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 class Recommend_GridAdapter extends BaseAdapter {
@@ -31,11 +36,14 @@ class Recommend_GridAdapter extends BaseAdapter {
     private UrlToBitmap urlToBitmap;
     private ViewHolder viewHolder = new ViewHolder();
     boolean showing = false;
+    ArrayList<String> hidList = new ArrayList<>();
 
-    public Recommend_GridAdapter(Context context, ArrayList<URL> photoUrls) {
+    public Recommend_GridAdapter(Context context, ArrayList<URL> photoUrls,ArrayList<String> hidList) {
         this.context = context;
         inflater = LayoutInflater.from(context);
         this.photoUrls = photoUrls;
+        this.hidList = hidList;
+
         urlToBitmap = new UrlToBitmap(photoUrls);
         urlToBitmap.execute();
         try {
@@ -62,25 +70,42 @@ class Recommend_GridAdapter extends BaseAdapter {
     public View getView(final int i, View view, ViewGroup viewGroup) {
 
         if (view == null) {
-
             view = inflater.inflate(R.layout.recommend_griditem, viewGroup, false);
             viewHolder.imageView = (ImageView) view.findViewById(R.id.recommend_iv);
             viewHolder.imageButton = (ImageButton) view.findViewById(R.id.likeit);
+            viewHolder.textView= (TextView)view.findViewById(R.id.rec_item_text);
 
             view.setTag(viewHolder);
         } else
             viewHolder = (ViewHolder) view.getTag();
 
-
         viewHolder.imageView.setImageBitmap(photoBitmap.get(i));
+        viewHolder.textView.setText("코디 정보? ");
         viewHolder.imageButton.setOnClickListener(new ImageButton.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                viewHolder.imageButton.setSelected(!viewHolder.imageButton.isSelected());
+            public void onClick(View view) { //네트워킹
+                try {
+                    HashMap<String,String> arugments = new HashMap<String,String>();
+                    arugments.put("uid","3"); //??
+                    arugments.put("hid","11"); //아으아아아각ㄱ
+                    Networking networking = new Networking(new URL("http://52.78.194.160:3000/closet/like/makeLike"),arugments);
+                    networking.execute();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                //viewHolder.imageButton.setSelected(!viewHolder.imageButton.isSelected());
+                viewHolder.imageButton.setImageResource(R.drawable.full_like);
             }
         });
 
         return view;
+    }
+
+    public void likeList(){
+        //네트워킹해서 해당 uid가 좋아요 한 목록 뽑고 ,, 비교해서 하트 이미지 설정
+
+
+
     }
 
     /*        for (int j = 0 ; j<photoUrls.size();j++){
@@ -92,6 +117,7 @@ class Recommend_GridAdapter extends BaseAdapter {
     private class ViewHolder {
         private ImageView imageView;
         private ImageButton imageButton;
+        private TextView textView;
     }
 
 }

@@ -7,13 +7,15 @@
     tools:context=".Home.Home"
     android:orientation="vertical">
 
+
     <Button
-        android:layout_gravity="center"
         android:id="@+id/mapButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="위치 가져오기 " />
-
+        android:layout_gravity="top"
+        android:layout_marginLeft="50dp"
+        android:background="@android:color/transparent"
+        android:text="오늘 뭐 입지?" />
 
     <ImageView
         android:id="@+id/imageView"

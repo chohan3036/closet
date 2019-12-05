@@ -126,9 +126,6 @@ public class Match extends Fragment implements View.OnClickListener {
     public void setGrid() {
 
         Match_Adapter adapter;
-        Log.d("Log_dMAtchAdapter", String.valueOf(selected_from_clothes));
-        Log.d("Log_dMAtchAdapter", String.valueOf(selected_from_clothes2));
-
 
         selected_from_clothes2 = selected_items.selected_from_clothes;
 
