@@ -79,44 +79,10 @@ class Recommend_GridAdapter extends BaseAdapter {
 
         viewHolder.imageView.setImageBitmap(photoBitmap.get(i));
 
-        /* viewHolder.button.setOnClickListener(new Button.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                viewHolder.button.setActivated(true);
-            }
-        });
-         */
 
         return view;
     }
-    /*
-    public class likeImage extends Activity{
-        private ImageView one = null;
-        private ImageView two = null;
 
-        protected void onCreate(Bundle savedInstanceState){
-            super.onCreate(savedInstanceState);
-
-            one = (ImageView)findViewById(R.id.like_image);
-            two = (ImageView)findViewById(R.id.empty_like);
-
-            one.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    two.setVisibility(View.VISIBLE);
-                    v.setVisibility(View.GONE);
-                }
-            });
-            two.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    one.setVisibility(View.VISIBLE);
-                    v.setVisibility(View.GONE);
-                }
-            });
-        }
-    }
- */
     private class ViewHolder {
         private ImageView imageView;
         private Button button;
