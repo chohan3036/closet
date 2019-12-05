@@ -155,7 +155,7 @@ public class Recommend extends Fragment {
     }
     private void loadGridView() {
         GridView gridView = (GridView) view.findViewById(R.id.recommend_grid);
-        adapter = new Recommend_GridAdapter(getContext(), photoUrls);
+        adapter = new Recommend_GridAdapter(getContext(), photoUrls,hidList);
         gridView.setAdapter(adapter);
     }
 }

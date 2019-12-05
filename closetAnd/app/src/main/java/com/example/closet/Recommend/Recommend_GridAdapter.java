@@ -21,6 +21,8 @@ import com.example.closet.Networking;
 import com.example.closet.Networking_Get;
 import com.example.closet.R;
 
+import org.json.JSONObject;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -37,6 +39,8 @@ class Recommend_GridAdapter extends BaseAdapter {
     private ViewHolder viewHolder = new ViewHolder();
     boolean showing = false;
     ArrayList<String> hidList = new ArrayList<>();
+    String uid = "1" ; // 받아오기
+
 
     public Recommend_GridAdapter(Context context, ArrayList<URL> photoUrls,ArrayList<String> hidList) {
         this.context = context;
@@ -85,7 +89,7 @@ class Recommend_GridAdapter extends BaseAdapter {
             public void onClick(View view) { //네트워킹
                 try {
                     HashMap<String,String> arugments = new HashMap<String,String>();
-                    arugments.put("uid","3"); //??
+                    arugments.put("uid",uid);
                     arugments.put("hid","11"); //아으아아아각ㄱ
                     Networking networking = new Networking(new URL("http://52.78.194.160:3000/closet/like/makeLike"),arugments);
                     networking.execute();
@@ -103,7 +107,30 @@ class Recommend_GridAdapter extends BaseAdapter {
 
     public void likeList(){
         //네트워킹해서 해당 uid가 좋아요 한 목록 뽑고 ,, 비교해서 하트 이미지 설정
+        try {
+            URL url = new URL ("http://52.78.194.160:3000like/myLikeList/"+uid);
+            Networking_Get networking_get = new Networking_Get(url);
+            networking_get.execute();
+            JSONObject jsonObject = networking_get.get();
+            Log.d("Log_dLikeLIst",jsonObject.toString());
 
+            /*
+            * {
+    "message": "like list 반환 성공",
+    "result": [
+        17,
+        18,
+        19
+    ]
+}
+            * */
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
 
     }
