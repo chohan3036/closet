@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:layout_marginLeft="150dp"
-        android:background="@android:color/black"
+        android:background="@drawable/speechbubble"
         android:text="오늘의 날씨는 ..."
         android:fontFamily="@font/nanum"
         android:layout_gravity="top|center_vertical"

@@ -20,6 +20,7 @@
         <TextView
             android:id="@+id/cloth_color"
             android:text="추출된 color 표시 \n textView로 하면안될것같은데 사용자가 바꿀 수 있게 하려면"
+            android:fontFamily="@font/nanum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"/>
@@ -27,12 +28,14 @@
         <TextView
             android:id="@+id/cloth_category"
             android:text="추출된 category 표시"
+            android:fontFamily="@font/nanum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"/>
 
         <EditText
             android:hint="옷에 대한 설명을 작성해주세요"
+            android:fontFamily="@font/nanum"
             android:id="@+id/cloth_description"
             android:layout_width="300dp"
             android:layout_height="100dp"
@@ -53,6 +56,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="Cancel"
+            android:fontFamily="@font/montaga"
             android:id="@+id/Cancel"
             android:background="#90ee90"/>
         <View
@@ -63,6 +67,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:fontFamily="@font/montaga"
             android:text="Ok"
             android:id="@+id/Ok"
             android:background="#90ee90"/>

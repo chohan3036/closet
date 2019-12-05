@@ -30,6 +30,7 @@ class Recommend_GridAdapter extends BaseAdapter {
     private ArrayList<Bitmap> photoBitmap = new ArrayList<>();
     private UrlToBitmap urlToBitmap;
     private ViewHolder viewHolder = new ViewHolder();
+    boolean showing = false;
 
     public Recommend_GridAdapter(Context context, ArrayList<URL> photoUrls) {
         this.context = context;
@@ -57,8 +58,6 @@ class Recommend_GridAdapter extends BaseAdapter {
         return i;
     }
 
-
-
     public View getView(final int i, View view, ViewGroup viewGroup) {
 
         if (view == null) {
@@ -79,12 +78,12 @@ class Recommend_GridAdapter extends BaseAdapter {
         for (int j = 0 ; j<photoBitmap.size();j++){
             Log.d("Log_dPhotoBitmap",i+"\n"+photoBitmap);
         }
+
         viewHolder.imageView.setImageBitmap(photoBitmap.get(i));
         viewHolder.imageButton.setOnClickListener(new ImageButton.OnClickListener(){
             @Override
             public void onClick(View view) {
-                viewHolder.imageButton.setBackgroundResource(R.drawable.like);
-                // 좋아요 수 상승 코드
+                viewHolder.imageButton.setSelected(!viewHolder.imageButton.isSelected());
             }
         });
 

@@ -78,6 +78,7 @@
             android:layout_marginBottom="20dp"
             android:layout_weight="1"
             android:background="#eee6c4"
+            android:fontFamily="@font/montaga"
             android:text="Login" />
 
         <Button
@@ -89,7 +90,8 @@
             android:layout_marginBottom="20dp"
             android:layout_weight="1"
             android:background="#eee6c4"
-            android:text="sign up" />
+            android:fontFamily="@font/montaga"
+            android:text="Sign up" />
 
     </LinearLayout>
 

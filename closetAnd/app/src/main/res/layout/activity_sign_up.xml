@@ -10,11 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:fontFamily="@font/nanum"
         android:hint="id를 입력해주세요"/>
     <EditText
         android:hint="nickName을 입력해주세요"
         android:id="@+id/nickname_signUp"
         android:layout_width="match_parent"
+        android:fontFamily="@font/nanum"
         android:layout_height="0dp"
         android:layout_weight="1"/>
    <EditText

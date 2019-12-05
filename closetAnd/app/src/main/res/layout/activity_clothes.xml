@@ -16,7 +16,6 @@
             android:layout_height="50dp"
             android:layout_marginLeft="20dp"
             android:background="#FFFFFF"
-
             android:entries="@array/clothes_array" />
 
         <Spinner
@@ -63,6 +62,7 @@
             android:layout_marginTop="15dp"
             android:background="#eee6c4"
             android:text="ADD"
+            android:fontFamily="@font/montaga"
             android:onClick="onClick"/>
 
         <Button
@@ -74,6 +74,7 @@
             android:layout_marginLeft="15dp"
             android:background="#eee6c4"
             android:text="INFO"
+            android:fontFamily="@font/montaga"
             android:onClick="onClick"/>
 
         <Button
@@ -84,6 +85,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginTop="15dp"
             android:background="#eee6c4"
+            android:fontFamily="@font/montaga"
             android:text="MYPICK"
             android:onClick="onClick"/>
 
