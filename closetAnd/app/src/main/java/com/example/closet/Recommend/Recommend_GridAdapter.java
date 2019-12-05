@@ -26,20 +26,17 @@ class Recommend_GridAdapter extends BaseAdapter {
 
     Context context;
     private LayoutInflater inflater;
-    private int layout;
 
     ArrayList<URL> photoUrls;
     ArrayList<Bitmap> photoBitmap = new ArrayList<>();
     UrlToBitmap urlToBitmap;
-    ArrayList<String> arrayTextList;
 
-    public Recommend_GridAdapter(Context context, ArrayList<URL> photoUrls, ArrayList<String> arrayTextList) {
+    public Recommend_GridAdapter(Context context, ArrayList<URL> photoUrls) {
 
         this.context = context;
         inflater = LayoutInflater.from(context);
 
         this.photoUrls = photoUrls;
-        this.arrayTextList = arrayTextList;
 
         urlToBitmap = new UrlToBitmap(photoUrls);
         urlToBitmap.execute();
@@ -72,7 +69,7 @@ class Recommend_GridAdapter extends BaseAdapter {
 
             view = inflater.inflate(R.layout.recommend_griditem, viewGroup, false);
             viewHolder.imageView = (ImageView) view.findViewById(R.id.recommend_iv);
-            viewHolder.imageButton = (ImageButton) view.findViewById(R.id.like);
+            viewHolder.imageButton = (ImageButton) view.findViewById(R.id.likeit);
 
             view.setTag(viewHolder);
         } else

@@ -7,10 +7,8 @@
             android:id="@+id/recommend_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
-            android:src="@drawable/example_01"
-            android:layout_alignParentTop="true"
-            android:visibility="visible" />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true" />
 
     <RelativeLayout
         android:layout_width="120dp"
@@ -18,7 +16,7 @@
         android:layout_alignParentBottom="true" >
 
         <ImageButton
-            android:id="@+id/like"
+            android:id="@+id/likeit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
