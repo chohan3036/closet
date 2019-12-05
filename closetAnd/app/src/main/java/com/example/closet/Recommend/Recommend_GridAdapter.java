@@ -30,6 +30,7 @@ class Recommend_GridAdapter extends BaseAdapter {
     private ArrayList<Bitmap> photoBitmap = new ArrayList<>();
     private UrlToBitmap urlToBitmap;
     private ViewHolder viewHolder = new ViewHolder();
+    boolean showing = false;
 
     public Recommend_GridAdapter(Context context, ArrayList<URL> photoUrls) {
         this.context = context;
@@ -45,6 +46,7 @@ class Recommend_GridAdapter extends BaseAdapter {
             e.printStackTrace();
         }
     }
+
     public int getCount() {
         return photoUrls.size();
     }
@@ -69,54 +71,24 @@ class Recommend_GridAdapter extends BaseAdapter {
         } else
             viewHolder = (ViewHolder) view.getTag();
 
-        /*
-        for (int j = 0 ; j<photoUrls.size();j++){
-            Log.d("Log_dPhotoUrls",i+"\n"+photoUrls);
-        }
-
-        for (int j = 0 ; j<photoBitmap.size();j++){
-            Log.d("Log_dPhotoBitmap",i+"\n"+photoBitmap);
-        }*/
 
         viewHolder.imageView.setImageBitmap(photoBitmap.get(i));
-        viewHolder.imageButton.setOnClickListener(new ImageButton.OnClickListener(){
+        viewHolder.imageButton.setOnClickListener(new ImageButton.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewHolder.imageButton.setBackgroundResource(R.drawable.like);
-                // 좋아요 수 상승 코드
+                viewHolder.imageButton.setSelected(!viewHolder.imageButton.isSelected());
             }
         });
 
         return view;
     }
-    /*
-    public class likeImage extends Activity{
-        private ImageView one = null;
-        private ImageView two = null;
 
-        protected void onCreate(Bundle savedInstanceState){
-            super.onCreate(savedInstanceState);
+    /*        for (int j = 0 ; j<photoUrls.size();j++){
+               Log.d("Log_dPhotoUrls",i+"\n"+photoUrls);
+           }
 
-            one = (ImageView)findViewById(R.id.like_image);
-            two = (ImageView)findViewById(R.id.empty_like);
-
-            one.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    two.setVisibility(View.VISIBLE);
-                    v.setVisibility(View.GONE);
-                }
-            });
-            two.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    one.setVisibility(View.VISIBLE);
-                    v.setVisibility(View.GONE);
-                }
-            });
-        }
-    }
- */
+           for (int j = 0 ; j<photoBitmap.size();j++){
+               Log.d("Log_dPhotoBitmap",i+"\n"+photoBitmap);         */
     private class ViewHolder {
         private ImageView imageView;
         private ImageButton imageButton;
