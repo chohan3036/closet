@@ -41,7 +41,6 @@ public class Home extends Fragment implements View.OnClickListener {
     Button map;
     TextView weather_info_textView;
 
-    Button testCv;
     String weather_info;
 
 
@@ -68,8 +67,6 @@ public class Home extends Fragment implements View.OnClickListener {
         BtnMove = (ImageButton) view.findViewById(R.id.BtnActivityOne);
         BtnMove.setOnClickListener(this);
         weather_info_textView = (TextView)view.findViewById(R.id.weather_text);
-        testCv = (Button)view.findViewById(R.id.testCV);
-        testCv.setOnClickListener(this);
 
     }
     @Override
@@ -108,9 +105,6 @@ public class Home extends Fragment implements View.OnClickListener {
         } if (view == BtnMove) {
             Intent intent = new Intent(getActivity(), Clothes.class);
             startActivityForResult(intent, 30);
-        }else if (view == testCv){
-            Intent intent = new Intent(getActivity(), openCV_test.class);
-            startActivity(intent);
         }
     }
 

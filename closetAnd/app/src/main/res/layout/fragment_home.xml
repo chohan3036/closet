@@ -58,10 +58,5 @@
         android:layout_marginRight="10dp"
         android:background="#00000000"/>
 
-    <Button
-        android:id="@+id/testCV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="수빈 test"
-        android:layout_gravity="bottom"/>
+
 </FrameLayout>

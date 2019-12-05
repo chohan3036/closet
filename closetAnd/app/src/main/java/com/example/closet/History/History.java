@@ -90,6 +90,7 @@ public class History extends Fragment {
             arrayTextList.add("History Items " + i);
         adapter = new History_GridAdapter(context, photoUrls, arrayTextList);
         gridView.setAdapter(adapter);
+        photoUrls.clear();//여기?
     }
 
 }
