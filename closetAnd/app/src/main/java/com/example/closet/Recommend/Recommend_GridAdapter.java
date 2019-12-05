@@ -26,18 +26,15 @@ class Recommend_GridAdapter extends BaseAdapter {
 
     Context context;
     private LayoutInflater inflater;
-
     ArrayList<URL> photoUrls;
-    ArrayList<Bitmap> photoBitmap = new ArrayList<>();
-    UrlToBitmap urlToBitmap;
+    private ArrayList<Bitmap> photoBitmap = new ArrayList<>();
+    private UrlToBitmap urlToBitmap;
+    private ViewHolder viewHolder = new ViewHolder();
 
     public Recommend_GridAdapter(Context context, ArrayList<URL> photoUrls) {
-
         this.context = context;
         inflater = LayoutInflater.from(context);
-
         this.photoUrls = photoUrls;
-
         urlToBitmap = new UrlToBitmap(photoUrls);
         urlToBitmap.execute();
         try {
@@ -48,7 +45,6 @@ class Recommend_GridAdapter extends BaseAdapter {
             e.printStackTrace();
         }
     }
-
     public int getCount() {
         return photoUrls.size();
     }
@@ -61,7 +57,7 @@ class Recommend_GridAdapter extends BaseAdapter {
         return i;
     }
 
-    ViewHolder viewHolder = new ViewHolder();
+
 
     public View getView(final int i, View view, ViewGroup viewGroup) {
 
@@ -75,6 +71,14 @@ class Recommend_GridAdapter extends BaseAdapter {
         } else
             viewHolder = (ViewHolder) view.getTag();
 
+
+        for (int j = 0 ; j<photoUrls.size();j++){
+            Log.d("Log_dPhotoUrls",i+"\n"+photoUrls);
+        }
+
+        for (int j = 0 ; j<photoBitmap.size();j++){
+            Log.d("Log_dPhotoBitmap",i+"\n"+photoBitmap);
+        }
         viewHolder.imageView.setImageBitmap(photoBitmap.get(i));
         viewHolder.imageButton.setOnClickListener(new ImageButton.OnClickListener(){
             @Override
