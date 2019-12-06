@@ -89,7 +89,7 @@ public class Clothes extends AppCompatActivity {
         setContentView(R.layout.activity_clothes);
         context = this; //context오는지 확인해야 할 듯
         getClothings(net_url);
-        //getUid();
+        getUid();
         loadGridView();
         setSpinner();
 
@@ -133,6 +133,7 @@ public class Clothes extends AppCompatActivity {
 
     private void getUid() {
         uid = SaveSharedPreference.getString(this, "uid"); //이걸 메인에서 받아서 intent로 넘겨줘야하나?
+        Log.d("Log_dGetUid",uid);
     }
 
     private void setSpinner() {

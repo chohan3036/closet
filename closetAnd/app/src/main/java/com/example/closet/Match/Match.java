@@ -97,6 +97,7 @@ public class Match extends Fragment implements View.OnClickListener {
     GridView gridView;
     ArrayList<URL> selected_from_clothes2 = new ArrayList<>();
     ArrayList<Integer> match_checked_items;
+    Context context;
 
     public Match() {
         // Required empty public constructor
@@ -125,14 +126,12 @@ public class Match extends Fragment implements View.OnClickListener {
     public void setGrid() {
 
         Match_Adapter adapter;
-        Log.d("Log_dMAtchAdapter", String.valueOf(selected_from_clothes));
-        Log.d("Log_dMAtchAdapter", String.valueOf(selected_from_clothes2));
-
 
         selected_from_clothes2 = selected_items.selected_from_clothes;
 
         if (selected_from_clothes2 == null) {
-            Toast.makeText(getContext(), "선택된 옷이 없습니다", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "선택된 옷이 없습니다", Toast.LENGTH_LONG).show();
+            //getContext못가져오면 이것도 못가져올것같기도?
         } else {
             adapter = new Match_Adapter(getActivity(), R.layout.match_griditem, selected_from_clothes2);
             gridView.setAdapter(adapter);
@@ -149,6 +148,7 @@ public class Match extends Fragment implements View.OnClickListener {
     }
 
     private void setting() {
+        context =getContext();
         btn_camera = (ImageButton) view.findViewById(R.id.match_camera);
         btn_camera.setOnClickListener(this);
         iv = (ImageView) view.findViewById(R.id.match_avatar);

@@ -64,8 +64,8 @@
             android:layout_marginTop="15dp"
             android:background="#eee6c4"
             android:text="ADD"
-            android:fontFamily="@font/montaga"
-            android:onClick="onClick"/>
+            android:fontFamily="@font/nanum"
+        android:onClick="onClick"/>
 
         <Button
             android:id="@+id/info"
@@ -76,7 +76,7 @@
             android:layout_marginLeft="15dp"
             android:background="#eee6c4"
             android:text="INFO"
-            android:fontFamily="@font/montaga"
+            android:fontFamily="@font/nanum"
             android:onClick="onClick"/>
 
         <Button
@@ -87,7 +87,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginTop="15dp"
             android:background="#eee6c4"
-            android:fontFamily="@font/montaga"
+            android:fontFamily="@font/nanum"
             android:text="MYPICK"
             android:onClick="onClick"/>
 

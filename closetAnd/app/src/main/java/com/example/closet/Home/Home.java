@@ -1,5 +1,7 @@
 package com.example.closet.Home;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -38,10 +41,11 @@ public class Home extends Fragment implements View.OnClickListener {
 
     View view;
     ImageButton BtnMove;
-    Button map;
+    ImageView map;
     TextView weather_info_textView;
 
-    Button testCv;
+    String weather_info;
+
 
     public Home() {
         // Required empty public constructor
@@ -56,37 +60,39 @@ public class Home extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home, container, false);
-        map = (Button) view.findViewById(R.id.mapButton);
+        setting();
+        return view;
+    }
+
+    private void setting(){
+        map = (ImageView) view.findViewById(R.id.mapButton);
         map.setOnClickListener(this);
         BtnMove = (ImageButton) view.findViewById(R.id.BtnActivityOne);
         BtnMove.setOnClickListener(this);
         weather_info_textView = (TextView)view.findViewById(R.id.weather_text);
-        testCv = (Button)view.findViewById(R.id.testCV);
-        testCv.setOnClickListener(this);
 
-        //setWeather_info(weather_info);
-        return view;
     }
-
     @Override
     public void onStart() {
         super.onStart();
         //getWeatherOnBackground();
     }
 
+
     private void getWeatherOnBackground() {
-        String weather_info = null;
+        weather_info = null;
         GetLocation getLocation = new GetLocation(getActivity());
         getLocation.execute(); //여기안에서 networking을 또 해서 asyncTask가 또있음 null
         try {
+
             weather_info = getLocation.get();
-            //setWeather_info(weather_info);
+            if(weather_info!= null)
+                setWeather_info(weather_info);
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
     }
     @Override
     public void onClick(View view) {
@@ -102,9 +108,6 @@ public class Home extends Fragment implements View.OnClickListener {
         } if (view == BtnMove) {
             Intent intent = new Intent(getActivity(), Clothes.class);
             startActivityForResult(intent, 30);
-        }else if (view == testCv){
-            Intent intent = new Intent(getActivity(), openCV_test.class);
-            startActivity(intent);
         }
     }
 
@@ -114,7 +117,6 @@ public class Home extends Fragment implements View.OnClickListener {
 
        if (requestCode == GET_WEATHER_IS_OK) {
             String weather_info = data.getStringExtra("result");
-            Log.d("Log_dHomeWeather",weather_info);
             setWeather_info(weather_info);
 
         }
