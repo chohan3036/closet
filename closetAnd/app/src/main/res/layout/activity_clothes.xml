@@ -16,12 +16,14 @@
             android:layout_height="50dp"
             android:layout_marginLeft="20dp"
             android:background="#FFFFFF"
+            android:theme="@style/SpinnerTheme"
             android:entries="@array/clothes_array" />
 
         <Spinner
             android:id="@+id/spinner4"
             android:layout_width="170dp"
             android:layout_height="50dp"
+            android:theme="@style/SpinnerTheme"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:background="#FFFFFF"
