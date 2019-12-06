@@ -24,14 +24,17 @@
         android:fontFamily="@font/nanum"
         android:layout_height="0dp"
         android:layout_weight="1"/>
-    <EditText
-        android:id="@+id/pwd_signUp"
-        android:fontFamily="@font/nanum"
-        android:textColorHint="#000000"
-        android:hint="pwd*"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+
+   <EditText
+       android:id="@+id/pwd_signUp"
+       android:fontFamily="@font/nanum"
+       android:textColorHint="#000000"
+       android:hint="pwd*"
+       android:layout_width="match_parent"
+       android:layout_height="0dp"
+       android:layout_weight="1"/>
+
+
     <EditText
         android:id="@+id/age_signUp"
         android:layout_width="match_parent"
@@ -55,7 +58,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="female"
-            />
+
+           />
 
         <RadioButton
             android:id="@+id/male"
@@ -66,6 +70,7 @@
             android:text="male"
             />
     </RadioGroup>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
