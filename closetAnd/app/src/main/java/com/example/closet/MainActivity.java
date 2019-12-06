@@ -12,15 +12,20 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.closet.History.History;
 import com.example.closet.Home.Home;
 import com.example.closet.Match.Match;
 import com.example.closet.Recommend.Recommend;
+
 import com.example.closet.User.User;
+
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -49,9 +54,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void init() {
-        int[] tabIcons = new int[]{R.drawable.icon_home, R.drawable.icon_match, R.drawable.icon_history, R.drawable.icon_recommend,R.drawable.icon_mypage};
-        for (int i = 0; i < tabIcons.length; i++) {
+        int[] tabIcons = new int[]{R.drawable.icon_home, R.drawable.icon_match, R.drawable.icon_history, R.drawable.icon_recommend, R.drawable.icon_mypage};
 
+        for (int i = 0; i < tabIcons.length; i++) {
 
             ImageView imageView = new ImageView(this);
             imageView.setBackgroundColor(Color.TRANSPARENT);
@@ -95,4 +100,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return this.fragmentList.size();
         }
     }
+
+
 }

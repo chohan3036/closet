@@ -2,42 +2,47 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:gravity="center"
     android:orientation="vertical">
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center">
+        android:layout_width="300dp"
+        android:background="#EDC6C6"
+        android:layout_height="500dp">
 
         <ImageView
             android:src="@drawable/emptylike"
             android:id="@+id/cloth_image"
-            android:layout_width="200dp"
+            android:layout_width="300dp"
             android:layout_height="300dp"
-            android:layout_marginTop="50dp"/>
+            android:gravity="center"/>
 
         <TextView
             android:id="@+id/cloth_color"
-            android:text="추출된 color 표시 \n textView로 하면안될것같은데 사용자가 바꿀 수 있게 하려면"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"/>
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/nanum"
+            android:text="추출된 color 표시 \n textView로 하면안될것같은데 사용자가 바꿀 수 있게 하려면" />
 
         <TextView
             android:id="@+id/cloth_category"
             android:text="추출된 category 표시"
+            android:fontFamily="@font/nanum"
+            android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"/>
+            />
 
         <EditText
-            android:hint="옷에 대한 설명을 작성해주세요"
             android:id="@+id/cloth_description"
             android:layout_width="300dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="30dp"
-            android:background="#FFFFFF" />
+            android:layout_height="112dp"
+            android:layout_marginTop="20dp"
+            android:background="#FFFFFF"
+            android:fontFamily="@font/nanum"
+            android:hint="옷에 대한 설명을 작성해주세요" />
 
     </LinearLayout>
 
@@ -49,20 +54,19 @@
         android:layout_marginTop="50dp">
 
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Cancel"
+            android:fontFamily="@font/montaga"
             android:id="@+id/Cancel"
             android:background="#90ee90"/>
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="#ffffff"/>
+
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="@font/montaga"
             android:text="Ok"
             android:id="@+id/Ok"
             android:background="#90ee90"/>

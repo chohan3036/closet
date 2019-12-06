@@ -1,10 +1,14 @@
 package com.example.closet.Match;
 
 import android.app.Activity;
+import android.content.ContentUris;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,12 +27,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.closet.Clothes.AddClothes;
+import com.example.closet.storeClothingNetworking;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
@@ -57,6 +63,14 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import org.json.JSONObject;
 
@@ -75,10 +89,15 @@ import com.example.closet.R;
 import android.widget.GridView;
 
 import java.util.HashMap;
+import java.util.regex.Matcher;
 
 import static android.app.Activity.RESULT_OK;
 import static android.graphics.BitmapFactory.decodeByteArray;
 import static android.widget.Toast.LENGTH_LONG;
+import static com.example.closet.Clothes.Clothes.getDataColumn;
+import static com.example.closet.Clothes.Clothes.isDownloadsDocument;
+import static com.example.closet.Clothes.Clothes.isExternalStorageDocument;
+import static com.example.closet.Clothes.Clothes.isMediaDocument;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -98,6 +117,7 @@ public class Match extends Fragment implements View.OnClickListener {
     GridView gridView;
     ArrayList<URL> selected_from_clothes2 = new ArrayList<>();
     ArrayList<Integer> match_checked_items;
+    Context context;
 
     String avatarPhotoPath;
     boolean avatarSelected = false;
@@ -129,12 +149,10 @@ public class Match extends Fragment implements View.OnClickListener {
     public void setGrid() {
 
         Match_Adapter adapter;
-        Log.d("Log_dMAtchAdapter", String.valueOf(selected_from_clothes));
-        Log.d("Log_dMAtchAdapter", String.valueOf(selected_from_clothes2));
-
         selected_from_clothes2 = selected_items.selected_from_clothes;
         if (selected_from_clothes2 == null) {
-            Toast.makeText(getContext(), "선택된 옷이 없습니다", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "선택된 옷이 없습니다", Toast.LENGTH_LONG).show();
+            //getContext못가져오면 이것도 못가져올것같기도?
         } else {
             adapter = new Match_Adapter(getActivity(), R.layout.match_griditem, selected_from_clothes2);
             gridView.setAdapter(adapter);
@@ -144,11 +162,12 @@ public class Match extends Fragment implements View.OnClickListener {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if(isVisibleToUser)
+        if (isVisibleToUser)
             setGrid();
     }
 
     private void setting() {
+        context = getContext();
         btn_camera = (ImageButton) view.findViewById(R.id.match_camera);
         btn_camera.setOnClickListener(this);
         iv = (ImageView) view.findViewById(R.id.match_avatar);
@@ -234,10 +253,20 @@ public class Match extends Fragment implements View.OnClickListener {
             case R.id.reset:
                 break;
             case R.id.match_camera:
-               dispatchTakePictureIntent();
+                getPhotoFromAlbum();
+                //dispatchTakePictureIntent();
+                //getFragmentManager();
+
                 break;
         }
     }
+
+    private void getPhotoFromAlbum() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(intent, 3030);
+    }
+
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -246,6 +275,7 @@ public class Match extends Fragment implements View.OnClickListener {
             File photoFile = null;
             try {
                 photoFile = createImageFile();
+                ///storage/emulated/0/Android/data/com.example.closet/files/Pictures/JPEG_20191206_141016_1292747622526178270.jpg
             } catch (IOException ex) {
 
             }
@@ -260,6 +290,79 @@ public class Match extends Fragment implements View.OnClickListener {
         }
     }
 
+    public void networkingPhoto(String photoFile) {
+        try {
+            storeClothingNetworking networking = new storeClothingNetworking(photoFile);
+            networking.execute();
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static String getPath(final Context context, final Uri uri) {
+
+        final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+
+        // DocumentProvider
+        if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
+            // ExternalStorageProvider
+            if (isExternalStorageDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+
+                if ("primary".equalsIgnoreCase(type)) {
+                    return Environment.getExternalStorageDirectory() + "/"
+                            + split[1];
+                }
+
+                // TODO handle non-primary volumes
+            }
+            // DownloadsProvider
+            else if (isDownloadsDocument(uri)) {
+
+                final String id = DocumentsContract.getDocumentId(uri);
+                final Uri contentUri = ContentUris.withAppendedId(
+                        Uri.parse("content://downloads/public_downloads"),
+                        Long.valueOf(id));
+
+                return getDataColumn(context, contentUri, null, null);
+            }
+            // MediaProvider
+            else if (isMediaDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+
+                Uri contentUri = null;
+                if ("image".equals(type)) {
+                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                } else if ("video".equals(type)) {
+                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                } else if ("audio".equals(type)) {
+                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                }
+
+                final String selection = "_id=?";
+                final String[] selectionArgs = new String[]{split[1]};
+
+                return getDataColumn(context, contentUri, selection,
+                        selectionArgs);
+            }
+        }
+        // MediaStore (and general)
+        else if ("content".equalsIgnoreCase(uri.getScheme())) {
+            return getDataColumn(context, uri, null, null);
+        }
+        // File
+        else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+
+        return null;
+    }
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -273,12 +376,36 @@ public class Match extends Fragment implements View.OnClickListener {
 
         // Save a file: path for use with ACTION_VIEW intents
         avatarPhotoPath = image.getAbsolutePath();
+        //currentPhotoPath = image.getAbsolutePath();
         return image;
     }
+
+    String currentPhotoPath;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 3030) {
+            Uri uri = data.getData();
+
+            String filePath = getPath(getActivity(), uri);
+
+            Log.d("Log_dFilePath ",filePath.toString());
+            //String selectedImagesPaths = getRealPathFromURI(getContext(), uri);
+
+                //currentPhotoPath = image.getAbsolutePath();
+                //File imgFile = new File(currentPhotoPath);
+                networkingPhoto(filePath);
+
+            }
+            // Save a file: path for use with ACTION_VIEW intents
+
+            //Log.d("Real file path is", selectedImagesPaths);
+            //imagesSelected = true;
+
+        }
+        /*
         if (requestCode == MY_PERMISSIONS_REQUEST_CAMERA && resultCode == RESULT_OK) {
+
             avatarSelected = true;
             //File imgFile = new File(avatarPhotoPath);
             //if (imgFile.exists()) {
@@ -287,6 +414,17 @@ public class Match extends Fragment implements View.OnClickListener {
         }
         AddClothes sendImage = new AddClothes(avatarSelected, avatarPhotoPath);
         sendImage.connectServer();
+
+            File imgFile = new File(currentPhotoPath);
+
+            Log.d("Log_dPhotoFile", String.valueOf(photoFile));
+            Log.d("Log_dImagFIle", String.valueOf(imgFile));
+            networkingPhoto(photoFile);
+            if (imgFile.exists()) {
+                iv.setImageURI(Uri.fromFile(imgFile));
+            }
+        }*/
+
     }
     // 이미지 Resize 함수
    /* private int setSimpleSize(BitmapFactory.Options options, int requestWidth, int requestHeight){
@@ -306,5 +444,6 @@ public class Match extends Fragment implements View.OnClickListener {
         }
         return size;
     }*/
-}
+
+
 

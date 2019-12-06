@@ -1,12 +1,16 @@
 package com.example.closet.Recommend;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.core.content.res.ResourcesCompat;
+
 import com.example.closet.R;
 
 public class RecommendSpinner_Adapter extends ArrayAdapter<String>{

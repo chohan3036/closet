@@ -14,12 +14,19 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.view.View.OnClickListener;
+import android.widget.TextView;
 
 import com.example.closet.Clothes.UrlToBitmap;
+import com.example.closet.Networking;
+import com.example.closet.Networking_Get;
 import com.example.closet.R;
 
+import org.json.JSONObject;
+
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 class Recommend_GridAdapter extends BaseAdapter {
@@ -30,11 +37,17 @@ class Recommend_GridAdapter extends BaseAdapter {
     private ArrayList<Bitmap> photoBitmap = new ArrayList<>();
     private UrlToBitmap urlToBitmap;
     private ViewHolder viewHolder = new ViewHolder();
+    boolean showing = false;
+    ArrayList<String> hidList = new ArrayList<>();
+    String uid = "1" ; // 받아오기
 
-    public Recommend_GridAdapter(Context context, ArrayList<URL> photoUrls) {
+
+    public Recommend_GridAdapter(Context context, ArrayList<URL> photoUrls,ArrayList<String> hidList) {
         this.context = context;
         inflater = LayoutInflater.from(context);
         this.photoUrls = photoUrls;
+        this.hidList = hidList;
+
         urlToBitmap = new UrlToBitmap(photoUrls);
         urlToBitmap.execute();
         try {
@@ -45,6 +58,7 @@ class Recommend_GridAdapter extends BaseAdapter {
             e.printStackTrace();
         }
     }
+
     public int getCount() {
         return photoUrls.size();
     }
@@ -57,70 +71,81 @@ class Recommend_GridAdapter extends BaseAdapter {
         return i;
     }
 
-
-
     public View getView(final int i, View view, ViewGroup viewGroup) {
 
         if (view == null) {
-
             view = inflater.inflate(R.layout.recommend_griditem, viewGroup, false);
             viewHolder.imageView = (ImageView) view.findViewById(R.id.recommend_iv);
             viewHolder.imageButton = (ImageButton) view.findViewById(R.id.likeit);
+            viewHolder.textView= (TextView)view.findViewById(R.id.rec_item_text);
 
             view.setTag(viewHolder);
         } else
             viewHolder = (ViewHolder) view.getTag();
-
-
-        for (int j = 0 ; j<photoUrls.size();j++){
-            Log.d("Log_dPhotoUrls",i+"\n"+photoUrls);
-        }
-
-        for (int j = 0 ; j<photoBitmap.size();j++){
-            Log.d("Log_dPhotoBitmap",i+"\n"+photoBitmap);
-        }
         viewHolder.imageView.setImageBitmap(photoBitmap.get(i));
-        viewHolder.imageButton.setOnClickListener(new ImageButton.OnClickListener(){
+        viewHolder.textView.setText("코디 정보? ");
+        viewHolder.imageButton.setOnClickListener(new ImageButton.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                viewHolder.imageButton.setBackgroundResource(R.drawable.like);
-                // 좋아요 수 상승 코드
+            public void onClick(View view) { //네트워킹
+                try {
+                    HashMap<String,String> arugments = new HashMap<String,String>();
+                    arugments.put("uid",uid);
+                    arugments.put("hid","11"); //아으아아아각ㄱ
+                    Networking networking = new Networking(new URL("http://52.78.194.160:3000/closet/like/makeLike"),arugments);
+                    networking.execute();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                //viewHolder.imageButton.setSelected(!viewHolder.imageButton.isSelected());
+                viewHolder.imageButton.setImageResource(R.drawable.full_like);
             }
         });
 
         return view;
     }
-    /*
-    public class likeImage extends Activity{
-        private ImageView one = null;
-        private ImageView two = null;
 
-        protected void onCreate(Bundle savedInstanceState){
-            super.onCreate(savedInstanceState);
 
-            one = (ImageView)findViewById(R.id.like_image);
-            two = (ImageView)findViewById(R.id.empty_like);
+    public void likeList(){
+        //네트워킹해서 해당 uid가 좋아요 한 목록 뽑고 ,, 비교해서 하트 이미지 설정
+        try {
+            URL url = new URL ("http://52.78.194.160:3000like/myLikeList/"+uid);
+            Networking_Get networking_get = new Networking_Get(url);
+            networking_get.execute();
+            JSONObject jsonObject = networking_get.get();
+            Log.d("Log_dLikeLIst",jsonObject.toString());
 
-            one.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    two.setVisibility(View.VISIBLE);
-                    v.setVisibility(View.GONE);
-                }
-            });
-            two.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    one.setVisibility(View.VISIBLE);
-                    v.setVisibility(View.GONE);
-                }
-            });
+            /*
+            * {
+    "message": "like list 반환 성공",
+    "result": [
+        17,
+        18,
+        19
+    ]
+}
+            * */
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
         }
+
+
     }
- */
+
+    /*        for (int j = 0 ; j<photoUrls.size();j++){
+               Log.d("Log_dPhotoUrls",i+"\n"+photoUrls);
+           }
+
+           for (int j = 0 ; j<photoBitmap.size();j++){
+               Log.d("Log_dPhotoBitmap",i+"\n"+photoBitmap);         */
+
     private class ViewHolder {
         private ImageView imageView;
         private ImageButton imageButton;
+        private TextView textView;
     }
 
 }

@@ -17,13 +17,16 @@
         android:layout_gravity="center">
 
         <TextView
+            android:layout_marginLeft="20dp"
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="추천 기준을 선택해 주세요(임시)" />
+            android:fontFamily="@font/nanum"
+            android:text="추천 기준을 선택해 주세요" />
 
         <Spinner
             android:id="@+id/recommend_spinner"
+            android:theme="@style/SpinnerTheme"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

@@ -46,6 +46,7 @@ public class Recommend extends Fragment {
     ArrayList<URL> photoUrls = new ArrayList<>();
     private Context context;
     private Recommend_GridAdapter adapter;
+    ArrayList<String> hidList =new ArrayList<>();
 
     public Recommend() {
         // Required empty public constructor
@@ -128,19 +129,20 @@ public class Recommend extends Fragment {
     }
 
     public void showRecommendList(JSONArray jsonArray) {
-    //들어올 때 마다 photoUrl clear
+    //그리드뷰 업데이트 될 때마다 photoUrl clear
         photoUrls.clear();
         for(int i=0 ; i<jsonArray.length() ; i++){
             try {
                 JSONObject eachRecommendedClothing = jsonArray.getJSONObject(i);
                 String photoFIle = eachRecommendedClothing.getString("photo_look");
+                String hid = eachRecommendedClothing.getString("hid");
                 //Log.d("Log_dPhotoFile",photoFIle);
                 if("null".equals(photoFIle)){
                     //Log.d("Log_dNULLSTRINGhhhhhhhh",photoFIle);
                 }
                 else {
-                    Log.d("Log_dISITNOTNULL",photoFIle);
                     photoUrls.add(new URL(photoFIle));
+                    hidList.add(hid);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -152,7 +154,7 @@ public class Recommend extends Fragment {
     }
     private void loadGridView() {
         GridView gridView = (GridView) view.findViewById(R.id.recommend_grid);
-        adapter = new Recommend_GridAdapter(getContext(), photoUrls);
+        adapter = new Recommend_GridAdapter(getContext(), photoUrls,hidList);
         gridView.setAdapter(adapter);
     }
 }

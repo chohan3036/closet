@@ -1,6 +1,10 @@
 package com.example.closet.Home;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -12,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -36,10 +41,11 @@ public class Home extends Fragment implements View.OnClickListener {
 
     View view;
     ImageButton BtnMove;
-    Button map;
+    ImageView map;
     TextView weather_info_textView;
 
-    Button testCv;
+    String weather_info;
+
 
     public Home() {
         // Required empty public constructor
@@ -54,37 +60,39 @@ public class Home extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home, container, false);
-        map = (Button) view.findViewById(R.id.mapButton);
+        setting();
+        return view;
+    }
+
+    private void setting(){
+        map = (ImageView) view.findViewById(R.id.mapButton);
         map.setOnClickListener(this);
         BtnMove = (ImageButton) view.findViewById(R.id.BtnActivityOne);
         BtnMove.setOnClickListener(this);
         weather_info_textView = (TextView)view.findViewById(R.id.weather_text);
-        testCv = (Button)view.findViewById(R.id.testCV);
-        testCv.setOnClickListener(this);
 
-        //setWeather_info(weather_info);
-        return view;
     }
-
     @Override
     public void onStart() {
         super.onStart();
         //getWeatherOnBackground();
     }
 
+
     private void getWeatherOnBackground() {
-        String weather_info = null;
+        weather_info = null;
         GetLocation getLocation = new GetLocation(getActivity());
         getLocation.execute(); //여기안에서 networking을 또 해서 asyncTask가 또있음 null
         try {
+
             weather_info = getLocation.get();
-            //setWeather_info(weather_info);
+            if(weather_info!= null)
+                setWeather_info(weather_info);
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
     }
     @Override
     public void onClick(View view) {
@@ -100,9 +108,6 @@ public class Home extends Fragment implements View.OnClickListener {
         } if (view == BtnMove) {
             Intent intent = new Intent(getActivity(), Clothes.class);
             startActivityForResult(intent, 30);
-        }else if (view == testCv){
-            Intent intent = new Intent(getActivity(), openCV_test.class);
-            startActivity(intent);
         }
     }
 
@@ -112,7 +117,6 @@ public class Home extends Fragment implements View.OnClickListener {
 
        if (requestCode == GET_WEATHER_IS_OK) {
             String weather_info = data.getStringExtra("result");
-            Log.d("Log_dHomeWeather",weather_info);
             setWeather_info(weather_info);
 
         }
@@ -136,7 +140,7 @@ public class Home extends Fragment implements View.OnClickListener {
             Log.d("JSONTIME",timeRelease);
             */
             String [] cold = new String[] {"밖이 추워요! 외투를 잊지 마세요~", "밖이 추워요! 코트를 잊지 마세요.", "한파 주위! 롱패딩은 필수에요~"};
-            String [] warm = new String[] {"날이 따스하네요. 소풍 가기 좋은 날이에요!", "비교적 따뜻한 날씨입니다. 가벼운 옷차림을 추천해요!"};
+            String [] warm = new String[] {"날이 따스하네요. 소풍 가기 좋은 날이에요!", "비교적 따뜻한 날씨입니다.\n 가벼운 옷차림을 추천해요!"};
             String [] hot = new String [] {"너무 더운 날이에요. 물을 자주 드세요!", "폭염 주의! 모자와 선글라스를 챙기시는 게 어떠세요?"};
             String advice = null;
             String result = null;
