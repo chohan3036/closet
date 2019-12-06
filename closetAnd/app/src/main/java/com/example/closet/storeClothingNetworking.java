@@ -11,6 +11,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -25,6 +27,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.WritableByteChannel;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -50,18 +55,20 @@ public class storeClothingNetworking extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... voids) {
         try {
-            Log.d("Log_dPhotoFileInNet",photo_file.toString());
+            Log.d("Log_dPhotoFileInNet", photo_file.toString());
             String boundary = "-----";
             //String boundary = "*****";
             String LINE_FEED = "\r\n";
             JSONObject result = null;
 
             conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestProperty("Content-type", "multipart/form-data;boundary="+boundary);
-            //conn.setRequestProperty("Connection","Keep-Alive");
+            conn.setRequestProperty("Content-type", "multipart/form-data;boundary=" + boundary);
+            conn.setRequestProperty("Connection", "Keep-Alive");
             conn.setRequestMethod("POST");
-            conn.setConnectTimeout(30*1000);// 30초
-            conn.setReadTimeout(20*1000);//
+            conn.setRequestProperty("Accept", "*/*");
+            conn.setRequestProperty("Accept-Encoding", "gzip, deflate");
+            conn.setConnectTimeout(30 * 1000);// 30초
+            conn.setReadTimeout(20 * 1000);//
             conn.setDoInput(true);
             conn.setDoOutput(true);
 
@@ -92,43 +99,70 @@ public class storeClothingNetworking extends AsyncTask<Void, Void, Void> {
                 writer.flush();
             }*/
 
-            writer.append("--"+boundary).append(LINE_FEED);
-            writer.append("Content-Disposition: form-data; name=\"photo\"; filename=\"" + photo_file.toString() + "\"").append(LINE_FEED);
-            //writer.append("Content-Type:multipart/form-data;").append(LINE_FEED); //이거는..?흠
-            //writer.append("Content-Type: " + URLConnection.guessContentTypeFromName(file.getName())).append(LINE_FEED);
-            writer.append("Content-Transfer-Encoding: binary").append(LINE_FEED);
-            writer.append(LINE_FEED);
-            writer.flush();
 
 
-            writer.append("--"+boundary).append(LINE_FEED);
+
+            writer.append("--" + boundary).append(LINE_FEED);
             writer.append("Content-Disposition: form-data; name=\"uid\"").append(LINE_FEED);
             writer.append("Content-Type: text/plain; charset=" + "UTF-8").append(LINE_FEED);
             writer.append(LINE_FEED);
             writer.append("4").append(LINE_FEED);//값 .uid 값 argu로 받아야하나?
             writer.flush();
 
+            writer.append("--" + boundary).append(LINE_FEED);
+            writer.append("Content-Disposition: form-data; name=\"photo\"; filename=\"" + photo_file.toString() + "\"").append(LINE_FEED);
+            //writer.append("Content-Type:multipart/form-data;").append(LINE_FEED); //이거는..?흠
+            //writer.append("Content-Type: " + URLConnection.guessContentTypeFromName(file.getName())).append(LINE_FEED);
+            writer.append("Content-Transfer-Encoding: binary").append(LINE_FEED);
+            writer.append(LINE_FEED);
+            writer.flush();
             /** 파일 데이터를 넣는 부분**/
 
-            long FileSize = photo_file.length();
-            if(FileSize > 2000000 ){
-                Log.d("Log_dFIleSize","FIle size is too big");
-                photo_file = ResizeFile(photo_file,FileSize);
+            //FileInputStream inputStream = new FileInputStream(photo_file);
+            InputStream is =conn.getInputStream();
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPreferredConfig = Bitmap.Config.RGB_565;
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            try {
+                Bitmap responseImage = BitmapFactory.decodeFile(filePath, options);
+                responseImage.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            } catch (Exception e) {
+                System.out.println("Please Make Sure the Selected File is an Image.");
             }
+            byte[] byteArray = stream.toByteArray();
 
-
-            FileInputStream inputStream = new FileInputStream(photo_file);
-            byte[] buffer = new byte[(int) photo_file.length()];
+            /*int bytesRead1 = 0;
+            while((bytesRead1 = inputStream.read(byteArray)) >0){
+                    stream.write(byteArray,0,bytesRead1);
+            }*/
+/*
+            //byte[] buffer = new byte[(int) photo_file.length()];
+            //byte[] buffer =  new byte[stream.size()];
             int bytesRead = -1;
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, bytesRead);
+            //!=-1
+            while ((bytesRead = inputStream.read(byteArray)) != -1) {
+                Log.d("Log_dByteReqad", String.valueOf(bytesRead));
+                outputStream.write(byteArray, 0, bytesRead);
             }
+            */
+            //WritableByteChannel channel = Channels.newChannel(outputStream);
+            //channel.write(ByteBuffer.wrap(byteArray));
+            /*int bytesRead=  0;
+            while((bytesRead = is.read(byteArray)) != -1){
+                outputStream.write(byteArray,0,bytesRead);
+            }
+
             outputStream.flush();
-            inputStream.close();
+            stream.close();
+            is.close();
+            */
+            writer.println(new String(byteArray));
+            //inputStream.close();
             writer.append(LINE_FEED);
             writer.flush();
 
-            writer.append("--"+boundary + "--").append(LINE_FEED);
+            writer.append("--" + boundary + "--").append(LINE_FEED);
             writer.close();
 
             Log.d("Log_dSTORE", String.valueOf(conn.getResponseCode()));
@@ -159,22 +193,47 @@ public class storeClothingNetworking extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
-    private File ResizeFile(File uploadFile,long Size) throws Exception{
-        int num=(int)(Size/1000000);
+    public void FileInputStream() {
+
+    }
+    /*public void byteStreamToBitmap(){
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        try {
+            Bitmap responseImage = BitmapFactory.decodeFile(filePath, options);
+            responseImage.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        }catch(Exception e){
+            System.out.println("Please Make Sure the Selected File is an Image.");
+        }
+        byte[] byteArray = stream.toByteArray();
+        int bytesRead = -1;
+        while ((bytesRead = stream.read(byteArray)) != -1) {
+            try {
+                outputStream.write(byteArray, 0, bytesRead);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }*/
+
+    private File ResizeFile(File uploadFile, long Size) throws Exception {
+        int num = (int) (Size / 1000000);
         Bitmap uploadBitmap = BitmapFactory.decodeFile(uploadFile.getAbsolutePath());
         //File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Pictures/UVchecker");
         //File newFile= File.createTempFile("UVchecker", ".jpg", dir);
         FileOutputStream out = new FileOutputStream(uploadFile);
 
-        int height=uploadBitmap.getHeight();
-        int width=uploadBitmap.getWidth();
-        int newheight=height/num;
-        int newwidth=width/num;
+        int height = uploadBitmap.getHeight();
+        int width = uploadBitmap.getWidth();
+        int newheight = height / num;
+        int newwidth = width / num;
         float scaleWidth = ((float) newwidth) / width;
         float scaleHeight = ((float) newheight) / height;
-        Matrix matrix= new Matrix();
-        uploadBitmap=Bitmap.createScaledBitmap(uploadBitmap, newwidth, newheight, true);
-        Bitmap resizeBitmap=Bitmap.createBitmap(uploadBitmap,0,0,newwidth,newheight,matrix,true);
+        Matrix matrix = new Matrix();
+        uploadBitmap = Bitmap.createScaledBitmap(uploadBitmap, newwidth, newheight, true);
+        Bitmap resizeBitmap = Bitmap.createBitmap(uploadBitmap, 0, 0, newwidth, newheight, matrix, true);
         resizeBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
         out.close();
         return uploadFile;

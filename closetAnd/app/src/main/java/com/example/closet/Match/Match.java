@@ -24,6 +24,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.closet.storeClothingNetworking;
@@ -101,6 +102,11 @@ import static com.example.closet.Clothes.Clothes.isMediaDocument;
 /**
  * A simple {@link Fragment} subclass.
  */
+/* 아바타 결과
+* [{'avatar_id': 13, 'uid': 7, 'Head': '(220, 31)', 'Neck': '(236, 118)', 'RShoulder': '(165, 174)                       ', 'RElbow': '(157, 261)', 'RWrist': '(141, 356)', 'LShoulder': '(299, 158)', 'LElbow': '(331, 2                       69)', 'LWrist': '(338, 348)', 'RHip': '(212, 602)', 'RKnee': 'None', 'RAnkle': '(228, 404)', 'LH                       ip': '(197, 594)', 'LKnee': '(331, 380)', 'LAnkle': '(236, 396)', 'Chest': '(236, 237)', 'Backgr                       ound': None, 'photo': 'https://closetsook.s3.ap-northeast-2.amazonaws.com/User_Avatar_20191206-0                       95657.png'}]
+*
+*
+* */
 public class Match extends Fragment implements View.OnClickListener {
     private PopupWindow mPopupWindow;
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
@@ -117,6 +123,8 @@ public class Match extends Fragment implements View.OnClickListener {
     ArrayList<URL> selected_from_clothes2 = new ArrayList<>();
     ArrayList<Integer> match_checked_items;
     Context context;
+    String avatarInfo;//pose networking결과
+    ProgressBar progressBar;
 
     public Match() {
         // Required empty public constructor
@@ -290,15 +298,6 @@ public class Match extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void networkingPhoto(String photoFile) {
-        try {
-            storeClothingNetworking networking = new storeClothingNetworking(photoFile);
-            networking.execute();
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-    }
 
 
     public static String getPath(final Context context, final Uri uri) {
@@ -385,15 +384,29 @@ public class Match extends Fragment implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 3030) {
             Uri uri = data.getData();
-
             String filePath = getPath(getActivity(), uri);
-
             Log.d("Log_dFilePath ",filePath.toString());
+
+            try {
+                NetworkingAvatar networking = new NetworkingAvatar(filePath,getActivity());
+                networking.execute();
+                avatarInfo = networking.get();
+
+                if (new File(filePath).exists()) {
+                    iv.setImageURI(Uri.fromFile(new File(filePath)));
+                }
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
             //String selectedImagesPaths = getRealPathFromURI(getContext(), uri);
 
                 //currentPhotoPath = image.getAbsolutePath();
                 //File imgFile = new File(currentPhotoPath);
-                networkingPhoto(filePath);
+
+               // networkingPhoto(filePath);
 
             }
             // Save a file: path for use with ACTION_VIEW intents
@@ -405,10 +418,6 @@ public class Match extends Fragment implements View.OnClickListener {
         /*
         if (requestCode == MY_PERMISSIONS_REQUEST_CAMERA && resultCode == RESULT_OK) {
             File imgFile = new File(currentPhotoPath);
-
-            Log.d("Log_dPhotoFile", String.valueOf(photoFile));
-            Log.d("Log_dImagFIle", String.valueOf(imgFile));
-            networkingPhoto(photoFile);
             if (imgFile.exists()) {
                 iv.setImageURI(Uri.fromFile(imgFile));
             }
