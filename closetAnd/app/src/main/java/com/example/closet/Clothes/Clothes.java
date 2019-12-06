@@ -382,22 +382,23 @@ public class Clothes extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PICK_FROM_CAMERA ) {
-            //File imgFile = new File(selectedImagesPaths);
-            imagesSelected = true;
-        }
-        else if (requestCode == PICK_FROM_ALBUM) {
-            if (data == null) {
-                Log.d("Log_d data", "data is null");
-            } else {
-                uri = data.getData();
-                Log.d("UIR is ", uri.toString());
-                selectedImagesPaths = getRealPathFromURI(this, uri);
-                Log.d("Real file path is", selectedImagesPaths);
+        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+            if (requestCode == PICK_FROM_CAMERA ) {
+                //File imgFile = new File(selectedImagesPaths);
                 imagesSelected = true;
             }
-        }
+            else if (requestCode == PICK_FROM_ALBUM) {
+                if (data == null) {
+                    Log.d("Log_d data", "data is null");
+                } else {
+                    uri = data.getData();
+                    Log.d("UIR is ", uri.toString());
+                    selectedImagesPaths = getRealPathFromURI(this, uri);
+                    Log.d("Real file path is", selectedImagesPaths);
+                    imagesSelected = true;
+                    infoPopup();
+                }
+            }
 
         AddClothes sendImage = new AddClothes(imagesSelected, selectedImagesPaths);
         sendImage.connectServer();
