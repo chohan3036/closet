@@ -132,7 +132,9 @@ class Recommend_GridAdapter extends BaseAdapter {
 
         return view;
     }
+    public void ChangeLikeStatus(){
 
+    }
     public ArrayList<Integer> likeList() {
 
         //네트워킹해서 해당 uid가 좋아요 한 목록 뽑고 ,, 비교해서 하트 이미지 설정
@@ -145,7 +147,7 @@ class Recommend_GridAdapter extends BaseAdapter {
             JSONObject jsonObject = networking_get.get();
             JSONArray result = null;
             if (jsonObject != null)
-                result = (JSONArray) jsonObject.get("result"); //배열인가?
+                result = (JSONArray) jsonObject.get("result");
             //Log.d("Log_dWWWWWW",result.toString());
 
             for (int i = 0; i < result.length(); i++) {
