@@ -3,109 +3,31 @@
 3    package="org.opencv.test" >
 4
 5    <uses-sdk
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-5-->C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger3771647826049202117.xml:5:5-73
+5-->C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger861357476404554889.xml:5:5-73
 6        android:minSdkVersion="8"
-6-->C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger3771647826049202117.xml:5:15-40
+6-->C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger861357476404554889.xml:5:15-40
 7        android:targetSdkVersion="26" />
-7-->C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger3771647826049202117.xml:5:41-70
+7-->C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger861357476404554889.xml:5:41-70
 8
 9    <instrumentation
-9-->C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger3771647826049202117.xml:11:5-15:65
+9-->C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger861357476404554889.xml:11:5-15:65
 10        android:name="android.test.InstrumentationTestRunner"
-10-->C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger3771647826049202117.xml:11:22-75
+10-->C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger861357476404554889.xml:11:22-75
 11        android:functionalTest="false"
-11-->C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger3771647826049202117.xml:14:22-52
+11-->C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger861357476404554889.xml:14:22-52
 12        android:handleProfiling="false"
-12-->C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger3771647826049202117.xml:13:22-53
+12-->C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger861357476404554889.xml:13:22-53
 13        android:label="Tests for org.opencv.test"
-13-->C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger3771647826049202117.xml:15:22-63
+13-->C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger861357476404554889.xml:15:22-63
 14        android:targetPackage="org.opencv.test" />
-14-->C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger3771647826049202117.xml:12:22-61
+14-->C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger861357476404554889.xml:12:22-61
 15
 16    <application android:debuggable="true" >
-16-->C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger3771647826049202117.xml:7:5-9:19
-16-->C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger3771647826049202117.xml:7:18-43
+16-->C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger861357476404554889.xml:7:5-9:19
+16-->C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger861357476404554889.xml:7:18-43
 17        <uses-library android:name="android.test.runner" />
-17-->C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger3771647826049202117.xml:8:9-60
-17-->C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger3771647826049202117.xml:8:23-57
-=======
-5-->C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger508321656835166551.xml:5:5-73
-=======
-<<<<<<< HEAD
-5-->C:\Users\sookmyung\Desktop\closet_git\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger4105290072353761625.xml:5:5-73
-=======
-5-->C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger597904070306291856.xml:5:5-73
->>>>>>> 307c50e294de3e092e5af72a92241cce927ada03
-6        android:minSdkVersion="8"
-6-->C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger597904070306291856.xml:5:15-40
-7        android:targetSdkVersion="26" />
-7-->C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger597904070306291856.xml:5:41-70
-8
-9    <instrumentation
-9-->C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger597904070306291856.xml:11:5-15:65
-10        android:name="android.test.InstrumentationTestRunner"
-10-->C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger597904070306291856.xml:11:22-75
-11        android:functionalTest="false"
-11-->C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger597904070306291856.xml:14:22-52
-12        android:handleProfiling="false"
-12-->C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger597904070306291856.xml:13:22-53
-13        android:label="Tests for org.opencv.test"
-13-->C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger597904070306291856.xml:15:22-63
-14        android:targetPackage="org.opencv.test" />
-14-->C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger597904070306291856.xml:12:22-61
-15
-16    <application android:debuggable="true" >
-16-->C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger597904070306291856.xml:7:5-9:19
-16-->C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger597904070306291856.xml:7:18-43
-17        <uses-library android:name="android.test.runner" />
-<<<<<<< HEAD
-17-->C:\Users\sookmyung\Desktop\closet_git\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger4105290072353761625.xml:8:9-60
-17-->C:\Users\sookmyung\Desktop\closet_git\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger4105290072353761625.xml:8:23-57
->>>>>>> 0fa20bc664130927e9611c04fe61c469414d41ec
-=======
-5-->C:\Users\sookmyung\Desktop\git_closet\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger5351914867329032037.xml:5:5-73
->>>>>>> b6031adba711f49615a5ce75443018ebbdf268e4
-6        android:minSdkVersion="8"
-6-->C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger508321656835166551.xml:5:15-40
-7        android:targetSdkVersion="26" />
-7-->C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger508321656835166551.xml:5:41-70
-8
-9    <instrumentation
-9-->C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger508321656835166551.xml:11:5-15:65
-10        android:name="android.test.InstrumentationTestRunner"
-10-->C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger508321656835166551.xml:11:22-75
-11        android:functionalTest="false"
-11-->C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger508321656835166551.xml:14:22-52
-12        android:handleProfiling="false"
-12-->C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger508321656835166551.xml:13:22-53
-13        android:label="Tests for org.opencv.test"
-13-->C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger508321656835166551.xml:15:22-63
-14        android:targetPackage="org.opencv.test" />
-14-->C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger508321656835166551.xml:12:22-61
-15
-16    <application android:debuggable="true" >
-16-->C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger508321656835166551.xml:7:5-9:19
-16-->C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger508321656835166551.xml:7:18-43
-17        <uses-library android:name="android.test.runner" />
-<<<<<<< HEAD
-17-->C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger508321656835166551.xml:8:9-60
-17-->C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger508321656835166551.xml:8:23-57
-=======
-17-->C:\Users\sookmyung\Desktop\git_closet\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger5351914867329032037.xml:8:9-60
-17-->C:\Users\sookmyung\Desktop\git_closet\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger5351914867329032037.xml:8:23-57
-<<<<<<< HEAD
->>>>>>> c23d25e3cf27af577601360c4111c78cd30118f3
-=======
->>>>>>> origin/uiIssue
->>>>>>> b6031adba711f49615a5ce75443018ebbdf268e4
->>>>>>> 0fa20bc664130927e9611c04fe61c469414d41ec
-=======
-17-->C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger597904070306291856.xml:8:9-60
-17-->C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger597904070306291856.xml:8:23-57
->>>>>>> 307c50e294de3e092e5af72a92241cce927ada03
+17-->C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger861357476404554889.xml:8:9-60
+17-->C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\build\intermediates\tmp\manifest\androidTest\debug\manifestMerger861357476404554889.xml:8:23-57
 18    </application>
 19
 20</manifest>

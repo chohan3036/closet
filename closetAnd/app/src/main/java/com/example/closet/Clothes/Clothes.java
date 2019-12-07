@@ -400,12 +400,11 @@ public class Clothes extends AppCompatActivity {
                     selectedImagesPaths = getRealPathFromURI(this, uri);
                     Log.d("Real file path is", selectedImagesPaths);
                     imagesSelected = true;
-                    infoPopup();
                 }
             }
-
         AddClothes sendImage = new AddClothes(imagesSelected, selectedImagesPaths);
         sendImage.connectServer();
+        infoPopup();
         super.onActivityResult(requestCode, resultCode, data);
     }
 

@@ -1,10 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<<<<<<< HEAD
-<<<<<<< HEAD
 <merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\src\main\assets"/><source path="C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\build\intermediates\shader_assets\debug\compileDebugShaders\out"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\src\debug\assets"/></dataSet></merger>
-=======
-<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\main\assets"/><source path="C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\build\intermediates\shader_assets\debug\compileDebugShaders\out"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\debug\assets"/></dataSet></merger>
->>>>>>> 0fa20bc664130927e9611c04fe61c469414d41ec
-=======
-<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\assets"/><source path="C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\build\intermediates\shader_assets\debug\compileDebugShaders\out"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\debug\assets"/></dataSet></merger>
->>>>>>> 307c50e294de3e092e5af72a92241cce927ada03

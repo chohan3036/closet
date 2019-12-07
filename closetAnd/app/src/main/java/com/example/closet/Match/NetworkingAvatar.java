@@ -37,7 +37,8 @@ public class NetworkingAvatar extends AsyncTask<Void, Void, JSONObject> {
     }
     public void connectServer() {
 
-        String ipv4Address = "52.78.194.160";
+        String ipv4Address = "192.168.0.3";
+        //String ipv4Address = "52.78.194.160";
         String portNumber = "3030";
 
         final Pattern IP_ADDRESS
@@ -63,7 +64,17 @@ public class NetworkingAvatar extends AsyncTask<Void, Void, JSONObject> {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         try {
             Bitmap responseImage = BitmapFactory.decodeFile(selectedImagesPaths, options);
-            responseImage.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            // 사이즈가 클 때 줄이는 코드
+            int height = responseImage.getHeight();
+            int width = responseImage.getWidth();
+            Bitmap resized = null;
+            while(height > 1000 || width > 1000){
+                resized = Bitmap.createScaledBitmap(responseImage, width / 2 , height / 2, true);
+                height = resized.getHeight();
+                width = resized.getWidth();
+            }
+            responseImage = resized;
+            responseImage.compress(Bitmap.CompressFormat.JPEG, 80, stream);
         }catch(Exception e){
             System.out.println("Please Make Sure the Selected File is an Image.");
             return;
