@@ -38,6 +38,7 @@ public class Networking extends AsyncTask<Void,Void,JSONObject> {
     @Override
     protected JSONObject doInBackground(Void... voids) {
         try {
+
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestProperty("Connection", "Keep-Alive");
             urlConnection.setConnectTimeout(20 * 1000);//20초

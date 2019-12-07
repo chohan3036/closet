@@ -1,6 +1,7 @@
 package com.example.closet.Clothes;
 
 import android.Manifest;
+import android.graphics.Typeface;
 import android.annotation.SuppressLint;
 import android.content.ContentUris;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -36,6 +38,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -336,7 +339,7 @@ public class Clothes extends AppCompatActivity {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/*");
                 startActivityForResult(intent, PICK_FROM_ALBUM);
-                //infoPopup();
+                infoPopup();
             }
         });
     }
@@ -383,22 +386,23 @@ public class Clothes extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PICK_FROM_CAMERA ) {
-            //File imgFile = new File(selectedImagesPaths);
-            imagesSelected = true;
-        }
-        else if (requestCode == PICK_FROM_ALBUM) {
-            if (data == null) {
-                Log.d("Log_d data", "data is null");
-            } else {
-                uri = data.getData();
-                Log.d("UIR is ", uri.toString());
-                selectedImagesPaths = getRealPathFromURI(this, uri);
-                Log.d("Real file path is", selectedImagesPaths);
+        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+            if (requestCode == PICK_FROM_CAMERA ) {
+                //File imgFile = new File(selectedImagesPaths);
                 imagesSelected = true;
             }
-        }
+            else if (requestCode == PICK_FROM_ALBUM) {
+                if (data == null) {
+                    Log.d("Log_d data", "data is null");
+                } else {
+                    uri = data.getData();
+                    Log.d("UIR is ", uri.toString());
+                    selectedImagesPaths = getRealPathFromURI(this, uri);
+                    Log.d("Real file path is", selectedImagesPaths);
+                    imagesSelected = true;
+                    infoPopup();
+                }
+            }
 
         AddClothes sendImage = new AddClothes(imagesSelected, selectedImagesPaths);
         sendImage.connectServer();
