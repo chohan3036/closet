@@ -44,14 +44,37 @@
             android:src="@drawable/camera"
             android:background="#00000000"/>
     </RelativeLayout>
-
-    <ImageView
-        android:id="@+id/match_avatar"
-        android:layout_width="280dp"
-        android:layout_height="650dp"
+    <FrameLayout
         android:layout_marginTop="80dp"
-        android:src="@drawable/person"
-        android:scaleType="fitXY" />
+
+        android:layout_width="280dp"
+        android:layout_height="650dp" >
+
+        <ImageView
+            android:id="@+id/match_avatar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY" />
+
+        <ImageView
+            android:id="@+id/match_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/match_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressbar"
+            android:layout_gravity="center"
+            android:visibility="invisible"
+            />
+    
+    </FrameLayout>
 
     <GridView
         android:id="@+id/match_gridView"
