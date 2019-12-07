@@ -5,6 +5,7 @@ import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -118,10 +119,10 @@ public class Match extends Fragment implements View.OnClickListener {
     ArrayList<URL> selected_from_clothes = new ArrayList<>();
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1888;
     Intent intent, intent1;
-    ImageView iv;
+    ImageView iv, top, bottom;
     GridView gridView;
     ArrayList<URL> selected_from_clothes2 = new ArrayList<>();
-    ArrayList<Integer> match_checked_items;
+    ArrayList<Integer> match_checked_items = Match_Adapter.match_checked_items;;
     Context context;
     String avatarInfo;//pose networking결과
     ProgressBar progressBar;
@@ -142,10 +143,9 @@ public class Match extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.fragment_match, container, false);
+        gridView = (GridView) view.findViewById(R.id.match_gridView);
 
         setting();
-
-        gridView = (GridView) view.findViewById(R.id.match_gridView);
 
         return view;
     }
@@ -186,6 +186,13 @@ public class Match extends Fragment implements View.OnClickListener {
         save.setOnClickListener(this);
         reset = (Button) view.findViewById(R.id.reset);
         reset.setOnClickListener(this);
+
+        /*if(getActivity().getIntent() !=null) {
+            top = (ImageView) view.findViewById(R.id.match_top);
+            bottom = (ImageView) view.findViewById(R.id.match_down);
+            Bitmap bitmapimage = getActivity().getIntent().getExtras().getParcelable("photo");
+            top.setImageBitmap(bitmapimage);
+        }*/
     }
 
     public void onClick(View view) {

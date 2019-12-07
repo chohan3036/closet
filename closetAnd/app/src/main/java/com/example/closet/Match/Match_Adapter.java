@@ -3,6 +3,7 @@ package com.example.closet.Match;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -10,7 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.closet.Clothes.UrlToBitmap;
 import com.example.closet.R;
@@ -23,8 +28,11 @@ class Match_Adapter extends BaseAdapter {
 
     private Context context;
     private LayoutInflater inflater;
+    private LinearLayout sublayout = new LinearLayout(context);
     private int layout;
     private SparseBooleanArray mSelectedItemsIds;
+
+    ImageView top, bottom;
 
     ArrayList<URL> selected_from_clothes;
     ArrayList<Bitmap> photoBitmap = new ArrayList<>();
@@ -81,7 +89,7 @@ class Match_Adapter extends BaseAdapter {
         return i;
     }
 
-    public View getView(final int i, View view, ViewGroup viewGroup) {
+    public View getView(final int i, View view, final ViewGroup viewGroup) {
         ViewHolder viewHolder;
         //checked_items = new ArrayList<>(); 어디선가 초기화해줘야하는데,,
 
@@ -100,8 +108,16 @@ class Match_Adapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 checkCheckBox(i, !mSelectedItemsIds.get(i));
+                View sub = inflater.inflate(R.layout.fragment_match, sublayout);
+                top = (ImageView) sub.findViewById(R.id.match_top);
+                bottom = (ImageView) sub.findViewById(R.id.match_down);
+                top.setImageBitmap(photoBitmap.get(i));
             }
         });
+
+        if(viewHolder.checkBox.isChecked()){
+            checkCheckBox(i, !mSelectedItemsIds.get(i));
+        }
 
         return view;
     }
