@@ -286,6 +286,8 @@ public class Match extends Fragment implements View.OnClickListener {
             }
         }
     }
+
+
     // 이미지 Resize 함수
    /* private int setSimpleSize(BitmapFactory.Options options, int requestWidth, int requestHeight){
         // 이미지 사이즈를 체크할 원본 이미지 가로/세로 사이즈를 임시 변수에 대입.
