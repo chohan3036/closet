@@ -1,6 +1,7 @@
 package com.example.closet.Clothes;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.closet.R;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 
 
 public class CustomSpinner_Adapter extends ArrayAdapter<String> {
@@ -25,6 +27,8 @@ public class CustomSpinner_Adapter extends ArrayAdapter<String> {
     String[] spinnerNames;
     int[] spinnerImages;
     Context mContext;
+
+    Typeface font = ResourcesCompat.getFont(getContext(), R.font.montaga);
 
     public CustomSpinner_Adapter(Context context, String[] names, int[] images) {
         super(context, R.layout.spinner_row);
@@ -57,6 +61,7 @@ public class CustomSpinner_Adapter extends ArrayAdapter<String> {
 
             mViewHolder.mImage = (ImageView) convertView.findViewById(R.id.imageview_spinner_image);
             mViewHolder.mName = (TextView) convertView.findViewById(R.id.textview_spinner_name);
+
             convertView.setTag(mViewHolder);
 
         } else {
@@ -66,6 +71,7 @@ public class CustomSpinner_Adapter extends ArrayAdapter<String> {
 
         mViewHolder.mImage.setImageResource(spinnerImages[position]);
         mViewHolder.mName.setText(spinnerNames[position]);
+        mViewHolder.mName.setTypeface(font);
 
         return convertView;
     }
