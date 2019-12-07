@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.closet.Clothes.UrlToBitmap;
+import com.example.closet.DataTransferInterface;
 import com.example.closet.R;
 
 import java.net.URL;
@@ -28,7 +29,6 @@ class Match_Adapter extends BaseAdapter {
 
     private Context context;
     private LayoutInflater inflater;
-    private LinearLayout sublayout = new LinearLayout(context);
     private int layout;
     private SparseBooleanArray mSelectedItemsIds;
 
@@ -40,13 +40,17 @@ class Match_Adapter extends BaseAdapter {
 
     static public ArrayList<Integer> match_checked_items = new ArrayList<>(); //match에서 쓸 수 있게 static
 
-    public Match_Adapter(Context context, int layout, ArrayList<URL> selected_from_clothes) {
+    DataTransferInterface dtInterface;
+
+    public Match_Adapter(Context context, int layout, ArrayList<URL> selected_from_clothes, DataTransferInterface dtInterface) {
 
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.context = context;
         this.layout = layout;
         this.selected_from_clothes = selected_from_clothes;
         mSelectedItemsIds = new SparseBooleanArray();
+
+        this.dtInterface = dtInterface;
 
         urlToBitmap = new UrlToBitmap(selected_from_clothes);
         urlToBitmap.execute();
@@ -108,16 +112,9 @@ class Match_Adapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 checkCheckBox(i, !mSelectedItemsIds.get(i));
-                View sub = inflater.inflate(R.layout.fragment_match, sublayout);
-                top = (ImageView) sub.findViewById(R.id.match_top);
-                bottom = (ImageView) sub.findViewById(R.id.match_down);
-                top.setImageBitmap(photoBitmap.get(i));
+                dtInterface.setValues(photoBitmap.get(i));
             }
         });
-
-        if(viewHolder.checkBox.isChecked()){
-            checkCheckBox(i, !mSelectedItemsIds.get(i));
-        }
 
         return view;
     }

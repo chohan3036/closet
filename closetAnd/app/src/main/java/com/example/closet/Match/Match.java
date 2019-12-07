@@ -24,10 +24,12 @@ import android.provider.MediaStore;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.closet.DataTransferInterface;
 import com.example.closet.storeClothingNetworking;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -73,6 +75,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.MalformedURLException;
@@ -108,7 +111,7 @@ import static com.example.closet.Clothes.Clothes.isMediaDocument;
 *
 *
 * */
-public class Match extends Fragment implements View.OnClickListener {
+public class Match extends Fragment implements View.OnClickListener, DataTransferInterface {
     private PopupWindow mPopupWindow;
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
     private String pictureFilePath;
@@ -126,6 +129,8 @@ public class Match extends Fragment implements View.OnClickListener {
     Context context;
     JSONObject avatarInfo;//pose networking결과
     ProgressBar progressBar;
+
+    String lshoulder;
 
     public Match() {
         // Required empty public constructor
@@ -160,7 +165,7 @@ public class Match extends Fragment implements View.OnClickListener {
             Toast.makeText(context, "선택된 옷이 없습니다", Toast.LENGTH_LONG).show();
             //getContext못가져오면 이것도 못가져올것같기도?
         } else {
-            adapter = new Match_Adapter(getActivity(), R.layout.match_griditem, selected_from_clothes2);
+            adapter = new Match_Adapter(getActivity(), R.layout.match_griditem, selected_from_clothes2, this);
             gridView.setAdapter(adapter);
         }
 
@@ -193,6 +198,34 @@ public class Match extends Fragment implements View.OnClickListener {
             Bitmap bitmapimage = getActivity().getIntent().getExtras().getParcelable("photo");
             top.setImageBitmap(bitmapimage);
         }*/
+    }
+
+    private  void setXY(){
+        try {
+            lshoulder = (String) avatarInfo.get("LShoulder");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void setValues(Bitmap photo) {
+        // TODO Auto-generated method stub
+        top = (ImageView) view.findViewById(R.id.match_top);
+        top.setImageBitmap(photo);
+
+        int forY = lshoulder.length();
+        String forSXY = lshoulder.substring(1, forY-1);
+        String forIXY[] = forSXY.split(", ");
+
+        int x = Integer.parseInt(forIXY[0]);
+        int y = Integer.parseInt(forIXY[1]);
+
+        top.setX(x);
+        top.setY(y);
+        top.setLayoutParams(new FrameLayout.LayoutParams());
+
+        bottom = (ImageView) view.findViewById(R.id.match_down);
     }
 
     public void onClick(View view) {
@@ -398,6 +431,7 @@ public class Match extends Fragment implements View.OnClickListener {
                 NetworkingAvatar networking = new NetworkingAvatar(filePath,getActivity());
                 networking.execute();
                 avatarInfo = networking.get();
+                setXY();
                 //여기서  null 나면 박수빈한테 알려조
 
                 if (new File(filePath).exists()) {
