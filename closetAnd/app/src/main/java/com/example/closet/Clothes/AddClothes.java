@@ -7,11 +7,19 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.example.closet.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -40,13 +48,11 @@ public class AddClothes extends AppCompatActivity {
 
     String selectedImagesPaths; // Paths of the image(s) selected by the user.
     boolean imagesSelected; // Whether the user selected at least an image or not.
-    Bitmap bitmap;
 
     public AddClothes (boolean imagesSelected, String selectedImagesPaths)
     {
         this.imagesSelected = imagesSelected;
         this.selectedImagesPaths = selectedImagesPaths;
-        //this.bitmap = bitmap;
     }
 
     @Override
@@ -57,6 +63,7 @@ public class AddClothes extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "이 앱을 실행하려면 인터넷 권한이 필요합니다.", Toast.LENGTH_SHORT).show();
             ActivityCompat.requestPermissions(AddClothes.this, new String[]{Manifest.permission.INTERNET}, 1);
         }
+        setContentView(R.layout.activity_clothes2);
     }
 
     @Override
@@ -130,6 +137,9 @@ public class AddClothes extends AppCompatActivity {
     }
 
     void postRequest(String postUrl, RequestBody postBody) {
+        //final EditText color = (EditText)findViewById(R.id.cloth_color);
+        //final EditText category = (EditText)findViewById(R.id.cloth_category);
+
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(100, TimeUnit.SECONDS)
                 .readTimeout(100, TimeUnit.SECONDS)
@@ -160,6 +170,12 @@ public class AddClothes extends AppCompatActivity {
                     public void run() {
                         try {
                             System.out.println("Server's Response\n" + response.body().string());
+                            //response 파싱해서 Edittext에 띄우게 해야 됨
+                            //String resultStr = response.body().string();
+                            //String[] results = resultStr.split(",");
+                            //color.setText(results[2].split(":")[1]);
+                            //category.setText(results[3].split(":")[1]);
+                            //infoPopup();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

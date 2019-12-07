@@ -390,7 +390,6 @@ public class Match extends Fragment implements View.OnClickListener {
             String filePath = getPath(getActivity(), uri);
             Log.d("Log_dFilePath ", filePath.toString());
 
-
             NetworkingAvatar networking = new NetworkingAvatar(filePath, getActivity());
             networking.connectServer();
             //여기서  null 나면 박수빈한테 알려조
