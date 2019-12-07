@@ -1,6 +1,7 @@
 -- Merging decision tree log ---
 manifest
 <<<<<<< HEAD
+<<<<<<< HEAD
 ADDED from C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml:2:1-7:12
 INJECTED from C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml:2:1-7:12
 INJECTED from C:\Users\choha\Desktop\SYSTEM_\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml:2:1-7:12
@@ -44,32 +45,47 @@ INJECTED from C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVL
 INJECTED from C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml:2:1-7:12
 INJECTED from C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml:2:1-7:12
 INJECTED from C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml:2:1-7:12
+=======
+ADDED from C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml:2:1-7:12
+INJECTED from C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml:2:1-7:12
+INJECTED from C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml:2:1-7:12
+INJECTED from C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml:2:1-7:12
+INJECTED from C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml:2:1-7:12
+INJECTED from C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml:2:1-7:12
+INJECTED from C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml:2:1-7:12
+>>>>>>> 307c50e294de3e092e5af72a92241cce927ada03
 	package
-		ADDED from C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml:3:7-27
-		INJECTED from C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
+		ADDED from C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml:3:7-27
+		INJECTED from C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
 	android:versionName
-		ADDED from C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml:5:7-34
-		INJECTED from C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
+		ADDED from C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml:5:7-34
+		INJECTED from C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
 	xmlns:android
-		ADDED from C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml:2:11-69
+		ADDED from C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml:2:11-69
 	android:versionCode
-		ADDED from C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml:4:7-33
-		INJECTED from C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
+		ADDED from C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml:4:7-33
+		INJECTED from C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
 uses-sdk
-INJECTED from C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
-INJECTED from C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
-INJECTED from C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
-INJECTED from C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
+INJECTED from C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
+INJECTED from C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
+INJECTED from C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
+INJECTED from C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
 	android:targetSdkVersion
-		INJECTED from C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
-		ADDED from C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
+		ADDED from C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
 	android:minSdkVersion
+<<<<<<< HEAD
 		INJECTED from C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
 		ADDED from C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
 		INJECTED from C:\Users\Administrator\Desktop\git_closet\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
 >>>>>>> 0fa20bc664130927e9611c04fe61c469414d41ec
+=======
+		INJECTED from C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
+		ADDED from C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\beeny\Desktop\closetGit\closet\closetAnd\openCVLibrary348\src\main\AndroidManifest.xml
+>>>>>>> 307c50e294de3e092e5af72a92241cce927ada03

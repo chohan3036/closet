@@ -34,7 +34,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Recommend extends Fragment {
+public class Recommend extends Fragment implements AdapterView.OnItemSelectedListener {
 
     View view;
     int[] recommend_spinner = new int[]{R.drawable.recommend_beige, R.drawable.thumb_on, R.drawable.thumb_off};
@@ -85,52 +85,13 @@ public class Recommend extends Fragment {
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.recommend));
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         recom_spinner.setAdapter(dataAdapter);
-        recom_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String string = adapterView.getItemAtPosition(i).toString();
-                //처음에 들어갔을 때 어떻게 보여주지?
-                try {
-                    if (string.equals("나이/성별")) {
-                        url = new URL("http://52.78.194.160:3030/recommendByUserInfo?uid=" + uid);
-                    } else if (string.equals("코디 기반")) {
-                        url = new URL("http://52.78.194.160:3030/recommendByLookTable?uid=" + uid);
-                    } else {
-                        url = new URL("http://52.78.194.160:3000/closet/like/recommendByLike");
-                    }
-                    Networking_Get networking = new Networking_Get(url);
-                    networking.execute();
-                    JSONObject result = networking.get();
-
-                    if (result!=null) {
-                        Log.d("Log_dRECOMMEND", result.toString());
-                        //: {"message":"successfully selected","result":[{"hid":37,"uid":3,"like":11,"look_name":"daily,campus","pho
-                        JSONArray jsonArray = result.getJSONArray("result");
-                        Log.d("Log_dResultArray", jsonArray.toString());
-                        showRecommendList(jsonArray);
-                        //[{"down_cid":22,"hid":18,"like":4,"look_name":"romantic,office,daily","outer_cid":0,"photo_look":null,"uid":2,"up_cid":20},{"down_cid":21,"hid":22,"like":3,"look_name":"office,daily
-                    }
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+        recom_spinner.setOnItemSelectedListener(this);
     }
 
     public void showRecommendList(JSONArray jsonArray) {
     //그리드뷰 업데이트 될 때마다 photoUrl clear
         photoUrls.clear();
+        hidList.clear();
         for(int i=0 ; i<jsonArray.length() ; i++){
             try {
                 JSONObject eachRecommendedClothing = jsonArray.getJSONObject(i);
@@ -149,12 +110,55 @@ public class Recommend extends Fragment {
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
-            loadGridView();
         }
+        loadGridView();
     }
     private void loadGridView() {
+
         GridView gridView = (GridView) view.findViewById(R.id.recommend_grid);
         adapter = new Recommend_GridAdapter(getContext(), photoUrls,hidList);
         gridView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+        //gridView.invalidateViews();//?
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        String string = adapterView.getItemAtPosition(i).toString();
+        //처음에 들어갔을 때 어떻게 보여주지?
+        try {
+            if (string.equals("나이/성별")) {
+                url = new URL("http://52.78.194.160:3030/recommendByUserInfo?uid=" + uid);
+            } else if (string.equals("코디 기반")) {
+                url = new URL("http://52.78.194.160:3030/recommendByLookTable?uid=" + uid);
+            } else if(string.equals("좋아요 순")){
+                url = new URL("http://52.78.194.160:3000/closet/like/recommendByLike");
+            }
+            Networking_Get networking = new Networking_Get(url);
+            networking.execute();
+            JSONObject result = networking.get();
+
+            if (result!=null) {
+                Log.d("Log_dRECOMMEND", result.toString());
+                //: {"message":"successfully selected","result":[{"hid":37,"uid":3,"like":11,"look_name":"daily,campus","pho
+                JSONArray jsonArray = result.getJSONArray("result");
+                Log.d("Log_dResultArray", jsonArray.toString());
+                showRecommendList(jsonArray);
+                //[{"down_cid":22,"hid":18,"like":4,"look_name":"romantic,office,daily","outer_cid":0,"photo_look":null,"uid":2,"up_cid":20},{"down_cid":21,"hid":22,"like":3,"look_name":"office,daily
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }
