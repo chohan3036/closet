@@ -44,6 +44,7 @@ class Recommend_GridAdapter extends BaseAdapter {
     ArrayList<String> hidList = new ArrayList<>();
     String uid = "1"; // 받아오기
 
+
     private ArrayList<Integer> likedHid = new ArrayList<>();//  그 사용자가 좋아요  한 list
 
     public Recommend_GridAdapter(Context context, ArrayList<URL> photoUrls, ArrayList<String> hidList) {
@@ -63,7 +64,6 @@ class Recommend_GridAdapter extends BaseAdapter {
             e.printStackTrace();
         }
     }
-
     public int getCount() {
         return photoUrls.size();
     }
@@ -83,9 +83,9 @@ class Recommend_GridAdapter extends BaseAdapter {
             viewHolder.imageButton = (ImageButton) view.findViewById(R.id.likeit);
             viewHolder.textView = (TextView) view.findViewById(R.id.rec_item_text);
             view.setTag(viewHolder);
-
         } else
             viewHolder = (ViewHolder) view.getTag();
+
         viewHolder.imageView.setImageBitmap(photoBitmap.get(i));
         viewHolder.textView.setText("코디 정보? ");
         for (int j = 0; j < likedHid.size(); j++) {
@@ -98,6 +98,7 @@ class Recommend_GridAdapter extends BaseAdapter {
         viewHolder.imageButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                ImageButton selected;
                 try {
                     //37,21,17,20,22,19,18,50
                     HashMap<String, String> arugments = new HashMap<String, String>();
@@ -107,10 +108,13 @@ class Recommend_GridAdapter extends BaseAdapter {
                     networking.execute();
                     JSONObject jsonObject = networking.get();
                     if (String.valueOf(jsonObject.get("like_status")).equals("1")) {
-                        //getView()
-                        viewHolder.imageButton.setImageResource(R.drawable.full_like);
+                        //viewHolder.imageButton.setImageResource(R.drawable.full_like);
+                        selected = (ImageButton)view.findViewById(view.getId());
+                        selected.setImageResource(R.drawable.full_like);
+
                     } else {
-                        viewHolder.imageButton.setImageResource(R.drawable.emptylike);
+                        selected = (ImageButton)view.findViewById(view.getId());
+                        selected.setImageResource(R.drawable.emptylike);
                     }
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
