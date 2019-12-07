@@ -43,7 +43,6 @@ class Recommend_GridAdapter extends BaseAdapter {
     boolean showing = false;
     ArrayList<String> hidList = new ArrayList<>();
     String uid = "1"; // 받아오기
-    Integer selected;
 
     private ArrayList<Integer> likedHid = new ArrayList<>();//  그 사용자가 좋아요  한 list
 
@@ -81,10 +80,10 @@ class Recommend_GridAdapter extends BaseAdapter {
         if (view == null) {
             view = inflater.inflate(R.layout.recommend_griditem, viewGroup, false);
             viewHolder.imageView = (ImageView) view.findViewById(R.id.recommend_iv);
-            viewHolder.imageButton = (ImageView) view.findViewById(R.id.likeit);
-            //viewHolder.imageView.setOnClickListener(this); //? 처리 안됨 ㅠ
+            viewHolder.imageButton = (ImageButton) view.findViewById(R.id.likeit);
             viewHolder.textView = (TextView) view.findViewById(R.id.rec_item_text);
             view.setTag(viewHolder);
+
         } else
             viewHolder = (ViewHolder) view.getTag();
         viewHolder.imageView.setImageBitmap(photoBitmap.get(i));
@@ -104,20 +103,15 @@ class Recommend_GridAdapter extends BaseAdapter {
                     HashMap<String, String> arugments = new HashMap<String, String>();
                     arugments.put("uid", uid);
                     arugments.put("hid", hidList.get(i));
-                    //Log.d("Log_dSeleceted", hidList.get(i));
-                    //Log.d("Log_dBBBBBBB", String.valueOf(viewGroup.getChildAt(i)));
-                    //if(viewGroup.getChildAt(i) instanceof ImageView)
-                    //    Log.d("Log_dAAAAAAAAAA","asdadasd");
                     Networking networking = new Networking(new URL("http://52.78.194.160:3000/closet/like/makeLike"), arugments);
                     networking.execute();
                     JSONObject jsonObject = networking.get();
-                    //Log.d("Log_dOOOOo", String.valueOf(jsonObject.get("like_status")));
-                    //if(jsonObject.get("like_status") == (Integer)1){
                     if (String.valueOf(jsonObject.get("like_status")).equals("1")) {
-                        //Log.d("Log_dMakeLike", "good");
+                        //getView()
                         viewHolder.imageButton.setImageResource(R.drawable.full_like);
-                    } else
+                    } else {
                         viewHolder.imageButton.setImageResource(R.drawable.emptylike);
+                    }
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
@@ -132,9 +126,11 @@ class Recommend_GridAdapter extends BaseAdapter {
 
         return view;
     }
-    public void ChangeLikeStatus(){
+
+    public void ChangeLikeStatus() {
 
     }
+
     public ArrayList<Integer> likeList() {
 
         //네트워킹해서 해당 uid가 좋아요 한 목록 뽑고 ,, 비교해서 하트 이미지 설정
@@ -203,7 +199,7 @@ class Recommend_GridAdapter extends BaseAdapter {
 
     private class ViewHolder {
         private ImageView imageView;
-        private ImageView imageButton;
+        private ImageButton imageButton;
         private TextView textView;
     }
 

@@ -72,6 +72,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.MalformedURLException;
@@ -103,10 +104,10 @@ import static com.example.closet.Clothes.Clothes.isMediaDocument;
  * A simple {@link Fragment} subclass.
  */
 /* 아바타 결과
-* [{'avatar_id': 13, 'uid': 7, 'Head': '(220, 31)', 'Neck': '(236, 118)', 'RShoulder': '(165, 174)                       ', 'RElbow': '(157, 261)', 'RWrist': '(141, 356)', 'LShoulder': '(299, 158)', 'LElbow': '(331, 2                       69)', 'LWrist': '(338, 348)', 'RHip': '(212, 602)', 'RKnee': 'None', 'RAnkle': '(228, 404)', 'LH                       ip': '(197, 594)', 'LKnee': '(331, 380)', 'LAnkle': '(236, 396)', 'Chest': '(236, 237)', 'Backgr                       ound': None, 'photo': 'https://closetsook.s3.ap-northeast-2.amazonaws.com/User_Avatar_20191206-0                       95657.png'}]
-*
-*
-* */
+ * [{'avatar_id': 13, 'uid': 7, 'Head': '(220, 31)', 'Neck': '(236, 118)', 'RShoulder': '(165, 174)                       ', 'RElbow': '(157, 261)', 'RWrist': '(141, 356)', 'LShoulder': '(299, 158)', 'LElbow': '(331, 2                       69)', 'LWrist': '(338, 348)', 'RHip': '(212, 602)', 'RKnee': 'None', 'RAnkle': '(228, 404)', 'LH                       ip': '(197, 594)', 'LKnee': '(331, 380)', 'LAnkle': '(236, 396)', 'Chest': '(236, 237)', 'Backgr                       ound': None, 'photo': 'https://closetsook.s3.ap-northeast-2.amazonaws.com/User_Avatar_20191206-0                       95657.png'}]
+ *
+ *
+ * */
 public class Match extends Fragment implements View.OnClickListener {
     private PopupWindow mPopupWindow;
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
@@ -299,7 +300,6 @@ public class Match extends Fragment implements View.OnClickListener {
     }
 
 
-
     public static String getPath(final Context context, final Uri uri) {
 
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
@@ -362,6 +362,7 @@ public class Match extends Fragment implements View.OnClickListener {
 
         return null;
     }
+
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -379,52 +380,59 @@ public class Match extends Fragment implements View.OnClickListener {
     }
 
     String currentPhotoPath;
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 3030) {
             Uri uri = data.getData();
             String filePath = getPath(getActivity(), uri);
-            Log.d("Log_dFilePath ",filePath.toString());
+            Log.d("Log_dFilePath ", filePath.toString());
 
+
+            NetworkingAvatar networking = new NetworkingAvatar(filePath, getActivity());
+            networking.connectServer();
+            //여기서  null 나면 박수빈한테 알려조
+            if (new File(filePath).exists()) {
+                iv.setImageURI(Uri.fromFile(new File(filePath)));
+            }
+
+            while(!networking.responsed)
+                ; //response받을 때 까지 기다림 아예 view동작을멈춤
+            avatarInfo = networking.getAvaInfo();
+            Log.d("Log_dAvatar", avatarInfo.toString());
             try {
-                NetworkingAvatar networking = new NetworkingAvatar(filePath,getActivity());
-                networking.execute();
-                avatarInfo = networking.get();
-                //여기서  null 나면 박수빈한테 알려조
+                String head = (String)avatarInfo.get("Head");
 
-                if (new File(filePath).exists()) {
-                    iv.setImageURI(Uri.fromFile(new File(filePath)));
-                }
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-            //String selectedImagesPaths = getRealPathFromURI(getContext(), uri);
-
-                //currentPhotoPath = image.getAbsolutePath();
-                //File imgFile = new File(currentPhotoPath);
-
-               // networkingPhoto(filePath);
-
-            }
-            // Save a file: path for use with ACTION_VIEW intents
-
-            //Log.d("Real file path is", selectedImagesPaths);
-            //imagesSelected = true;
 
         }
+        //String selectedImagesPaths = getRealPathFromURI(getContext(), uri);
+
+        //currentPhotoPath = image.getAbsolutePath();
+        //File imgFile = new File(currentPhotoPath);
+
+        // networkingPhoto(filePath);
+
+    }
+    // Save a file: path for use with ACTION_VIEW intents
+
+    //Log.d("Real file path is", selectedImagesPaths);
+    //imagesSelected = true;
+
+
         /*
-        if (requestCode == MY_PERMISSIONS_REQUEST_CAMERA && resultCode == RESULT_OK) {
+   }     if (requestCode == MY_PERMISSIONS_REQUEST_CAMERA && resultCode == RESULT_OK) {
             File imgFile = new File(currentPhotoPath);
             if (imgFile.exists()) {
                 iv.setImageURI(Uri.fromFile(imgFile));
             }
         }*/
-    }
-    // 이미지 Resize 함수
+}
+// 이미지 Resize 함수
    /* private int setSimpleSize(BitmapFactory.Options options, int requestWidth, int requestHeight){
         // 이미지 사이즈를 체크할 원본 이미지 가로/세로 사이즈를 임시 변수에 대입.
         int originalWidth = options.outWidth;
