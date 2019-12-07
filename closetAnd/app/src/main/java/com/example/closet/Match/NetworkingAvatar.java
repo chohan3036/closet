@@ -43,8 +43,8 @@ public class NetworkingAvatar {
 
     public void connectServer() {
 
-        String ipv4Address = "192.168.0.3";
-        //String ipv4Address = "52.78.194.160";
+        //String ipv4Address = "192.168.0.3";
+        String ipv4Address = "52.78.194.160";
         String portNumber = "3030";
 
         final Pattern IP_ADDRESS

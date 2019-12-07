@@ -80,8 +80,8 @@ public class AddClothes extends AppCompatActivity {
         }
         System.out.println("Sending the Files. Please Wait ...");
 
-        //String ipv4Address = "52.78.194.160";
-        String ipv4Address = "192.168.0.3";
+        String ipv4Address = "52.78.194.160";
+        //String ipv4Address = "192.168.0.3";
         String portNumber = "3030";
 
         Matcher matcher = IP_ADDRESS.matcher(ipv4Address);
