@@ -6,8 +6,13 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,10 +26,10 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class NetworkingAvatar extends AsyncTask<Void, Void, String> {
+public class NetworkingAvatar extends AsyncTask<Void, Void, JSONObject> {
     Activity activity;
     String selectedImagesPaths;
-    String result;
+    JSONObject avaInfo;
 
     NetworkingAvatar(String selectedImagesPaths, Activity activity){
         this.selectedImagesPaths = selectedImagesPaths;
@@ -105,23 +110,35 @@ public class NetworkingAvatar extends AsyncTask<Void, Void, String> {
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
-                System.out.println("Log_dServer's Response\n" + response.body().string());
-                result=response.body().string();
-                /* 결과값jsonPasring해서 줘야할듯,,
-                * [{'avatar_id': 18, 'uid': 3, 'Head': '(220, 31)', 'Neck': '(236, 118)', 'RShoulder': '(165, 166)', 'RElbow': '(149, 261)', 'RWrist': '(141, 356)', 'LShoulder': '(299, 158)', 'LElbow': '(331, 269)', 'LWrist': '(338, 348)', 'RHip': '(212, 602)', 'RKnee': 'None', 'RAnkle': '(228, 404)', 'LHip': '(197, 602)', 'LKnee': '(331, 372)', 'LAnkle': '(236, 396)', 'Chest': '(236, 229)', 'Background': None, 'photo': 'https://closetsook.s3.ap-northeast-2.amazonaws.com/User_Avatar_20191206-195749.png'}]
+                //System.out.println("Log_dServer's Response\n" + response.body().string());
+                String result=response.body().string();
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    String jsonResult = (String) jsonObject.get("result");
+                    JSONArray jsonArray = new JSONArray(jsonResult);
 
-                 * */
+                    avaInfo = (JSONObject) jsonArray.get(0);
+                    String head= (String) avaInfo.get("Head");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
     }
     @Override
-    protected String doInBackground(Void... voids) {
+    protected JSONObject doInBackground(Void... voids) {
         connectServer();
-        return result;
+        /* 결과값jsonPasring해서 줘야할듯,,
+         * [{'avatar_id': 18, 'uid': 3, 'Head': '(220, 31)', 'Neck': '(236, 118)', 'RShoulder': '(165, 166)', 'RElbow': '(149, 261)', 'RWrist': '(141, 356)', 'LShoulder': '(299, 158)', 'LElbow': '(331, 269)', 'LWrist': '(338, 348)', 'RHip': '(212, 602)', 'RKnee': 'None', 'RAnkle': '(228, 404)', 'LHip': '(197, 602)', 'LKnee': '(331, 372)', 'LAnkle': '(236, 396)', 'Chest': '(236, 229)', 'Background': None, 'photo': 'https://closetsook.s3.ap-northeast-2.amazonaws.com/User_Avatar_20191206-195749.png'}]
+
+         * */
+
+        return avaInfo;
     }
 
     @Override
-    protected void onPostExecute(String s) {
+    protected void onPostExecute(JSONObject s) {
         super.onPostExecute(s);
     }
 }

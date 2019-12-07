@@ -124,7 +124,7 @@ public class Match extends Fragment implements View.OnClickListener {
     ArrayList<URL> selected_from_clothes2 = new ArrayList<>();
     ArrayList<Integer> match_checked_items = Match_Adapter.match_checked_items;;
     Context context;
-    String avatarInfo;//pose networking결과
+    JSONObject avatarInfo;//pose networking결과
     ProgressBar progressBar;
 
     public Match() {
@@ -398,6 +398,7 @@ public class Match extends Fragment implements View.OnClickListener {
                 NetworkingAvatar networking = new NetworkingAvatar(filePath,getActivity());
                 networking.execute();
                 avatarInfo = networking.get();
+                //여기서  null 나면 박수빈한테 알려조
 
                 if (new File(filePath).exists()) {
                     iv.setImageURI(Uri.fromFile(new File(filePath)));
