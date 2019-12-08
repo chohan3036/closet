@@ -3,6 +3,7 @@ package com.example.closet.Clothes;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;

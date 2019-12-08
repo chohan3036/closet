@@ -1,7 +1,6 @@
 package com.example.closet.Clothes;
 
 import android.Manifest;
-import android.graphics.Typeface;
 import android.annotation.SuppressLint;
 import android.content.ContentUris;
 import android.content.Context;
@@ -9,11 +8,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -27,7 +24,6 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 import android.widget.Spinner;
 
@@ -40,16 +36,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
-import com.example.closet.Match.Match;
-import com.example.closet.Match.Match_Grid;
 import com.example.closet.Networking_Get;
 import com.example.closet.R;
 import com.example.closet.SaveSharedPreference;
-import com.example.closet.storeClothingNetworking;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,7 +48,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
 

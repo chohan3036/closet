@@ -5,6 +5,7 @@ import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,12 +24,13 @@ import android.provider.MediaStore;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.closet.Clothes.AddClothes;
+import com.example.closet.DataTransferInterface;
 import com.example.closet.storeClothingNetworking;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -102,15 +104,7 @@ import static com.example.closet.Clothes.Clothes.isDownloadsDocument;
 import static com.example.closet.Clothes.Clothes.isExternalStorageDocument;
 import static com.example.closet.Clothes.Clothes.isMediaDocument;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-/* 아바타 결과
- * [{'avatar_id': 13, 'uid': 7, 'Head': '(220, 31)', 'Neck': '(236, 118)', 'RShoulder': '(165, 174)                       ', 'RElbow': '(157, 261)', 'RWrist': '(141, 356)', 'LShoulder': '(299, 158)', 'LElbow': '(331, 2                       69)', 'LWrist': '(338, 348)', 'RHip': '(212, 602)', 'RKnee': 'None', 'RAnkle': '(228, 404)', 'LH                       ip': '(197, 594)', 'LKnee': '(331, 380)', 'LAnkle': '(236, 396)', 'Chest': '(236, 237)', 'Backgr                       ound': None, 'photo': 'https://closetsook.s3.ap-northeast-2.amazonaws.com/User_Avatar_20191206-0                       95657.png'}]
- *
- *
- * */
-public class Match extends Fragment implements View.OnClickListener {
+public class Match extends Fragment implements View.OnClickListener, DataTransferInterface{
     private PopupWindow mPopupWindow;
     public static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
     private String pictureFilePath;
@@ -124,7 +118,7 @@ public class Match extends Fragment implements View.OnClickListener {
     ImageView iv, top, bottom;
     GridView gridView;
     ArrayList<URL> selected_from_clothes2 = new ArrayList<>();
-    ArrayList<Integer> match_checked_items;
+    ArrayList<Integer> match_checked_items = Match_Adapter.match_checked_items;;
     Context context;
     JSONObject avatarInfo;//pose networking결과
     ProgressBar progressBar;
@@ -140,7 +134,6 @@ public class Match extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = getActivity().getIntent();
         //selected_from_clothes = (ArrayList<URL>) intent.getSerializableExtra("selected_items");
     }
 
@@ -163,7 +156,7 @@ public class Match extends Fragment implements View.OnClickListener {
             Toast.makeText(context, "선택된 옷이 없습니다", Toast.LENGTH_LONG).show();
             //getContext못가져오면 이것도 못가져올것같기도?
         } else {
-            adapter = new Match_Adapter(getActivity(), R.layout.match_griditem, selected_from_clothes2);
+            adapter = new Match_Adapter(getActivity(), R.layout.match_griditem, selected_from_clothes2, this);
             gridView.setAdapter(adapter);
         }
     }
@@ -187,6 +180,78 @@ public class Match extends Fragment implements View.OnClickListener {
         save.setOnClickListener(this);
         reset = (Button) view.findViewById(R.id.reset);
         reset.setOnClickListener(this);
+        /*if(getActivity().getIntent() !=null) {
+            top = (ImageView) view.findViewById(R.id.match_top);
+            bottom = (ImageView) view.findViewById(R.id.match_down);
+            Bitmap bitmapimage = getActivity().getIntent().getExtras().getParcelable("photo");
+            top.setImageBitmap(bitmapimage);
+        }*/
+    }
+
+    String lShoulder, forLshoulder, rShoulder, forRshoulder;
+    String [] forLshoulderInt, forRshoulderInt;
+    int lShoulderX, lShoulderY, rShoulderX, rShoulderY, lShoulderLength, rShoulderLength, forTopWidth;
+
+    String lWrist, rWrist, lKnee, forLwrist, forRwrist, forLknee;
+    String [] forLwristInt, forRwristInt, forLkneeInt;
+    int lWristLength, lWristX, lWristY, forTopHeight, rWristLength, rWristX, rWristY, forBottomWidth, lKneeLength, lKneeX, lKneeY, forBottomHeight;
+
+    public void parsing(){
+
+        test = (TextView) view.findViewById(R.id.match_tv);
+        test.setText(avatarInfo.toString());
+
+        lShoulderLength = lShoulder.length();
+        forLshoulder = lShoulder.substring(1, lShoulderLength-1);
+        forLshoulderInt = forLshoulder.split(", ");
+        lShoulderX = Integer.parseInt(forLshoulderInt[0]);
+        lShoulderY = Integer.parseInt(forLshoulderInt[1]);
+
+        rShoulderLength = rShoulder.length();
+        forRshoulder = rShoulder.substring(1, rShoulderLength-1);
+        forRshoulderInt = forLshoulder.split(", ");
+        rShoulderX = Integer.parseInt(forRshoulderInt[0]);
+        rShoulderY = Integer.parseInt(forRshoulderInt[1]);
+
+        forTopWidth = rShoulderX - lShoulderX; // 상의 width
+
+        lWristLength = lWrist.length();
+        forLwrist = lWrist.substring(1, lWristLength-1);
+        forLwristInt = lWrist.split(", ");
+        lWristX = Integer.parseInt(forLwristInt[0]);
+        lWristY = Integer.parseInt(forLwristInt[1]);
+
+        rWristLength = rWrist.length();
+        forRwrist = rWrist.substring(1, rWristLength-1);
+        forRwristInt = rWrist.split(", ");
+        rWristX = Integer.parseInt(forLwristInt[0]);
+        rWristY = Integer.parseInt(forLwristInt[1]);
+
+        forTopHeight = lShoulderY - lWristY; // 상의 height
+        forBottomWidth = rWristX - lWristX; // 하의 width
+
+        lKneeLength = lKnee.length();
+        forLknee = lKnee.substring(1, lKneeLength-1);
+        forLkneeInt = lKnee.split(", ");
+        lKneeX = Integer.parseInt(forLwristInt[0]);
+        lKneeY = Integer.parseInt(forLwristInt[1]);
+
+        forBottomHeight = lWristY - lKneeX; // 하의 height
+
+    }
+    @Override
+    public void setValues(Bitmap photo) {
+        // TODO Auto-generated method stub
+        parsing();
+
+        top = (ImageView) view.findViewById(R.id.match_top);
+        top.setImageBitmap(photo);
+
+        top.setX(lShoulderX);
+        top.setY(lShoulderY);
+        //top.setLayoutParams(new FrameLayout.LayoutParams());
+
+        bottom = (ImageView) view.findViewById(R.id.match_down);
     }
 
     public void onClick(View view) {
@@ -392,7 +457,7 @@ public class Match extends Fragment implements View.OnClickListener {
 
             NetworkingAvatar networking = new NetworkingAvatar(filePath, getActivity());
             networking.connectServer();
-            //여기서  null 나면 박수빈한테 알려조
+            //여기서 null나면 박수빈한테 알려조
             if (new File(filePath).exists()) {
                 iv.setImageURI(Uri.fromFile(new File(filePath)));
             }
@@ -401,14 +466,17 @@ public class Match extends Fragment implements View.OnClickListener {
             avatarInfo = networking.getAvaInfo();
             Log.d("Log_dAvatar", avatarInfo.toString());
             try {
-                String head = (String)avatarInfo.get("Head");
-
-
+                lShoulder = (String)avatarInfo.get("LShoulder");
+                rShoulder = (String)avatarInfo.get("RShoulder");
+                lWrist = (String)avatarInfo.get("LWrist");
+                rWrist = (String)avatarInfo.get("RWrist");
+                lKnee = (String)avatarInfo.get("LKnee");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
         }
+
         //String selectedImagesPaths = getRealPathFromURI(getContext(), uri);
 
         //currentPhotoPath = image.getAbsolutePath();
