@@ -2,9 +2,11 @@ package com.example.closet.Recommend;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -37,7 +39,7 @@ import java.util.concurrent.ExecutionException;
 public class Recommend extends Fragment implements AdapterView.OnItemSelectedListener {
 
     View view;
-    int[] recommend_spinnerImages = new int[]{R.drawable.recommend_beige, R.drawable.thumb_on, R.drawable.thumb_off};
+    int[] recommend_spinner = new int[]{R.drawable.recommend_beige, R.drawable.thumb_on, R.drawable.thumb_off};
     int spinner_id = 0;
     URL url = null;
     String uid = "2"; //수정하기
@@ -81,7 +83,6 @@ public class Recommend extends Fragment implements AdapterView.OnItemSelectedLis
     }
 */
     private void setting(){
-
         recom_spinner = (Spinner) view.findViewById(R.id.recommend_spinner);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.recommend));
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

@@ -18,22 +18,23 @@
             android:layout_height="300dp"
             android:gravity="center"/>
 
-        <TextView
+        <EditText
             android:id="@+id/cloth_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:fontFamily="@font/nanum"
-            android:text="추출된 color 표시 \n textView로 하면안될것같은데 사용자가 바꿀 수 있게 하려면" />
+            android:layout_marginTop="10dp"
+            android:text="color"
+            android:selectAllOnFocus="true"/>
 
-        <TextView
+        <EditText
             android:id="@+id/cloth_category"
-            android:text="추출된 category 표시"
-            android:fontFamily="@font/nanum"
-            android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            />
+            android:fontFamily="@font/nanum"
+            android:layout_marginTop="10dp"
+            android:text="category"
+            android:selectAllOnFocus="true" />
 
         <EditText
             android:id="@+id/cloth_description"
@@ -43,11 +44,9 @@
             android:background="#FFFFFF"
             android:fontFamily="@font/nanum"
             android:hint="옷에 대한 설명을 작성해주세요" />
-
     </LinearLayout>
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
@@ -70,7 +69,5 @@
             android:text="Ok"
             android:id="@+id/Ok"
             android:background="#90ee90"/>
-
     </LinearLayout>
-
 </LinearLayout>

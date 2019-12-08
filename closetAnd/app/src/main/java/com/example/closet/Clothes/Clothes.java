@@ -1,7 +1,6 @@
 package com.example.closet.Clothes;
 
 import android.Manifest;
-import android.graphics.Typeface;
 import android.annotation.SuppressLint;
 import android.content.ContentUris;
 import android.content.Context;
@@ -9,11 +8,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -23,31 +20,26 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 import android.widget.Spinner;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
-import com.example.closet.Match.Match;
-import com.example.closet.Match.Match_Grid;
 import com.example.closet.Networking_Get;
 import com.example.closet.R;
 import com.example.closet.SaveSharedPreference;
-import com.example.closet.storeClothingNetworking;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,12 +48,10 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 public class Clothes extends AppCompatActivity {
-    String[] REQUESTED_PEERMISSIONS = {Manifest.permission.READ_EXTERNAL_STORAGE};
 
     private Clothes_Adapter adapter;
     ArrayList<URL> photoUrls = new ArrayList<>();
@@ -72,12 +62,11 @@ public class Clothes extends AppCompatActivity {
     //****image to server
     private static final int PICK_FROM_CAMERA = 0;
     private static final int PICK_FROM_ALBUM = 1;
-    public static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
 
     String selectedImagesPaths;
     boolean imagesSelected = false;
     private Uri uri;
-    Bitmap bitmap;
+    String [] responses;
     //****image to server
 
     String uid = "3"; // 들어오는  유저 index저장 하기.
@@ -236,7 +225,6 @@ public class Clothes extends AppCompatActivity {
                 //Log.d("Log_dPhotoFile",photoFile);
                 photoUrls.add(new URL(photoFile));
             }
-
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -339,7 +327,6 @@ public class Clothes extends AppCompatActivity {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/*");
                 startActivityForResult(intent, PICK_FROM_ALBUM);
-                infoPopup();
             }
         });
     }
@@ -352,6 +339,11 @@ public class Clothes extends AppCompatActivity {
         infoPopupWindow.setFocusable(true);
         // 외부 영역 선택시 PopUp 종료
         infoPopupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+
+        EditText color = popupView.findViewById(R.id.cloth_color);
+        color.setText(AddClothes.responses[0].split(":")[1]);
+        EditText category = popupView.findViewById(R.id.cloth_category);
+        category.setText(AddClothes.responses[1].split(":")[1]);
 
         Button cancel = (Button) popupView.findViewById(R.id.Cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -369,7 +361,6 @@ public class Clothes extends AppCompatActivity {
             }
         });
     }
-    //String currentPhotoPath;
 
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -386,24 +377,21 @@ public class Clothes extends AppCompatActivity {
     }
 
     @Override
-        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-            if (requestCode == PICK_FROM_CAMERA ) {
-                //File imgFile = new File(selectedImagesPaths);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PICK_FROM_CAMERA ) {
+            imagesSelected = true;
+        }
+        else if (requestCode == PICK_FROM_ALBUM) {
+            if (data == null) {
+                Log.d("Log_d data", "data is null");
+            } else {
+                uri = data.getData();
+                Log.d("UIR is ", uri.toString());
+                selectedImagesPaths = getRealPathFromURI(this, uri);
+                Log.d("Real file path is", selectedImagesPaths);
                 imagesSelected = true;
             }
-            else if (requestCode == PICK_FROM_ALBUM) {
-                if (data == null) {
-                    Log.d("Log_d data", "data is null");
-                } else {
-                    uri = data.getData();
-                    Log.d("UIR is ", uri.toString());
-                    selectedImagesPaths = getRealPathFromURI(this, uri);
-                    Log.d("Real file path is", selectedImagesPaths);
-                    imagesSelected = true;
-                    infoPopup();
-                }
-            }
-
+        }
         AddClothes sendImage = new AddClothes(imagesSelected, selectedImagesPaths);
         sendImage.connectServer();
         super.onActivityResult(requestCode, resultCode, data);

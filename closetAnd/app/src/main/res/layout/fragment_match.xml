@@ -22,7 +22,6 @@
             android:textColor="#000000" />
 
         <Button
-
             android:layout_marginTop="20dp"
             android:id="@+id/save"
             android:layout_width="60dp"
@@ -44,6 +43,7 @@
             android:src="@drawable/camera"
             android:background="#00000000"/>
     </RelativeLayout>
+
     <FrameLayout
         android:layout_marginTop="80dp"
 
@@ -52,17 +52,24 @@
 
         <ImageView
             android:id="@+id/match_avatar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"/>
 
         <ImageView
             android:id="@+id/match_top"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="100dp"/>
 
         <ImageView
             android:id="@+id/match_down"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"/>
+
+        <TextView
+            android:id="@+id/match_tv"
+            android:layout_marginTop="100dp"
+            android:layout_marginLeft="100dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -72,7 +79,8 @@
             android:id="@+id/progressbar"
             android:layout_gravity="center"
             android:visibility="invisible"
-            />
+
+        />
 
     </FrameLayout>
 
