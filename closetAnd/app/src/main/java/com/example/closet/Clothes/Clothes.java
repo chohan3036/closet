@@ -23,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -33,6 +34,7 @@ import android.widget.Spinner;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -61,7 +63,6 @@ import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 public class Clothes extends AppCompatActivity {
-    String[] REQUESTED_PEERMISSIONS = {Manifest.permission.READ_EXTERNAL_STORAGE};
 
     private Clothes_Adapter adapter;
     ArrayList<URL> photoUrls = new ArrayList<>();
@@ -72,12 +73,11 @@ public class Clothes extends AppCompatActivity {
     //****image to server
     private static final int PICK_FROM_CAMERA = 0;
     private static final int PICK_FROM_ALBUM = 1;
-    public static final int MY_PERMISSIONS_REQUEST_CAMERA = 100;
 
     String selectedImagesPaths;
     boolean imagesSelected = false;
     private Uri uri;
-    Bitmap bitmap;
+    String [] responses;
     //****image to server
 
     String uid = "3"; // 들어오는  유저 index저장 하기.
@@ -351,6 +351,11 @@ public class Clothes extends AppCompatActivity {
         // 외부 영역 선택시 PopUp 종료
         infoPopupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
 
+        EditText color = popupView.findViewById(R.id.cloth_color);
+        color.setText(AddClothes.responses[0].split(":")[1]);
+        EditText category = popupView.findViewById(R.id.cloth_category);
+        category.setText(AddClothes.responses[1].split(":")[1]);
+
         Button cancel = (Button) popupView.findViewById(R.id.Cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -367,7 +372,6 @@ public class Clothes extends AppCompatActivity {
             }
         });
     }
-    //String currentPhotoPath;
 
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -384,22 +388,21 @@ public class Clothes extends AppCompatActivity {
     }
 
     @Override
-        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-            if (requestCode == PICK_FROM_CAMERA ) {
-                //File imgFile = new File(selectedImagesPaths);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PICK_FROM_CAMERA ) {
+            imagesSelected = true;
+        }
+        else if (requestCode == PICK_FROM_ALBUM) {
+            if (data == null) {
+                Log.d("Log_d data", "data is null");
+            } else {
+                uri = data.getData();
+                Log.d("UIR is ", uri.toString());
+                selectedImagesPaths = getRealPathFromURI(this, uri);
+                Log.d("Real file path is", selectedImagesPaths);
                 imagesSelected = true;
             }
-            else if (requestCode == PICK_FROM_ALBUM) {
-                if (data == null) {
-                    Log.d("Log_d data", "data is null");
-                } else {
-                    uri = data.getData();
-                    Log.d("UIR is ", uri.toString());
-                    selectedImagesPaths = getRealPathFromURI(this, uri);
-                    Log.d("Real file path is", selectedImagesPaths);
-                    imagesSelected = true;
-                }
-            }
+        }
         AddClothes sendImage = new AddClothes(imagesSelected, selectedImagesPaths);
         sendImage.connectServer();
         super.onActivityResult(requestCode, resultCode, data);
