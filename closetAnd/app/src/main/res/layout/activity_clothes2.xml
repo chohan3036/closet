@@ -46,10 +46,10 @@
             android:layout_weight="2"
             android:fontFamily="@font/nanum"
             android:hint="옷에 대한 설명을 작성해주세요" />
-
     </LinearLayout>
 
     <LinearLayout
+
 
         android:layout_width="300dp"
         android:layout_height="50dp"
@@ -75,5 +75,4 @@
             android:background="#EDC6C6"/>
 
     </LinearLayout>
-
 </LinearLayout>

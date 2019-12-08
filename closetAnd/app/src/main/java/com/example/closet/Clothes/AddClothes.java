@@ -4,15 +4,10 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +19,7 @@ import com.example.closet.R;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.CountDownLatch;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,6 +44,9 @@ public class AddClothes extends AppCompatActivity {
 
     String selectedImagesPaths; // Paths of the image(s) selected by the user.
     boolean imagesSelected; // Whether the user selected at least an image or not.
+    static String[] responses;
+
+    EditText color;
 
     public AddClothes (boolean imagesSelected, String selectedImagesPaths)
     {
@@ -64,6 +63,7 @@ public class AddClothes extends AppCompatActivity {
             ActivityCompat.requestPermissions(AddClothes.this, new String[]{Manifest.permission.INTERNET}, 1);
         }
         setContentView(R.layout.activity_clothes2);
+        color = findViewById(R.id.cloth_color);
     }
 
     @Override
@@ -81,9 +81,9 @@ public class AddClothes extends AppCompatActivity {
     }
 
     public void connectServer() {
+
         if (imagesSelected == false) {
             System.out.println("No Image Selected to Upload. Select Image(s) and Try Again.");
-            return;
         }
         System.out.println("Sending the Files. Please Wait ...");
 
@@ -94,7 +94,6 @@ public class AddClothes extends AppCompatActivity {
         Matcher matcher = IP_ADDRESS.matcher(ipv4Address);
         if (!matcher.matches()) {
             System.out.println("Invalid IPv4 Address. Please Check Your Inputs.");
-            return;
         }
         String postUrl = "http://" + ipv4Address + ":" + portNumber;
 
@@ -118,7 +117,6 @@ public class AddClothes extends AppCompatActivity {
             responseImage.compress(Bitmap.CompressFormat.JPEG, 80, stream);
         }catch(Exception e){
             System.out.println("Please Make Sure the Selected File is an Image.");
-            return;
         }
         byte[] byteArray = stream.toByteArray();
 
@@ -137,8 +135,9 @@ public class AddClothes extends AppCompatActivity {
     }
 
     void postRequest(String postUrl, RequestBody postBody) {
-       // final EditText color = (EditText)findViewById(R.id.cloth_color);
-       // final EditText category = (EditText)findViewById(R.id.cloth_category);
+
+                // final EditText color = (EditText)findViewById(R.id.cloth_color);
+                // final EditText category = (EditText)findViewById(R.id.cloth_category);
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(100, TimeUnit.SECONDS)
@@ -150,6 +149,8 @@ public class AddClothes extends AppCompatActivity {
                 .url(postUrl + "/saveClothes")
                 .post(postBody)
                 .build();
+
+        final CountDownLatch latch = new CountDownLatch(1);
 
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -169,19 +170,23 @@ public class AddClothes extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        //EditText color = findViewById(R.id.cloth_category);
                         try {
-                            System.out.println("Server's Response\n" + response.body().string());
                             //response 파싱해서 Edittext에 띄우게 해야 됨
+
                             //String resultStr = response.body().string();
                             //String[] results = resultStr.split(",");
                             //color.setText(results[2].split(":")[1]);
                             //category.setText(results[3].split(":")[1]);
+                            String resultStr = response.body().string();
+                            System.out.println(resultStr);
+                            responses = resultStr.split(",");
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+
                     }
                 });
-                //System.out.println("Server's Response\n" + response.body().string());
             }
 
 
