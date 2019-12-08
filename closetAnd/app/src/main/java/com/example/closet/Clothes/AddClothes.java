@@ -137,8 +137,8 @@ public class AddClothes extends AppCompatActivity {
     }
 
     void postRequest(String postUrl, RequestBody postBody) {
-        //final EditText color = (EditText)findViewById(R.id.cloth_color);
-        //final EditText category = (EditText)findViewById(R.id.cloth_category);
+       // final EditText color = (EditText)findViewById(R.id.cloth_color);
+       // final EditText category = (EditText)findViewById(R.id.cloth_category);
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(100, TimeUnit.SECONDS)
@@ -163,25 +163,57 @@ public class AddClothes extends AppCompatActivity {
                     }
                 });
             }
+
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         try {
+                            EditText color = (EditText)findViewById(R.id.cloth_color);
+                            EditText category = (EditText)findViewById(R.id.cloth_category);
                             System.out.println("Server's Response\n" + response.body().string());
                             //response 파싱해서 Edittext에 띄우게 해야 됨
-                            //String resultStr = response.body().string();
-                            //String[] results = resultStr.split(",");
-                            //color.setText(results[2].split(":")[1]);
-                            //category.setText(results[3].split(":")[1]);
-                            //infoPopup();
+                            String resultStr = response.body().string();
+                            String[] results = resultStr.split(",");
+                            color.setText(results[2].split(":")[1]);
+                            category.setText(results[3].split(":")[1]);
+                            infoPopup();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
                 });
                 //System.out.println("Server's Response\n" + response.body().string());
+            }
+
+            private PopupWindow infoPopupWindow;
+            protected void infoPopup() {
+                View popupView = getLayoutInflater().inflate(R.layout.activity_clothes2, null);
+                infoPopupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT);
+                //popupView 에서 (LinearLayout 을 사용) 레이아웃이 둘러싸고 있는 컨텐츠의 크기 만큼 팝업 크기를 지정
+                infoPopupWindow.setFocusable(true);
+                // 외부 영역 선택시 PopUp 종료
+                infoPopupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+
+                Button cancel = (Button) popupView.findViewById(R.id.Cancel);
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        infoPopupWindow.dismiss();
+                    }
+                });
+
+                Button ok = (Button) popupView.findViewById(R.id.Ok);
+                ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getApplicationContext(), "Ok", Toast.LENGTH_SHORT).show();
+                        //정보저장 코딩 필요
+                        infoPopupWindow.dismiss();
+                    }
+                });
             }
         });
     }

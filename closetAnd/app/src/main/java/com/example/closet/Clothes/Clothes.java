@@ -67,7 +67,7 @@ public class Clothes extends AppCompatActivity {
     ArrayList<URL> photoUrls = new ArrayList<>();
     GridView gridView;
     int spinner_id = 0;
-    private Context context;
+    Context context;
 
     //****image to server
     private static final int PICK_FROM_CAMERA = 0;
@@ -385,6 +385,7 @@ public class Clothes extends AppCompatActivity {
 
     @Override
         protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
             if (requestCode == PICK_FROM_CAMERA ) {
                 //File imgFile = new File(selectedImagesPaths);
                 imagesSelected = true;
