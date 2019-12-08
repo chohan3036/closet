@@ -225,7 +225,6 @@ public class Clothes extends AppCompatActivity {
                 //Log.d("Log_dPhotoFile",photoFile);
                 photoUrls.add(new URL(photoFile));
             }
-
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -328,7 +327,6 @@ public class Clothes extends AppCompatActivity {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/*");
                 startActivityForResult(intent, PICK_FROM_ALBUM);
-                infoPopup();
             }
         });
     }
@@ -389,10 +387,8 @@ public class Clothes extends AppCompatActivity {
                     selectedImagesPaths = getRealPathFromURI(this, uri);
                     Log.d("Real file path is", selectedImagesPaths);
                     imagesSelected = true;
-                    infoPopup();
                 }
             }
-
         AddClothes sendImage = new AddClothes(imagesSelected, selectedImagesPaths);
         sendImage.connectServer();
         super.onActivityResult(requestCode, resultCode, data);

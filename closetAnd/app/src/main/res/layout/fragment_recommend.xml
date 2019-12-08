@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/montaga"
             android:layout_weight="1"
-            android:entries="@array/recommend_array1"></Spinner>
+            android:entries="@array/recommend_array1"/>
 
 <!--
         <Spinner
@@ -45,7 +45,6 @@
         />
 -->
     </LinearLayout>
-
 
         <GridView
             android:id="@+id/recommend_grid"
