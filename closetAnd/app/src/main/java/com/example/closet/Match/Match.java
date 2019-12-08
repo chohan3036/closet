@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.closet.Clothes.AddClothes;
@@ -120,7 +121,7 @@ public class Match extends Fragment implements View.OnClickListener {
     ArrayList<URL> selected_from_clothes = new ArrayList<>();
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1888;
     Intent intent, intent1;
-    ImageView iv;
+    ImageView iv, top, bottom;
     GridView gridView;
     ArrayList<URL> selected_from_clothes2 = new ArrayList<>();
     ArrayList<Integer> match_checked_items;
@@ -130,6 +131,7 @@ public class Match extends Fragment implements View.OnClickListener {
 
     String avatarPhotoPath;
     boolean avatarSelected = false;
+    TextView test;
 
     public Match() {
         // Required empty public constructor
@@ -147,10 +149,8 @@ public class Match extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.fragment_match, container, false);
-
-        setting();
-
         gridView = (GridView) view.findViewById(R.id.match_gridView);
+        setting();
 
         return view;
     }
@@ -397,8 +397,7 @@ public class Match extends Fragment implements View.OnClickListener {
                 iv.setImageURI(Uri.fromFile(new File(filePath)));
             }
 
-            while(!networking.responsed)
-                ; //response받을 때 까지 기다림 아예 view동작을멈춤
+            while(!networking.responsed) ; //response받을 때 까지 기다림 아예 view동작을멈춤
             avatarInfo = networking.getAvaInfo();
             Log.d("Log_dAvatar", avatarInfo.toString());
             try {
