@@ -7,14 +7,23 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.closet.R;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,25 +48,22 @@ public class AddClothes extends AppCompatActivity {
 
     String selectedImagesPaths; // Paths of the image(s) selected by the user.
     boolean imagesSelected; // Whether the user selected at least an image or not.
-    Bitmap bitmap;
 
     public AddClothes (boolean imagesSelected, String selectedImagesPaths)
     {
         this.imagesSelected = imagesSelected;
         this.selectedImagesPaths = selectedImagesPaths;
-        //this.bitmap = bitmap;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
                 != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(getApplicationContext(), "이 앱을 실행하려면 인터넷과 외부 저장소 접근 권한이 필요합니다.", Toast.LENGTH_SHORT).show();
-            ActivityCompat.requestPermissions(AddClothes.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-            ActivityCompat.requestPermissions(AddClothes.this, new String[]{Manifest.permission.INTERNET}, 2);
+            Toast.makeText(getApplicationContext(), "이 앱을 실행하려면 인터넷 권한이 필요합니다.", Toast.LENGTH_SHORT).show();
+            ActivityCompat.requestPermissions(AddClothes.this, new String[]{Manifest.permission.INTERNET}, 1);
         }
+        setContentView(R.layout.activity_clothes2);
     }
 
     @Override
@@ -71,14 +77,6 @@ public class AddClothes extends AppCompatActivity {
                 }
                 return;
             }
-            case 2: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    Toast.makeText(getApplicationContext(), "Access to Internet Permission Granted. Thanks.", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Access to Internet Permission Denied.", Toast.LENGTH_SHORT).show();
-                }
-                return;
-            }
         }
     }
 
@@ -87,67 +85,77 @@ public class AddClothes extends AppCompatActivity {
             System.out.println("No Image Selected to Upload. Select Image(s) and Try Again.");
             return;
         }
-        System.out.println(selectedImagesPaths);
         System.out.println("Sending the Files. Please Wait ...");
 
         String ipv4Address = "52.78.194.160";
+        //String ipv4Address = "192.168.0.3";
         String portNumber = "3030";
-        String url = "http://52.78.194.160:3030/saveClothes";
-
 
         Matcher matcher = IP_ADDRESS.matcher(ipv4Address);
         if (!matcher.matches()) {
             System.out.println("Invalid IPv4 Address. Please Check Your Inputs.");
             return;
         }
-
-        String postUrl = "http://" + ipv4Address + ":" + portNumber + "/saveClothes";
+        String postUrl = "http://" + ipv4Address + ":" + portNumber;
 
         MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.RGB_565;
-
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         try {
             Bitmap responseImage = BitmapFactory.decodeFile(selectedImagesPaths, options);
-            responseImage.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            // 사이즈가 클 때 줄이는 코드
+            int height = responseImage.getHeight();
+            int width = responseImage.getWidth();
+            Bitmap resized = null;
+            while(height > 800 || width > 800){
+                resized = Bitmap.createScaledBitmap(responseImage, width / 2 , height / 2, true);
+                height = resized.getHeight();
+                width = resized.getWidth();
+            }
+            responseImage = resized;
+            responseImage.compress(Bitmap.CompressFormat.JPEG, 80, stream);
         }catch(Exception e){
             System.out.println("Please Make Sure the Selected File is an Image.");
             return;
         }
         byte[] byteArray = stream.toByteArray();
 
-        multipartBodyBuilder.addFormDataPart("photo", "Android_Flask_.jpg",
+        multipartBodyBuilder.addFormDataPart("photo", "Clothes.jpg",
                 RequestBody.create(MediaType.parse("image/*jpg"), byteArray));
-        multipartBodyBuilder.addFormDataPart("uid", "3");
+        /*multipartBodyBuilder.addFormDataPart("uid", "3");
         multipartBodyBuilder.addFormDataPart("name", "red");
         multipartBodyBuilder.addFormDataPart("colorR", "211");
         multipartBodyBuilder.addFormDataPart("colorG", "11");
         multipartBodyBuilder.addFormDataPart("colorB", "10");
         multipartBodyBuilder.addFormDataPart("category", "jeans");
-        multipartBodyBuilder.addFormDataPart("description","descriptionTest");
+        multipartBodyBuilder.addFormDataPart("description","descriptionTest");*/
 
         RequestBody postBody = multipartBodyBuilder.build();
-
         postRequest(postUrl, postBody);
     }
 
     void postRequest(String postUrl, RequestBody postBody) {
-        OkHttpClient client = new OkHttpClient();
+        //final EditText color = (EditText)findViewById(R.id.cloth_color);
+        //final EditText category = (EditText)findViewById(R.id.cloth_category);
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(100, TimeUnit.SECONDS)
+                .readTimeout(100, TimeUnit.SECONDS)
+                .writeTimeout(100, TimeUnit.SECONDS)
+                .build();
 
         Request request = new Request.Builder()
-                .url(postUrl)
+                .url(postUrl + "/saveClothes")
                 .post(postBody)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
-
             @Override
             public void onFailure(Call call, IOException e) {
                 call.cancel();
                 Log.d("FAIL", e.getMessage());
-
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -155,21 +163,25 @@ public class AddClothes extends AppCompatActivity {
                     }
                 });
             }
-
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
-                /*
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         try {
                             System.out.println("Server's Response\n" + response.body().string());
+                            //response 파싱해서 Edittext에 띄우게 해야 됨
+                            //String resultStr = response.body().string();
+                            //String[] results = resultStr.split(",");
+                            //color.setText(results[2].split(":")[1]);
+                            //category.setText(results[3].split(":")[1]);
+                            //infoPopup();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
-                });*/
-                System.out.println("Server's Response\n" + response.body().string());
+                });
+                //System.out.println("Server's Response\n" + response.body().string());
             }
         });
     }

@@ -26,17 +26,24 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class NetworkingAvatar extends AsyncTask<Void, Void, JSONObject> {
+public class NetworkingAvatar {
     Activity activity;
     String selectedImagesPaths;
-    JSONObject avaInfo;
+    JSONObject avaInfo = new JSONObject();
+    Boolean responsed = false;
 
-    NetworkingAvatar(String selectedImagesPaths, Activity activity){
+
+    NetworkingAvatar(String selectedImagesPaths, Activity activity) {
         this.selectedImagesPaths = selectedImagesPaths;
         this.activity = activity;
     }
+    public JSONObject getAvaInfo(){
+        return avaInfo;
+    }
+
     public void connectServer() {
 
+        //String ipv4Address = "192.168.0.3";
         String ipv4Address = "52.78.194.160";
         String portNumber = "3030";
 
@@ -50,7 +57,6 @@ public class NetworkingAvatar extends AsyncTask<Void, Void, JSONObject> {
         Matcher matcher = IP_ADDRESS.matcher(ipv4Address);
         if (!matcher.matches()) {
             System.out.println("Invalid IPv4 Address. Please Check Your Inputs.");
-            return;
         }
 
         String postUrl = "http://" + ipv4Address + ":" + portNumber + "/saveAvatar";
@@ -63,10 +69,19 @@ public class NetworkingAvatar extends AsyncTask<Void, Void, JSONObject> {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         try {
             Bitmap responseImage = BitmapFactory.decodeFile(selectedImagesPaths, options);
-            responseImage.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            // 사이즈가 클 때 줄이는 코드
+            int height = responseImage.getHeight();
+            int width = responseImage.getWidth();
+            Bitmap resized = null;
+            while(height > 1000 || width > 1000){
+                resized = Bitmap.createScaledBitmap(responseImage, width / 2 , height / 2, true);
+                height = resized.getHeight();
+                width = resized.getWidth();
+            }
+            responseImage = resized;
+            responseImage.compress(Bitmap.CompressFormat.JPEG, 80, stream);
         }catch(Exception e){
             System.out.println("Please Make Sure the Selected File is an Image.");
-            return;
         }
         byte[] byteArray = stream.toByteArray();
 
@@ -79,13 +94,13 @@ public class NetworkingAvatar extends AsyncTask<Void, Void, JSONObject> {
         postRequest(postUrl, postBody);
     }
 
-    void postRequest(String postUrl, RequestBody postBody) {
+    JSONObject postRequest(String postUrl, RequestBody postBody) {
         //OkHttpClient client = new OkHttpClient();
 
         OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(300, TimeUnit.SECONDS)
-                .writeTimeout(120,TimeUnit.SECONDS)
-                .readTimeout(130,TimeUnit.SECONDS)
+                .connectTimeout(100, TimeUnit.SECONDS)
+                .writeTimeout(100, TimeUnit.SECONDS)
+                .readTimeout(100, TimeUnit.SECONDS)
                 .build();
 
         Request request = new Request.Builder()
@@ -111,34 +126,25 @@ public class NetworkingAvatar extends AsyncTask<Void, Void, JSONObject> {
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
                 //System.out.println("Log_dServer's Response\n" + response.body().string());
-                String result=response.body().string();
-                try {
-                    JSONObject jsonObject = new JSONObject(result);
-                    String jsonResult = (String) jsonObject.get("result");
-                    JSONArray jsonArray = new JSONArray(jsonResult);
+                if (response.isSuccessful()) {
+                    String result = response.body().string();
+                    try {
+                        JSONObject jsonObject = new JSONObject(result);
+                        String jsonResult = (String) jsonObject.get("result");
+                        JSONArray jsonArray = new JSONArray(jsonResult);
 
-                    avaInfo = (JSONObject) jsonArray.get(0);
-                    String head= (String) avaInfo.get("Head");
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                        avaInfo = (JSONObject) jsonArray.get(0);
+                        String head = (String) avaInfo.get("Head");
+                        responsed = true;
+
+                        Log.d("Log_dAAAAAA", String.valueOf(jsonObject));
+                        Log.d("Log_dAAAAAA", String.valueOf(avaInfo));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-
             }
         });
-    }
-    @Override
-    protected JSONObject doInBackground(Void... voids) {
-        connectServer();
-        /* 결과값jsonPasring해서 줘야할듯,,
-         * [{'avatar_id': 18, 'uid': 3, 'Head': '(220, 31)', 'Neck': '(236, 118)', 'RShoulder': '(165, 166)', 'RElbow': '(149, 261)', 'RWrist': '(141, 356)', 'LShoulder': '(299, 158)', 'LElbow': '(331, 269)', 'LWrist': '(338, 348)', 'RHip': '(212, 602)', 'RKnee': 'None', 'RAnkle': '(228, 404)', 'LHip': '(197, 602)', 'LKnee': '(331, 372)', 'LAnkle': '(236, 396)', 'Chest': '(236, 229)', 'Background': None, 'photo': 'https://closetsook.s3.ap-northeast-2.amazonaws.com/User_Avatar_20191206-195749.png'}]
-
-         * */
-
-        return avaInfo;
-    }
-
-    @Override
-    protected void onPostExecute(JSONObject s) {
-        super.onPostExecute(s);
+        return  avaInfo;
     }
 }
