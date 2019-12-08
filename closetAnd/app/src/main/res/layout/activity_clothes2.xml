@@ -44,11 +44,9 @@
             android:background="#FFFFFF"
             android:fontFamily="@font/nanum"
             android:hint="옷에 대한 설명을 작성해주세요" />
-
     </LinearLayout>
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
@@ -71,7 +69,5 @@
             android:text="Ok"
             android:id="@+id/Ok"
             android:background="#90ee90"/>
-
     </LinearLayout>
-
 </LinearLayout>
