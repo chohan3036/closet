@@ -116,7 +116,6 @@ class Match_Adapter extends BaseAdapter {
                 dtInterface.setValues(photoBitmap.get(i));
             }
         });
-
         return view;
     }
 

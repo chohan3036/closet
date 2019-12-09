@@ -212,9 +212,9 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
         rShoulderX = Integer.parseInt(forRshoulderInt[0]);
         rShoulderY = Integer.parseInt(forRshoulderInt[1]);
 
-        //forTopWidth = rShoulderX - lShoulderX; // 상의 width
-        //top.getLayoutParams().width = forTopWidth;
-/*
+        forTopWidth = rShoulderX - lShoulderX; // 상의 width
+
+        /*
         lWristLength = lWrist.length();
         forLwrist = lWrist.substring(1, lWristLength-1);
         forLwristInt = lWrist.split(", ");
@@ -224,8 +224,8 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
         rWristLength = rWrist.length();
         forRwrist = rWrist.substring(1, rWristLength-1);
         forRwristInt = rWrist.split(", ");
-        rWristX = Integer.parseInt(forLwristInt[0]);
-        rWristY = Integer.parseInt(forLwristInt[1]);
+        rWristX = Integer.parseInt(forRwristInt[0]);
+        rWristY = Integer.parseInt(forRwristInt[1]);
 
         forTopHeight = lShoulderY - lWristY; // 상의 height
         forBottomWidth = rWristX - lWristX; // 하의 width
@@ -249,9 +249,12 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
         top = view.findViewById(R.id.match_top);
         top.setX(lShoulderX);
         top.setY(lShoulderY);
+        top.getLayoutParams().width = forTopWidth;
+        //top.getLayoutParams().height = forTopHeight;
+        top.setImageBitmap(photo);
         top.requestLayout();
-        //top.setLayoutParams(new FrameLayout.LayoutParams());
 
+        //top.setLayoutParams(new FrameLayout.LayoutParams());
         //bottom = (ImageView) view.findViewById(R.id.match_bottom);
     }
 
