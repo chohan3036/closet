@@ -24,7 +24,9 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.SpinnerAdapter;
@@ -32,6 +34,7 @@ import android.widget.Toast;
 import android.widget.Spinner;
 
 import java.io.File;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
@@ -58,6 +61,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
@@ -341,6 +345,19 @@ public class Clothes extends AppCompatActivity {
             }
         });
     }
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        selectedImagesPaths = image.getAbsolutePath();
+        return image;
+    }
 
     protected void infoPopup() {
         View popupView = getLayoutInflater().inflate(R.layout.activity_clothes2, null);
@@ -350,6 +367,12 @@ public class Clothes extends AppCompatActivity {
         infoPopupWindow.setFocusable(true);
         // 외부 영역 선택시 PopUp 종료
         infoPopupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+
+        //ImageView iv = popupView.findViewById(R.id.cloth_image);
+        //String urlStr = AddClothes.responses[4].split(":")[1];
+        //Uri uri1 = Uri.parse(urlStr);
+        //File file = new File(uri1.getPath());
+        //iv.setImageURI(Uri.fromFile(file));
 
         EditText color = popupView.findViewById(R.id.cloth_color);
         color.setText(AddClothes.responses[0].split(":")[1]);
@@ -373,19 +396,6 @@ public class Clothes extends AppCompatActivity {
         });
     }
 
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-        selectedImagesPaths = image.getAbsolutePath();
-        return image;
-    }
 
     @Override
 
