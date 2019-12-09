@@ -144,7 +144,6 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
         view = inflater.inflate(R.layout.fragment_match, container, false);
         gridView = (GridView) view.findViewById(R.id.match_gridView);
         setting();
-
         return view;
     }
 
@@ -198,8 +197,8 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
 
     public void parsing(){
 
-        test = (TextView) view.findViewById(R.id.match_tv);
-        test.setText(avatarInfo.toString());
+        //test = (TextView) view.findViewById(R.id.match_tv);
+        //test.setText(avatarInfo.toString());
 
         lShoulderLength = lShoulder.length();
         forLshoulder = lShoulder.substring(1, lShoulderLength-1);
@@ -209,12 +208,19 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
 
         rShoulderLength = rShoulder.length();
         forRshoulder = rShoulder.substring(1, rShoulderLength-1);
-        forRshoulderInt = forLshoulder.split(", ");
+        forRshoulderInt = forRshoulder.split(", ");
         rShoulderX = Integer.parseInt(forRshoulderInt[0]);
         rShoulderY = Integer.parseInt(forRshoulderInt[1]);
 
         forTopWidth = rShoulderX - lShoulderX; // 상의 width
 
+        top = view.findViewById(R.id.match_top);
+        top.getLayoutParams().width = forTopWidth;
+        top.setX(lShoulderX);
+        top.setY(lShoulderY);
+
+        //top.requestLayout();
+/*
         lWristLength = lWrist.length();
         forLwrist = lWrist.substring(1, lWristLength-1);
         forLwristInt = lWrist.split(", ");
@@ -237,21 +243,21 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
         lKneeY = Integer.parseInt(forLwristInt[1]);
 
         forBottomHeight = lWristY - lKneeX; // 하의 height
-
+        */
     }
+
     @Override
     public void setValues(Bitmap photo) {
         // TODO Auto-generated method stub
         parsing();
 
-        top = (ImageView) view.findViewById(R.id.match_top);
-        top.setImageBitmap(photo);
-
+        // top부터 확인
         top.setX(lShoulderX);
         top.setY(lShoulderY);
+
         //top.setLayoutParams(new FrameLayout.LayoutParams());
 
-        bottom = (ImageView) view.findViewById(R.id.match_down);
+        //bottom = (ImageView) view.findViewById(R.id.match_bottom);
     }
 
     public void onClick(View view) {
@@ -330,7 +336,6 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
                 getPhotoFromAlbum();
                 //dispatchTakePictureIntent();
                 //getFragmentManager();
-
                 break;
         }
     }
@@ -364,6 +369,54 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
         }
     }
 
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        avatarPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 3030) {
+            Uri uri = data.getData();
+            String filePath = getPath(getActivity(), uri);
+            Log.d("Log_dFilePath ", filePath.toString());
+
+            NetworkingAvatar networking = new NetworkingAvatar(filePath, getActivity());
+            networking.connectServer();
+            //여기서 null나면 박수빈한테 알려조
+            if (new File(filePath).exists()) {
+                iv.setImageURI(Uri.fromFile(new File(filePath)));
+            }
+
+            while(!networking.responsed) ; //response받을 때 까지 기다림 아예 view동작을멈춤
+            avatarInfo = networking.getAvaInfo();
+            //Log.d("Log_dAvatar", avatarInfo.toString());
+            try {
+                lShoulder = (String)avatarInfo.get("LShoulder");
+                Log.d("lShoulder",lShoulder);
+                rShoulder = (String)avatarInfo.get("RShoulder");
+                Log.d("rShoulder",rShoulder);
+                lWrist = (String)avatarInfo.get("LWrist");
+                Log.d("lWrist",lWrist);
+                rWrist = (String)avatarInfo.get("RWrist");
+                Log.d("rWrist",rWrist);
+                //lKnee = (String)avatarInfo.get("LKnee");
+                //parsing();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public static String getPath(final Context context, final Uri uri) {
 
@@ -381,7 +434,6 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
                     return Environment.getExternalStorageDirectory() + "/"
                             + split[1];
                 }
-
                 // TODO handle non-primary volumes
             }
             // DownloadsProvider
@@ -427,112 +479,7 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
 
         return null;
     }
-
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        avatarPhotoPath = image.getAbsolutePath();
-        //currentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
-
-    String currentPhotoPath;
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 3030) {
-            Uri uri = data.getData();
-            String filePath = getPath(getActivity(), uri);
-            Log.d("Log_dFilePath ", filePath.toString());
-
-            NetworkingAvatar networking = new NetworkingAvatar(filePath, getActivity());
-            networking.connectServer();
-            //여기서 null나면 박수빈한테 알려조
-            if (new File(filePath).exists()) {
-                iv.setImageURI(Uri.fromFile(new File(filePath)));
-            }
-
-            while(!networking.responsed)
-                ; //response받을 때 까지 기다림 아예 view동작을멈춤
-            avatarInfo = networking.getAvaInfo();
-            Log.d("Log_dAvatar", avatarInfo.toString());
-            try {
-                lShoulder = (String)avatarInfo.get("LShoulder");
-                rShoulder = (String)avatarInfo.get("RShoulder");
-                lWrist = (String)avatarInfo.get("LWrist");
-                rWrist = (String)avatarInfo.get("RWrist");
-                lKnee = (String)avatarInfo.get("LKnee");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-        //String selectedImagesPaths = getRealPathFromURI(getContext(), uri);
-
-        //currentPhotoPath = image.getAbsolutePath();
-        //File imgFile = new File(currentPhotoPath);
-
-        // networkingPhoto(filePath);
-
-    }
-    // Save a file: path for use with ACTION_VIEW intents
-
-    //Log.d("Real file path is", selectedImagesPaths);
-    //imagesSelected = true;
-
-
-        /*
-<<<<<<< HEAD
-        if (requestCode == MY_PERMISSIONS_REQUEST_CAMERA && resultCode == RESULT_OK) {
-
-            avatarSelected = true;
-            //File imgFile = new File(avatarPhotoPath);
-            //if (imgFile.exists()) {
-            //    iv.setImageURI(Uri.fromFile(imgFile));
-            //}
-        }
-        AddClothes sendImage = new AddClothes(avatarSelected, avatarPhotoPath);
-        sendImage.connectServer();
-
-=======
-   }     if (requestCode == MY_PERMISSIONS_REQUEST_CAMERA && resultCode == RESULT_OK) {
->>>>>>> 3aa693f8957a5708a68fb8b9df2c0985a3f94052
-            File imgFile = new File(currentPhotoPath);
-            if (imgFile.exists()) {
-                iv.setImageURI(Uri.fromFile(imgFile));
-            }
-        }*/
-
-    }
-    // 이미지 Resize 함수
-   /* private int setSimpleSize(BitmapFactory.Options options, int requestWidth, int requestHeight){
-        // 이미지 사이즈를 체크할 원본 이미지 가로/세로 사이즈를 임시 변수에 대입.
-        int originalWidth = options.outWidth;
-        int originalHeight = options.outHeight;
-
-        // 원본 이미지 비율인 1로 초기화
-        int size = 1;
-
-        // 해상도가 깨지지 않을만한 요구되는 사이즈까지 2의 배수의 값으로 원본 이미지를 나눈다.
-        while(requestWidth < originalWidth || requestHeight < originalHeight){
-            originalWidth = originalWidth / 2;
-            originalHeight = originalHeight / 2;
-
-            size = size * 2;
-        }
-        return size;
-    }*/
+}
 
 
 

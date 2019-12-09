@@ -57,13 +57,15 @@
 
         <ImageView
             android:id="@+id/match_top"
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"/>
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/finger" />
 
         <ImageView
-            android:id="@+id/match_down"
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"/>
+            android:id="@+id/match_bottom"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/finger"/>
 
         <TextView
             android:id="@+id/match_tv"

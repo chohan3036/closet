@@ -21,6 +21,7 @@ import com.example.closet.Clothes.UrlToBitmap;
 import com.example.closet.DataTransferInterface;
 import com.example.closet.R;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -62,9 +63,9 @@ class Match_Adapter extends BaseAdapter {
             e.printStackTrace();
         }
     }
+/*
+    private void fileToBitmap() {
 
-    /*
-    private void fileToBitmap(){
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         for(int i = 0 ; i<photoUrls.size(); i++) {
             Bitmap bitmap = BitmapFactory.decodeFile(photoUrls.get(i).getPath(), bmOptions);

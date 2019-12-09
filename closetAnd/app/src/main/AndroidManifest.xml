@@ -63,6 +63,7 @@
         <activity android:name=".Clothes.Clothes"
             android:exported="true"/>
         <activity android:name=".Match.Match_camera"/>
+        <activity android:name=".LoadingActivity" />
         <activity android:name=".openCV_test"></activity>
 
     </application>
