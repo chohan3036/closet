@@ -66,7 +66,7 @@ public class Clothes extends AppCompatActivity {
     String selectedImagesPaths;
     boolean imagesSelected = false;
     private Uri uri;
-    String [] responses;
+    String [] dbInfo = new String[8];
     //****image to server
 
     String uid = "3"; // 들어오는  유저 index저장 하기.
@@ -173,9 +173,7 @@ public class Clothes extends AppCompatActivity {
                     getClothings(categoryUrl);
                     loadGridView();
                 }
-
             }
-
             public void onNothingSelected(AdapterView<?> arg0) {
                 // TODO Auto-generated method stub
             }
@@ -340,10 +338,11 @@ public class Clothes extends AppCompatActivity {
         // 외부 영역 선택시 PopUp 종료
         infoPopupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
 
-        EditText color = popupView.findViewById(R.id.cloth_color);
-        color.setText(AddClothes.responses[0].split(":")[1]);
-        EditText category = popupView.findViewById(R.id.cloth_category);
-        category.setText(AddClothes.responses[1].split(":")[1]);
+        final EditText color = popupView.findViewById(R.id.cloth_color);
+        color.setText(AddClothes.responses[0].split(":")[1].replace("\"",""));
+        final EditText category = popupView.findViewById(R.id.cloth_category);
+        category.setText(AddClothes.responses[4].split(":")[1].replace("\"",""));
+        final EditText description = popupView.findViewById(R.id.cloth_description);
 
         Button cancel = (Button) popupView.findViewById(R.id.Cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -357,6 +356,21 @@ public class Clothes extends AppCompatActivity {
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // DB에 저장할 정보들을 String 배열에 담아 네트워킹 함수 호출
+                dbInfo[0] = uid;
+                System.out.println(uid);
+                dbInfo[1] = color.getText().toString();
+                dbInfo[2] = AddClothes.responses[1].split(":")[1];
+                dbInfo[3] = AddClothes.responses[2].split(":")[1];
+                dbInfo[4] = AddClothes.responses[3].split(":")[1];
+                dbInfo[5] = category.getText().toString();
+                dbInfo[6] = description.getText().toString();
+                System.out.println(dbInfo[6]);
+                dbInfo[7] = AddClothes.responses[7].split(":")[1];
+                int urlLength = dbInfo[7].length();
+                dbInfo[7] = dbInfo[7].substring(0, urlLength - 1);
+                DBClothes toDB = new DBClothes(dbInfo);
+                toDB.connectServer();
                 Toast.makeText(getApplicationContext(), "Ok", Toast.LENGTH_SHORT).show();
             }
         });
@@ -393,7 +407,14 @@ public class Clothes extends AppCompatActivity {
             }
         }
         AddClothes sendImage = new AddClothes(imagesSelected, selectedImagesPaths);
-        sendImage.connectServer();
+        try {
+            sendImage.connectServer();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        infoPopup();
         super.onActivityResult(requestCode, resultCode, data);
     }
 

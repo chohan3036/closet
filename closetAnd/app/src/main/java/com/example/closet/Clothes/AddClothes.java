@@ -1,25 +1,19 @@
 package com.example.closet.Clothes;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import com.example.closet.R;
+import com.example.closet.LoadingActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.CountDownLatch;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,7 +27,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class AddClothes extends AppCompatActivity {
-    private static final int PERMISSIONS_REQUEST_CODE = 100;
 
     private static final Pattern IP_ADDRESS
             = Pattern.compile(
@@ -46,41 +39,13 @@ public class AddClothes extends AppCompatActivity {
     boolean imagesSelected; // Whether the user selected at least an image or not.
     static String[] responses;
 
-    EditText color;
-
     public AddClothes (boolean imagesSelected, String selectedImagesPaths)
     {
         this.imagesSelected = imagesSelected;
         this.selectedImagesPaths = selectedImagesPaths;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(getApplicationContext(), "이 앱을 실행하려면 인터넷 권한이 필요합니다.", Toast.LENGTH_SHORT).show();
-            ActivityCompat.requestPermissions(AddClothes.this, new String[]{Manifest.permission.INTERNET}, 1);
-        }
-        setContentView(R.layout.activity_clothes2);
-        color = findViewById(R.id.cloth_color);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case 1: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    Toast.makeText(getApplicationContext(), "Access to Storage Permission Granted. Thanks.", Toast.LENGTH_SHORT).show();
-                } else {
-//                    Toast.makeText(getApplicationContext(), "Access to Storage Permission Denied.", Toast.LENGTH_SHORT).show();
-                }
-                return;
-            }
-        }
-    }
-
-    public void connectServer() {
+    public void connectServer() throws ExecutionException, InterruptedException {
 
         if (imagesSelected == false) {
             System.out.println("No Image Selected to Upload. Select Image(s) and Try Again.");
@@ -122,19 +87,12 @@ public class AddClothes extends AppCompatActivity {
 
         multipartBodyBuilder.addFormDataPart("photo", "Clothes.jpg",
                 RequestBody.create(MediaType.parse("image/*jpg"), byteArray));
-        /*multipartBodyBuilder.addFormDataPart("uid", "3");
-        multipartBodyBuilder.addFormDataPart("name", "red");
-        multipartBodyBuilder.addFormDataPart("colorR", "211");
-        multipartBodyBuilder.addFormDataPart("colorG", "11");
-        multipartBodyBuilder.addFormDataPart("colorB", "10");
-        multipartBodyBuilder.addFormDataPart("category", "jeans");
-        multipartBodyBuilder.addFormDataPart("description","descriptionTest");*/
 
         RequestBody postBody = multipartBodyBuilder.build();
         postRequest(postUrl, postBody);
     }
 
-    void postRequest(String postUrl, RequestBody postBody) {
+    void postRequest(String postUrl, RequestBody postBody) throws ExecutionException, InterruptedException {
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(100, TimeUnit.SECONDS)
@@ -147,38 +105,36 @@ public class AddClothes extends AppCompatActivity {
                 .post(postBody)
                 .build();
 
-        final CountDownLatch latch = new CountDownLatch(1);
+        CallbackFuture future = new CallbackFuture();
+        client.newCall(request).enqueue(future);
 
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                call.cancel();
-                Log.d("FAIL", e.getMessage());
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        System.out.println("Failed to Connect to Server. Please Try Again.");
-                    }
-                });
-            }
-            @Override
-            public void onResponse(Call call, final Response response) throws IOException {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        //EditText color = findViewById(R.id.cloth_category);
-                        try {
-                            //response 파싱해서 Edittext에 띄우게 해야 됨
-                            String resultStr = response.body().string();
-                            System.out.println(resultStr);
-                            responses = resultStr.split(",");
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+        Response response = future.get();
+        String resultStr = null;
+        try {
+            resultStr = response.body().string();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(resultStr);
+        responses = resultStr.split(",");
+    }
 
-                    }
-                });
-            }
-        });
+    class CallbackFuture extends CompletableFuture<Response> implements Callback{
+
+        public void onFailure(Call call, IOException e){
+            super.completeExceptionally(e);
+            call.cancel();
+            Log.d("FAIL", e.getMessage());
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println("Failed to Connect to Server. Please Try Again.");
+                }
+            });
+        }
+
+        public void onResponse(Call call, final Response response){
+            super.complete(response);
+        }
     }
 }

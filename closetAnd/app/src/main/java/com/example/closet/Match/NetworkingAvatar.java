@@ -32,7 +32,6 @@ public class NetworkingAvatar {
     JSONObject avaInfo = new JSONObject();
     Boolean responsed = false;
 
-
     NetworkingAvatar(String selectedImagesPaths, Activity activity) {
         this.selectedImagesPaths = selectedImagesPaths;
         this.activity = activity;
@@ -137,8 +136,8 @@ public class NetworkingAvatar {
                         String head = (String) avaInfo.get("Head");
                         responsed = true;
 
-                        Log.d("Log_dAAAAAA", String.valueOf(jsonObject));
-                        Log.d("Log_dAAAAAA", String.valueOf(avaInfo));
+                        //Log.d("Log_dAAAAAA", String.valueOf(jsonObject));
+                        //Log.d("Log_dAAAAAA", String.valueOf(avaInfo));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
