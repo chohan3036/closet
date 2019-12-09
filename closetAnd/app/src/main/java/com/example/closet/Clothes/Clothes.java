@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -22,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
@@ -67,6 +69,11 @@ public class Clothes extends AppCompatActivity {
     boolean imagesSelected = false;
     private Uri uri;
     String [] dbInfo = new String[8];
+    DBClothes toDB;
+
+    UrlToBitmap2 utb;
+    URL url;
+    Bitmap bitmap;
     //****image to server
 
     String uid = "3"; // 들어오는  유저 index저장 하기.
@@ -337,17 +344,59 @@ public class Clothes extends AppCompatActivity {
         infoPopupWindow.setFocusable(true);
         // 외부 영역 선택시 PopUp 종료
         infoPopupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
-
         final EditText color = popupView.findViewById(R.id.cloth_color);
-        color.setText(AddClothes.responses[0].split(":")[1].replace("\"",""));
         final EditText category = popupView.findViewById(R.id.cloth_category);
-        category.setText(AddClothes.responses[4].split(":")[1].replace("\"",""));
         final EditText description = popupView.findViewById(R.id.cloth_description);
+        final ImageView imgView = popupView.findViewById(R.id.cloth_image);
+
+        if (imagesSelected == true) {
+            toDB = new DBClothes(dbInfo);
+
+            color.setText(AddClothes.responses[0].split(":")[1].replace("\"", ""));
+            category.setText(AddClothes.responses[4].split(":")[1].replace("\"", ""));
+
+            // DB에 저장할 정보들을 String 배열에 담아 네트워킹 함수 호출
+            uid = "3";
+            dbInfo[0] = uid;
+            dbInfo[1] = color.getText().toString();
+            dbInfo[2] = AddClothes.responses[1].split(":")[1];
+            dbInfo[3] = AddClothes.responses[2].split(":")[1];
+            dbInfo[4] = AddClothes.responses[3].split(":")[1];
+            dbInfo[5] = category.getText().toString();
+            dbInfo[6] = description.getText().toString();
+            dbInfo[7] = AddClothes.responses[7].split(":")[1] + ":" + AddClothes.responses[7].split(":")[2];
+            int urlLength = dbInfo[7].length();
+            dbInfo[7] = dbInfo[7].substring(0, urlLength - 2).replace("\"", "");
+
+            toDB.imageRequest(dbInfo[7]);
+
+            try {
+                url = new URL(dbInfo[7]);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+
+            utb = new UrlToBitmap2(url);
+            utb.execute();
+            try {
+                bitmap = utb.get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            imgView.setImageBitmap(bitmap);
+            imgView.setImageAlpha(255);
+        }
 
         Button cancel = (Button) popupView.findViewById(R.id.Cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                color.setText("");
+                category.setText("");
+                description.setText("");
+                imgView.setImageBitmap(null);
                 infoPopupWindow.dismiss();
             }
         });
@@ -356,38 +405,10 @@ public class Clothes extends AppCompatActivity {
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // DB에 저장할 정보들을 String 배열에 담아 네트워킹 함수 호출
-                dbInfo[0] = uid;
-                System.out.println(uid);
-                dbInfo[1] = color.getText().toString();
-                dbInfo[2] = AddClothes.responses[1].split(":")[1];
-                dbInfo[3] = AddClothes.responses[2].split(":")[1];
-                dbInfo[4] = AddClothes.responses[3].split(":")[1];
-                dbInfo[5] = category.getText().toString();
-                dbInfo[6] = description.getText().toString();
-                System.out.println(dbInfo[6]);
-                dbInfo[7] = AddClothes.responses[7].split(":")[1];
-                int urlLength = dbInfo[7].length();
-                dbInfo[7] = dbInfo[7].substring(0, urlLength - 1);
-                DBClothes toDB = new DBClothes(dbInfo);
                 toDB.connectServer();
-                Toast.makeText(getApplicationContext(), "Ok", Toast.LENGTH_SHORT).show();
+                infoPopupWindow.dismiss();
             }
         });
-    }
-
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-        selectedImagesPaths = image.getAbsolutePath();
-        return image;
     }
 
     @Override
@@ -415,7 +436,22 @@ public class Clothes extends AppCompatActivity {
             e.printStackTrace();
         }
         infoPopup();
+        imagesSelected = false;
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        selectedImagesPaths = image.getAbsolutePath();
+        return image;
     }
 
     public static String getRealPathFromURI(final Context context, final Uri uri) {

@@ -96,6 +96,7 @@ class Clothes_Adapter extends BaseAdapter {
         } else
             viewHolder = (ViewHolder) view.getTag();
         viewHolder.imageView.setImageBitmap(photoBitmap.get(i));
+        viewHolder.imageView.setImageAlpha(255);
         viewHolder.checkBox.setChecked(mSelectedItemsIds.get(i));
 
         viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {

@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.closet.LoadingActivity;
 import com.example.closet.R;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
@@ -88,28 +90,49 @@ public class DBClothes extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(), "DB 연결에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                        Log.d("Fail","Failed to connect to server");
                     }
                 });
             }
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
-                // In order to access the TextView inside the UI thread, the code is executed inside runOnUiThread()
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(), "DB에 잘 저장됨", Toast.LENGTH_SHORT).show();
-/*
                         try {
-                            //response.body().string();
-                            //Toast.makeText(getApplicationContext(), response.body().string(), Toast.LENGTH_SHORT).show();
+                            Log.d("Success",response.body().string());
                         } catch (IOException e) {
                             e.printStackTrace();
-                        }*/
+                        }
                     }
                 });
             }
         });
     }
+
+    public void showImage() {
+
+    }
+
+    public void imageRequest(String url) {
+        OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                response.body().byteStream();
+            }
+
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                System.out.println("request failed: " + e.getMessage());
+            }
+        });
+    }
+
 }
