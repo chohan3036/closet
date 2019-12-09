@@ -359,7 +359,7 @@ public class Clothes extends AppCompatActivity {
         infoPopupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
 
         //ImageView iv = popupView.findViewById(R.id.cloth_image);
-        //String urlStr = AddClothes.responses[4].split(":")[1];
+        //String urlStr = AddClothes.responses[6].split(":")[1];
         //Uri uri1 = Uri.parse(urlStr);
         //File file = new File(uri1.getPath());
         //iv.setImageURI(Uri.fromFile(file));
@@ -367,7 +367,7 @@ public class Clothes extends AppCompatActivity {
         EditText color = popupView.findViewById(R.id.cloth_color);
         color.setText(AddClothes.responses[0].split(":")[1]);
         EditText category = popupView.findViewById(R.id.cloth_category);
-        category.setText(AddClothes.responses[1].split(":")[1]);
+        category.setText(AddClothes.responses[4].split(":")[1]);
 
         Button cancel = (Button) popupView.findViewById(R.id.Cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
