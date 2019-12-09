@@ -302,6 +302,7 @@ public class Clothes extends AppCompatActivity {
             }
         });
 
+        // 카메라 버튼 -> 카메라 인텐트 및 찍은 사진 저장
         Button camera = (Button) addPopupView.findViewById(R.id.callCamera);
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -324,6 +325,7 @@ public class Clothes extends AppCompatActivity {
             }
         });
 
+        // 앨범 버튼 -> 앨범 호출 (갤러리 등등 외부 탐색기 사용 가능; getRealPathURI에서 알아서 가져옴)
         Button album = (Button) addPopupView.findViewById(R.id.callAlbum);
         album.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -334,6 +336,8 @@ public class Clothes extends AppCompatActivity {
                 startActivityForResult(intent, PICK_FROM_ALBUM);
             }
         });
+        infoPopup();
+        imagesSelected = false;
     }
 
     protected void infoPopup() {
@@ -344,18 +348,22 @@ public class Clothes extends AppCompatActivity {
         infoPopupWindow.setFocusable(true);
         // 외부 영역 선택시 PopUp 종료
         infoPopupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+
+        // OK 버튼 눌렀을 때 써야 하기 때문에 final로 선언
         final EditText color = popupView.findViewById(R.id.cloth_color);
         final EditText category = popupView.findViewById(R.id.cloth_category);
         final EditText description = popupView.findViewById(R.id.cloth_description);
         final ImageView imgView = popupView.findViewById(R.id.cloth_image);
 
+        // 이전에 ADD 작업한 게 있다면 IF 내부를 실행, 아니라면 빈 INFO 화면 띄우기
         if (imagesSelected == true) {
             toDB = new DBClothes(dbInfo);
 
+            // 서버로부터 받은 응답을 파싱하여 INFO 화면에 띄워줌
             color.setText(AddClothes.responses[0].split(":")[1].replace("\"", ""));
             category.setText(AddClothes.responses[4].split(":")[1].replace("\"", ""));
 
-            // DB에 저장할 정보들을 String 배열에 담아 네트워킹 함수 호출
+            // DB에 저장할 정보들을 String 배열에 담음
             uid = "3";
             dbInfo[0] = uid;
             dbInfo[1] = color.getText().toString();
@@ -368,23 +376,21 @@ public class Clothes extends AppCompatActivity {
             int urlLength = dbInfo[7].length();
             dbInfo[7] = dbInfo[7].substring(0, urlLength - 2).replace("\"", "");
 
+            // 이미지를 서버로부터 받은 URL에서 가져와 보여줌
             toDB.imageRequest(dbInfo[7]);
-
             try {
                 url = new URL(dbInfo[7]);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-
-            utb = new UrlToBitmap2(url);
-            utb.execute();
-            try {
+                utb = new UrlToBitmap2(url);
+                utb.execute();
                 bitmap = utb.get();
+            } catch (MalformedURLException e){
+                e.printStackTrace();
             } catch (ExecutionException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            // 일단 BITMAP으로 가져온 뒤에, setImageAlpha를 통해 검정 부분을 투명하게 만들어 보여줌
             imgView.setImageBitmap(bitmap);
             imgView.setImageAlpha(255);
         }
@@ -435,8 +441,6 @@ public class Clothes extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        infoPopup();
-        imagesSelected = false;
         super.onActivityResult(requestCode, resultCode, data);
     }
 

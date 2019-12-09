@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.closet.LoadingActivity;
+import com.example.closet.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -105,6 +107,38 @@ public class AddClothes extends AppCompatActivity {
                 .post(postBody)
                 .build();
 
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                // Cancel the post on failure.
+                call.cancel();
+
+                // In order to access the TextView inside the UI thread, the code is executed inside runOnUiThread()
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d("Fail","Failed to Connect to Server");
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                // In order to access the TextView inside the UI thread, the code is executed inside runOnUiThread()
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            String resultStr = response.body().string();
+                            responses = resultStr.split(",");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        });
+/*
         CallbackFuture future = new CallbackFuture();
         client.newCall(request).enqueue(future);
 
@@ -135,6 +169,6 @@ public class AddClothes extends AppCompatActivity {
 
         public void onResponse(Call call, final Response response){
             super.complete(response);
-        }
+        }*/
     }
 }

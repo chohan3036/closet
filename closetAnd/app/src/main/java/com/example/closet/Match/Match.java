@@ -212,14 +212,8 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
         rShoulderX = Integer.parseInt(forRshoulderInt[0]);
         rShoulderY = Integer.parseInt(forRshoulderInt[1]);
 
-        forTopWidth = rShoulderX - lShoulderX; // 상의 width
-
-        top = view.findViewById(R.id.match_top);
-        top.getLayoutParams().width = forTopWidth;
-        top.setX(lShoulderX);
-        top.setY(lShoulderY);
-
-        //top.requestLayout();
+        //forTopWidth = rShoulderX - lShoulderX; // 상의 width
+        //top.getLayoutParams().width = forTopWidth;
 /*
         lWristLength = lWrist.length();
         forLwrist = lWrist.substring(1, lWristLength-1);
@@ -252,9 +246,10 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
         parsing();
 
         // top부터 확인
+        top = view.findViewById(R.id.match_top);
         top.setX(lShoulderX);
         top.setY(lShoulderY);
-
+        top.requestLayout();
         //top.setLayoutParams(new FrameLayout.LayoutParams());
 
         //bottom = (ImageView) view.findViewById(R.id.match_bottom);
