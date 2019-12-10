@@ -39,6 +39,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import com.example.closet.GetUID;
 import com.example.closet.Networking_Get;
 import com.example.closet.R;
 import com.example.closet.SaveSharedPreference;
@@ -52,6 +53,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
+
+import static com.example.closet.MainActivity.UID;
 
 public class Clothes extends AppCompatActivity {
 
@@ -76,8 +79,8 @@ public class Clothes extends AppCompatActivity {
     Bitmap bitmap;
     //****image to server
 
-    String uid = "3"; // 들어오는  유저 index저장 하기.
-    private String net_url = "http://52.78.194.160:3000/closet/show/personalCloset?uid=" + uid;
+    String uid; // 들어오는  유저 index저장 하기.
+    private String net_url;
 
     ArrayList<Integer> checked_items;
     JSONArray clothingResults;
@@ -87,8 +90,10 @@ public class Clothes extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clothes);
         context = this; //context오는지 확인해야 할 듯
+        uid = UID;
+        net_url = "http://52.78.194.160:3000/closet/show/personalCloset?uid=" + uid;
+        Log.d("Logged in this ID -> ",uid);
         getClothings(net_url);
-        getUid();
         loadGridView();
         setSpinner();
 
@@ -109,7 +114,6 @@ public class Clothes extends AppCompatActivity {
                 } else {
                     Toast.makeText(getApplicationContext(), "Access to Storage read Permission Denied.", Toast.LENGTH_SHORT).show();
                 }
-
             }
             case 2: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -128,11 +132,6 @@ public class Clothes extends AppCompatActivity {
                 return;
             }
         }
-    }
-
-    private void getUid() {
-        uid = SaveSharedPreference.getString(this, "uid"); //이걸 메인에서 받아서 intent로 넘겨줘야하나?
-        Log.d("Log_dGetUid",uid);
     }
 
     private void setSpinner() {
@@ -220,7 +219,7 @@ public class Clothes extends AppCompatActivity {
             networking.execute();
             JSONObject result = networking.get();
             clothingResults = (JSONArray) result.get("result");
-            //Log.d("Log_d_jsonarrayResult", String.valueOf(clothingResults));
+            Log.d("Log_d_jsonarrayResult", String.valueOf(clothingResults));
             //checked 된 거랑 맞춰서 intent로 보내는 방법으로  해보기
             //[{"cid":19,"color_name":"red","color_r":255,"color_g":10,"color_b":30,"category":"skirt","description":"favorite","photo":"https:\/\/closetsook.s3.ap-northeast-2.amazonaws.com\/1574096231635.PNG"},{"cid":24,"color_name":"white","color_r":11,"color_g":45,"color_b":133,"category":"skirt"
 
@@ -322,6 +321,7 @@ public class Clothes extends AppCompatActivity {
                         startActivityForResult(takePictureIntent, PICK_FROM_CAMERA);
                     }
                 }
+                addPopupWindow.dismiss();
             }
         });
 
@@ -334,10 +334,10 @@ public class Clothes extends AppCompatActivity {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/*");
                 startActivityForResult(intent, PICK_FROM_ALBUM);
+                addPopupWindow.dismiss();
             }
         });
-        infoPopup();
-        imagesSelected = false;
+
     }
 
     protected void infoPopup() {
@@ -364,7 +364,6 @@ public class Clothes extends AppCompatActivity {
             category.setText(AddClothes.responses[4].split(":")[1].replace("\"", ""));
 
             // DB에 저장할 정보들을 String 배열에 담음
-            uid = "3";
             dbInfo[0] = uid;
             dbInfo[1] = color.getText().toString();
             dbInfo[2] = AddClothes.responses[1].split(":")[1];
@@ -441,6 +440,8 @@ public class Clothes extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        infoPopup();
+        imagesSelected = false;
         super.onActivityResult(requestCode, resultCode, data);
     }
 

@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 
 import com.example.closet.GetLocation;
+import com.example.closet.GetUID;
 import com.example.closet.GetaLocation;
 import com.example.closet.Clothes.Clothes;
 import com.example.closet.User.LogIn;
@@ -45,7 +46,6 @@ public class Home extends Fragment implements View.OnClickListener {
     TextView weather_info_textView;
 
     String weather_info;
-
 
     public Home() {
         // Required empty public constructor

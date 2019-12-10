@@ -38,7 +38,7 @@ class Clothes_Adapter extends BaseAdapter {
         this.context = context;
         this.layout = layout;
         this.photoUrls = photoUrls;
-        Log.d("첫번째 사진", String.valueOf(this.photoUrls.get(0)));
+        //Log.d("첫번째 사진", String.valueOf(this.photoUrls.get(0)));
         mSelectedItemsIds = new SparseBooleanArray();
 
         urlToBitmap = new UrlToBitmap(photoUrls);
@@ -51,24 +51,6 @@ class Clothes_Adapter extends BaseAdapter {
             e.printStackTrace();
         }
     }
-
-    /*
-    private void fileToBitmap(){
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        for(int i = 0 ; i<photoUrls.size(); i++) {
-            Bitmap bitmap = BitmapFactory.decodeFile(photoUrls.get(i).getPath(), bmOptions);
-            System.out.println(photoUrls.get(i).getPath());
-            System.out.println(photoUrls.get(i).getAbsolutePath());
-            try {
-                System.out.println(photoUrls.get(i).getCanonicalPath());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            //bitmap= Bitmap.createScaledBitmap(bitmap,)
-            Log.d("Log_dBITMAP",bitmap.toString());
-            photoBitmap.add(bitmap);
-        }
-    }*/
 
     public int getCount() {
         return photoUrls.size();
@@ -105,7 +87,6 @@ class Clothes_Adapter extends BaseAdapter {
                 checkCheckBox(i, !mSelectedItemsIds.get(i));
             }
         });
-
         return view;
     }
 
@@ -129,7 +110,6 @@ class Clothes_Adapter extends BaseAdapter {
 
         //i는 0부터 체크박스 번호. 여기서는 position인가?
         //parent로 보내서 networking으로 받은거 정보 넘겨주면 될듯?
-
         if (value) {
             mSelectedItemsIds.put(position, true);
             checked_items.add((Integer)position);
@@ -148,4 +128,23 @@ class Clothes_Adapter extends BaseAdapter {
     public SparseBooleanArray getSelectedIds() {
         return mSelectedItemsIds;
     }
+
+    /*
+    private void fileToBitmap(){
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        for(int i = 0 ; i<photoUrls.size(); i++) {
+            Bitmap bitmap = BitmapFactory.decodeFile(photoUrls.get(i).getPath(), bmOptions);
+            System.out.println(photoUrls.get(i).getPath());
+            System.out.println(photoUrls.get(i).getAbsolutePath());
+            try {
+                System.out.println(photoUrls.get(i).getCanonicalPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //bitmap= Bitmap.createScaledBitmap(bitmap,)
+            Log.d("Log_dBITMAP",bitmap.toString());
+            photoBitmap.add(bitmap);
+        }
+    }*/
+
 }

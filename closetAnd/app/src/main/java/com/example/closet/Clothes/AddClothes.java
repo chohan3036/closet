@@ -107,38 +107,6 @@ public class AddClothes extends AppCompatActivity {
                 .post(postBody)
                 .build();
 
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                // Cancel the post on failure.
-                call.cancel();
-
-                // In order to access the TextView inside the UI thread, the code is executed inside runOnUiThread()
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.d("Fail","Failed to Connect to Server");
-                    }
-                });
-            }
-
-            @Override
-            public void onResponse(Call call, final Response response) throws IOException {
-                // In order to access the TextView inside the UI thread, the code is executed inside runOnUiThread()
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            String resultStr = response.body().string();
-                            responses = resultStr.split(",");
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-            }
-        });
-/*
         CallbackFuture future = new CallbackFuture();
         client.newCall(request).enqueue(future);
 
@@ -169,6 +137,40 @@ public class AddClothes extends AppCompatActivity {
 
         public void onResponse(Call call, final Response response){
             super.complete(response);
-        }*/
+        }
     }
+
+
+    /* 비동기로 구현한 코드! 혹시 몰라서 안 지우는 것이니 볼 필요 없음
+    client.newCall(request).enqueue(new Callback() {
+        @Override
+        public void onFailure(Call call, IOException e) {
+            // Cancel the post on failure.
+            call.cancel();
+
+            // In order to access the TextView inside the UI thread, the code is executed inside runOnUiThread()
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.d("Fail","Failed to Connect to Server");
+                }
+            });
+        }
+
+        @Override
+        public void onResponse(Call call, final Response response) throws IOException {
+            // In order to access the TextView inside the UI thread, the code is executed inside runOnUiThread()
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        String resultStr = response.body().string();
+                        responses = resultStr.split(",");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+    });*/
 }

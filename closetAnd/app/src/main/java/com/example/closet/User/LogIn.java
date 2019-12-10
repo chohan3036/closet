@@ -74,7 +74,6 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
                         if(automatic.isChecked()){
                             //shared에 저장.
                             SaveSharedPreference.setString(context,"uid", String.valueOf(result.get("Uid"))); //그냥 int로 받아야하나?
-
                         }
 
                         Intent intent  = new Intent(this, MainActivity.class);

@@ -20,6 +20,7 @@ import android.widget.GridView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.closet.GetUID;
 import com.example.closet.Recommend.Recommend_GridAdapter;
 import com.example.closet.Networking_Get;
 import com.example.closet.R;
@@ -33,16 +34,18 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+import static com.example.closet.MainActivity.UID;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class Recommend extends Fragment implements AdapterView.OnItemSelectedListener {
 
+    String uid;
     View view;
     int[] recommend_spinner = new int[]{R.drawable.recommend_beige, R.drawable.thumb_on, R.drawable.thumb_off};
     int spinner_id = 0;
     URL url = null;
-    String uid = "2"; //수정하기
     Spinner recom_spinner;
 
     ArrayList<URL> photoUrls = new ArrayList<>();
@@ -63,7 +66,7 @@ public class Recommend extends Fragment implements AdapterView.OnItemSelectedLis
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        uid = UID;
     }
 
     @Nullable

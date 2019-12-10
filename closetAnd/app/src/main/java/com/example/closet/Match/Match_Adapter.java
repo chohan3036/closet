@@ -106,6 +106,7 @@ class Match_Adapter extends BaseAdapter {
             view.setTag(viewHolder);
         } else
             viewHolder = (ViewHolder) view.getTag();
+
         viewHolder.imageView.setImageBitmap(photoBitmap.get(i));
         viewHolder.checkBox.setChecked(mSelectedItemsIds.get(i));
 
@@ -113,7 +114,7 @@ class Match_Adapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 checkCheckBox(i, !mSelectedItemsIds.get(i));
-                dtInterface.setValues(photoBitmap.get(i));
+                dtInterface.setValues(i, photoBitmap.get(i));
             }
         });
         return view;
