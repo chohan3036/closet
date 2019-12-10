@@ -103,6 +103,7 @@ import static com.example.closet.Clothes.Clothes.getDataColumn;
 import static com.example.closet.Clothes.Clothes.isDownloadsDocument;
 import static com.example.closet.Clothes.Clothes.isExternalStorageDocument;
 import static com.example.closet.Clothes.Clothes.isMediaDocument;
+import static com.example.closet.MainActivity.UID;
 
 public class Match extends Fragment implements View.OnClickListener, DataTransferInterface{
     private PopupWindow mPopupWindow;
@@ -126,6 +127,8 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
     String avatarPhotoPath;
     boolean avatarSelected = false;
     TextView test;
+
+    String uid = UID;
 
     public Match() {
         // Required empty public constructor
@@ -200,6 +203,7 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
         //test = (TextView) view.findViewById(R.id.match_tv);
         //test.setText(avatarInfo.toString());
 
+        // 상의 위치 정보 parsing
         lShoulderLength = lShoulder.length();
         forLshoulder = lShoulder.substring(1, lShoulderLength-1);
         forLshoulderInt = forLshoulder.split(", ");
@@ -214,50 +218,63 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
 
         forTopWidth = rShoulderX - lShoulderX; // 상의 width
 
-        top = view.findViewById(R.id.match_top);
-        top.getLayoutParams().width = forTopWidth;
-        top.setX(lShoulderX);
-        top.setY(lShoulderY);
-
-        //top.requestLayout();
-/*
+        // 하의 위치 정보 parsing
         lWristLength = lWrist.length();
         forLwrist = lWrist.substring(1, lWristLength-1);
-        forLwristInt = lWrist.split(", ");
+        forLwristInt = forLwrist.split(", ");
         lWristX = Integer.parseInt(forLwristInt[0]);
         lWristY = Integer.parseInt(forLwristInt[1]);
 
         rWristLength = rWrist.length();
         forRwrist = rWrist.substring(1, rWristLength-1);
-        forRwristInt = rWrist.split(", ");
-        rWristX = Integer.parseInt(forLwristInt[0]);
-        rWristY = Integer.parseInt(forLwristInt[1]);
+        forRwristInt = forRwrist.split(", ");
+        rWristX = Integer.parseInt(forRwristInt[0]);
+        rWristY = Integer.parseInt(forRwristInt[1]);
 
-        forTopHeight = lShoulderY - lWristY; // 상의 height
         forBottomWidth = rWristX - lWristX; // 하의 width
 
+        forTopHeight = lShoulderY - lWristY; // 상의 height
+        /*
+        if(lKnee != "None"){
+        // 상의 및 하의 height 정의
         lKneeLength = lKnee.length();
         forLknee = lKnee.substring(1, lKneeLength-1);
         forLkneeInt = lKnee.split(", ");
         lKneeX = Integer.parseInt(forLwristInt[0]);
         lKneeY = Integer.parseInt(forLwristInt[1]);
 
+         // 상의 height
         forBottomHeight = lWristY - lKneeX; // 하의 height
-        */
+        }*/
     }
 
     @Override
-    public void setValues(Bitmap photo) {
+    public void setValues(int i, Bitmap photo) {
         // TODO Auto-generated method stub
         parsing();
+        top = view.findViewById(R.id.match_top);
+        bottom = view.findViewById(R.id.match_bottom);
 
-        // top부터 확인
-        top.setX(lShoulderX);
-        top.setY(lShoulderY);
-
+        if(i == 0) {
+            // 첫번째로 선택한 옷은 상의
+            top.setX(lShoulderX);
+            top.setY(lShoulderY);
+            top.getLayoutParams().width = forTopWidth;
+            //top.getLayoutParams().height = forTopHeight;
+            top.setImageBitmap(photo);
+            top.setImageAlpha(255);
+            top.requestLayout();
+        }
+        else {
+            // 그 다음은 하의
+            bottom.setX(lWristX);
+            bottom.setY(lWristY);
+            bottom.getLayoutParams().width = forBottomWidth;
+            bottom.setImageBitmap(photo);
+            bottom.setImageAlpha(255);
+            bottom.requestLayout();
+        }
         //top.setLayoutParams(new FrameLayout.LayoutParams());
-
-        //bottom = (ImageView) view.findViewById(R.id.match_bottom);
     }
 
     public void onClick(View view) {
@@ -293,7 +310,7 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
                                     try {
                                         URL url = new URL("http://52.78.194.160:3030/storeHistory");
                                         HashMap<String, String> arguments = new HashMap<>();
-                                        arguments.put("uid", "3");
+                                        arguments.put("uid", uid);
                                         arguments.put("outer_cid", "28");
                                         arguments.put("up_cid", "26");
                                         arguments.put("down_cid", "27");
@@ -400,7 +417,7 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
 
             while(!networking.responsed) ; //response받을 때 까지 기다림 아예 view동작을멈춤
             avatarInfo = networking.getAvaInfo();
-            //Log.d("Log_dAvatar", avatarInfo.toString());
+            Log.d("Log_dAvatar", avatarInfo.toString());
             try {
                 lShoulder = (String)avatarInfo.get("LShoulder");
                 Log.d("lShoulder",lShoulder);
@@ -410,8 +427,8 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
                 Log.d("lWrist",lWrist);
                 rWrist = (String)avatarInfo.get("RWrist");
                 Log.d("rWrist",rWrist);
-                //lKnee = (String)avatarInfo.get("LKnee");
-                //parsing();
+                lKnee = (String)avatarInfo.get("LKnee");
+                Log.d("LKnee", lKnee);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

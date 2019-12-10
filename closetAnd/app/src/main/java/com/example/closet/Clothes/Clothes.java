@@ -41,6 +41,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import com.example.closet.GetUID;
 import com.example.closet.Networking_Get;
 import com.example.closet.R;
 import com.example.closet.SaveSharedPreference;
@@ -56,6 +57,8 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
+
+import static com.example.closet.MainActivity.UID;
 
 public class Clothes extends AppCompatActivity {
 
@@ -80,8 +83,8 @@ public class Clothes extends AppCompatActivity {
     Bitmap bitmap;
     //****image to server
 
-    String uid = "3"; // 들어오는  유저 index저장 하기.
-    private String net_url = "http://52.78.194.160:3000/closet/show/personalCloset?uid=" + uid;
+    String uid; // 들어오는  유저 index저장 하기.
+    private String net_url;
 
     ArrayList<Integer> checked_items;
     JSONArray clothingResults;
@@ -91,8 +94,10 @@ public class Clothes extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clothes);
         context = this; //context오는지 확인해야 할 듯
+        uid = UID;
+        net_url = "http://52.78.194.160:3000/closet/show/personalCloset?uid=" + uid;
+        Log.d("Logged in this ID -> ",uid);
         getClothings(net_url);
-        getUid();
         loadGridView();
         setSpinner();
 
@@ -113,7 +118,6 @@ public class Clothes extends AppCompatActivity {
                 } else {
                     Toast.makeText(getApplicationContext(), "Access to Storage read Permission Denied.", Toast.LENGTH_SHORT).show();
                 }
-
             }
             case 2: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -132,11 +136,6 @@ public class Clothes extends AppCompatActivity {
                 return;
             }
         }
-    }
-
-    private void getUid() {
-        uid = SaveSharedPreference.getString(this, "uid"); //이걸 메인에서 받아서 intent로 넘겨줘야하나?
-        Log.d("Log_dGetUid",uid);
     }
 
     private void setSpinner() {
@@ -224,7 +223,7 @@ public class Clothes extends AppCompatActivity {
             networking.execute();
             JSONObject result = networking.get();
             clothingResults = (JSONArray) result.get("result");
-            //Log.d("Log_d_jsonarrayResult", String.valueOf(clothingResults));
+            Log.d("Log_d_jsonarrayResult", String.valueOf(clothingResults));
             //checked 된 거랑 맞춰서 intent로 보내는 방법으로  해보기
             //[{"cid":19,"color_name":"red","color_r":255,"color_g":10,"color_b":30,"category":"skirt","description":"favorite","photo":"https:\/\/closetsook.s3.ap-northeast-2.amazonaws.com\/1574096231635.PNG"},{"cid":24,"color_name":"white","color_r":11,"color_g":45,"color_b":133,"category":"skirt"
 
@@ -306,6 +305,7 @@ public class Clothes extends AppCompatActivity {
             }
         });
 
+        // 카메라 버튼 -> 카메라 인텐트 및 찍은 사진 저장
         Button camera = (Button) addPopupView.findViewById(R.id.callCamera);
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -325,9 +325,11 @@ public class Clothes extends AppCompatActivity {
                         startActivityForResult(takePictureIntent, PICK_FROM_CAMERA);
                     }
                 }
+                addPopupWindow.dismiss();
             }
         });
 
+        // 앨범 버튼 -> 앨범 호출 (갤러리 등등 외부 탐색기 사용 가능; getRealPathURI에서 알아서 가져옴)
         Button album = (Button) addPopupView.findViewById(R.id.callAlbum);
         album.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -336,8 +338,10 @@ public class Clothes extends AppCompatActivity {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/*");
                 startActivityForResult(intent, PICK_FROM_ALBUM);
+                addPopupWindow.dismiss();
             }
         });
+
     }
 
     protected void infoPopup() {
@@ -348,19 +352,22 @@ public class Clothes extends AppCompatActivity {
         infoPopupWindow.setFocusable(true);
         // 외부 영역 선택시 PopUp 종료
         infoPopupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+
+        // OK 버튼 눌렀을 때 써야 하기 때문에 final로 선언
         final EditText color = popupView.findViewById(R.id.cloth_color);
         final EditText category = popupView.findViewById(R.id.cloth_category);
         final EditText description = popupView.findViewById(R.id.cloth_description);
         final ImageView imgView = popupView.findViewById(R.id.cloth_image);
 
+        // 이전에 ADD 작업한 게 있다면 IF 내부를 실행, 아니라면 빈 INFO 화면 띄우기
         if (imagesSelected == true) {
             toDB = new DBClothes(dbInfo);
 
+            // 서버로부터 받은 응답을 파싱하여 INFO 화면에 띄워줌
             color.setText(AddClothes.responses[0].split(":")[1].replace("\"", ""));
             category.setText(AddClothes.responses[4].split(":")[1].replace("\"", ""));
 
-            // DB에 저장할 정보들을 String 배열에 담아 네트워킹 함수 호출
-            uid = "3";
+            // DB에 저장할 정보들을 String 배열에 담음
             dbInfo[0] = uid;
             dbInfo[1] = color.getText().toString();
             dbInfo[2] = AddClothes.responses[1].split(":")[1];
@@ -372,23 +379,21 @@ public class Clothes extends AppCompatActivity {
             int urlLength = dbInfo[7].length();
             dbInfo[7] = dbInfo[7].substring(0, urlLength - 2).replace("\"", "");
 
+            // 이미지를 서버로부터 받은 URL에서 가져와 보여줌
             toDB.imageRequest(dbInfo[7]);
-
             try {
                 url = new URL(dbInfo[7]);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-
-            utb = new UrlToBitmap2(url);
-            utb.execute();
-            try {
+                utb = new UrlToBitmap2(url);
+                utb.execute();
                 bitmap = utb.get();
+            } catch (MalformedURLException e){
+                e.printStackTrace();
             } catch (ExecutionException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            // 일단 BITMAP으로 가져온 뒤에, setImageAlpha를 통해 검정 부분을 투명하게 만들어 보여줌
             imgView.setImageBitmap(bitmap);
             imgView.setImageAlpha(255);
         }

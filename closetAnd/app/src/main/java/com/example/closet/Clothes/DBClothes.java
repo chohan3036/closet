@@ -111,10 +111,6 @@ public class DBClothes extends AppCompatActivity {
         });
     }
 
-    public void showImage() {
-
-    }
-
     public void imageRequest(String url) {
         OkHttpClient client = new OkHttpClient();
 

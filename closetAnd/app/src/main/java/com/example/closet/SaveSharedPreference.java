@@ -29,7 +29,7 @@ public class SaveSharedPreference {
     //같은 방식으로 저장하고자 하는 데이터형을 바꿔가면서 함수를 만들어 주면 됨
 
     //값 로드
-    public  static String getString(Context context,String key){
+    public static String getString(Context context,String key){
         SharedPreferences preferences = getSharedPreferences(context);
         String value = preferences.getString(key,"");
         return value;
@@ -43,7 +43,7 @@ public class SaveSharedPreference {
         editor.commit();
     }
     //모든 저장 데이터 삭제
-    public  static void clear(Context context){
+    public static void clear(Context context){
         SharedPreferences preferences =getSharedPreferences(context);
         SharedPreferences.Editor editor = preferences.edit();
         editor.clear();
