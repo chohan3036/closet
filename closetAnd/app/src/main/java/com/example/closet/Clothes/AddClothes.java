@@ -110,7 +110,6 @@ public class AddClothes extends AppCompatActivity {
                 .post(postBody)
                 .build();
 
-
         CallbackFuture future = new CallbackFuture();
         client.newCall(request).enqueue(future);
 

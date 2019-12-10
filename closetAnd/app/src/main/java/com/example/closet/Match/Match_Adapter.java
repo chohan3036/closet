@@ -33,22 +33,22 @@ class Match_Adapter extends BaseAdapter {
     private int layout;
     private SparseBooleanArray mSelectedItemsIds;
 
-    ImageView top, bottom;
-
     ArrayList<URL> selected_from_clothes;
+    ArrayList<String> selected_from_clothes_category;
     ArrayList<Bitmap> photoBitmap = new ArrayList<>();
     UrlToBitmap urlToBitmap;
 
-    static public ArrayList<Integer> match_checked_items = new ArrayList<>(); //match에서 쓸 수 있게 static
+    static public ArrayList<Integer> match_checked_items = new ArrayList<>(); // match에서 쓸 수 있게 static
 
     DataTransferInterface dtInterface;
 
-    public Match_Adapter(Context context, int layout, ArrayList<URL> selected_from_clothes, DataTransferInterface dtInterface) {
+    public Match_Adapter(Context context, int layout, ArrayList<URL> selected_from_clothes, ArrayList<String> selected_from_clothes_category, DataTransferInterface dtInterface) {
 
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.context = context;
         this.layout = layout;
         this.selected_from_clothes = selected_from_clothes;
+        this.selected_from_clothes_category = selected_from_clothes_category;
         mSelectedItemsIds = new SparseBooleanArray();
 
         this.dtInterface = dtInterface;
@@ -114,7 +114,7 @@ class Match_Adapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 checkCheckBox(i, !mSelectedItemsIds.get(i));
-                dtInterface.setValues(i, photoBitmap.get(i));
+                dtInterface.setValues(selected_from_clothes_category.get(i), photoBitmap.get(i));
             }
         });
         return view;

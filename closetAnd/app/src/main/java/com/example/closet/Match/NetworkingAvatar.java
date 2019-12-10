@@ -26,16 +26,20 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static com.example.closet.MainActivity.UID;
+
 public class NetworkingAvatar {
     Activity activity;
     String selectedImagesPaths;
     JSONObject avaInfo = new JSONObject();
     Boolean responsed = false;
+    String uid = UID;
 
     NetworkingAvatar(String selectedImagesPaths, Activity activity) {
         this.selectedImagesPaths = selectedImagesPaths;
         this.activity = activity;
     }
+
     public JSONObject getAvaInfo(){
         return avaInfo;
     }
@@ -79,15 +83,14 @@ public class NetworkingAvatar {
             }
             responseImage = resized;
             responseImage.compress(Bitmap.CompressFormat.JPEG, 80, stream);
-        }catch(Exception e){
+        } catch(Exception e){
             System.out.println("Please Make Sure the Selected File is an Image.");
-
         }
         byte[] byteArray = stream.toByteArray();
 
         multipartBodyBuilder.addFormDataPart("photo", "avatar.jpg",
                 RequestBody.create(MediaType.parse("image/*jpg"), byteArray));
-        multipartBodyBuilder.addFormDataPart("uid", "3"); //uid바꾸기
+        multipartBodyBuilder.addFormDataPart("uid", uid); //uid바꾸기
 
         RequestBody postBody = multipartBodyBuilder.build();
 
