@@ -22,6 +22,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -30,6 +31,7 @@ import android.widget.Toast;
 import android.widget.Spinner;
 
 import java.io.File;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
@@ -51,6 +53,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URI;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
@@ -62,7 +66,7 @@ public class Clothes extends AppCompatActivity {
     ArrayList<URL> photoUrls = new ArrayList<>();
     GridView gridView;
     int spinner_id = 0;
-    private Context context;
+    Context context;
 
     //****image to server
     private static final int PICK_FROM_CAMERA = 0;
@@ -394,6 +398,7 @@ public class Clothes extends AppCompatActivity {
             imgView.setImageAlpha(255);
         }
 
+
         Button cancel = (Button) popupView.findViewById(R.id.Cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -416,7 +421,9 @@ public class Clothes extends AppCompatActivity {
         });
     }
 
+
     @Override
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PICK_FROM_CAMERA ) {
             imagesSelected = true;
@@ -429,6 +436,7 @@ public class Clothes extends AppCompatActivity {
                 Log.d("UIR is ", uri.toString());
                 selectedImagesPaths = getRealPathFromURI(this, uri);
                 Log.d("Real file path is", selectedImagesPaths);
+
                 imagesSelected = true;
             }
         }

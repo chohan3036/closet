@@ -96,6 +96,9 @@ public class AddClothes extends AppCompatActivity {
 
     void postRequest(String postUrl, RequestBody postBody) throws ExecutionException, InterruptedException {
 
+                // final EditText color = (EditText)findViewById(R.id.cloth_color);
+                // final EditText category = (EditText)findViewById(R.id.cloth_category);
+
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(100, TimeUnit.SECONDS)
                 .readTimeout(100, TimeUnit.SECONDS)
@@ -106,6 +109,7 @@ public class AddClothes extends AppCompatActivity {
                 .url(postUrl + "/saveClothes")
                 .post(postBody)
                 .build();
+
 
         CallbackFuture future = new CallbackFuture();
         client.newCall(request).enqueue(future);

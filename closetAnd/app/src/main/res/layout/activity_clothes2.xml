@@ -6,68 +6,73 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="300dp"
-        android:background="#EDC6C6"
-        android:layout_height="500dp">
+        android:layout_height="400dp"
+        android:background="#ece6cc"
+        android:orientation="vertical">
 
         <ImageView
-            android:src="@drawable/emptylike"
             android:id="@+id/cloth_image"
             android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:gravity="center"/>
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:scaleType="fitXY"
+            android:layout_weight="5"
+            android:src="@drawable/emptylike" />
 
         <EditText
             android:id="@+id/cloth_color"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:fontFamily="@font/nanum"
-            android:layout_marginTop="10dp"
-            android:text="color"
-            android:selectAllOnFocus="true"/>
+            android:hint="color를 입력해주세요"
+            android:selectAllOnFocus="true" />
 
         <EditText
             android:id="@+id/cloth_category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:fontFamily="@font/nanum"
-            android:layout_marginTop="10dp"
-            android:text="category"
+            android:hint="category를 입력해주세요"
             android:selectAllOnFocus="true" />
 
         <EditText
             android:id="@+id/cloth_description"
             android:layout_width="300dp"
-            android:layout_height="112dp"
-            android:layout_marginTop="20dp"
-            android:background="#FFFFFF"
+            android:layout_height="0dp"
+            android:background="#ece6cc"
+            android:layout_weight="2"
             android:fontFamily="@font/nanum"
             android:hint="옷에 대한 설명을 작성해주세요" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+
+
+        android:layout_width="300dp"
         android:layout_height="50dp"
         android:orientation="horizontal"
-        android:layout_marginTop="50dp">
+        >
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Cancel"
             android:fontFamily="@font/montaga"
             android:id="@+id/Cancel"
-            android:background="#90ee90"/>
+            android:background="#EDC6C6"/>
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fontFamily="@font/montaga"
             android:text="Ok"
             android:id="@+id/Ok"
-            android:background="#90ee90"/>
+            android:background="#EDC6C6"/>
+
     </LinearLayout>
 </LinearLayout>
