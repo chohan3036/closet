@@ -81,6 +81,7 @@ public class NetworkingAvatar {
             responseImage.compress(Bitmap.CompressFormat.JPEG, 80, stream);
         }catch(Exception e){
             System.out.println("Please Make Sure the Selected File is an Image.");
+
         }
         byte[] byteArray = stream.toByteArray();
 

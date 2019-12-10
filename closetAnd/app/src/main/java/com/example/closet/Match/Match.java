@@ -205,48 +205,54 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
         //test.setText(avatarInfo.toString());
 
         // 상의 위치 정보 parsing
-        lShoulderLength = lShoulder.length();
-        forLshoulder = lShoulder.substring(1, lShoulderLength-1);
-        forLshoulderInt = forLshoulder.split(", ");
-        lShoulderX = Integer.parseInt(forLshoulderInt[0]);
-        lShoulderY = Integer.parseInt(forLshoulderInt[1]);
+        if (!lShoulder.equals("None")) {
+            lShoulderLength = lShoulder.length();
+            forLshoulder = lShoulder.substring(1, lShoulderLength - 1);
+            forLshoulderInt = forLshoulder.split(", ");
+            lShoulderX = Integer.parseInt(forLshoulderInt[0]);
+            lShoulderY = Integer.parseInt(forLshoulderInt[1]);
+        } else {lShoulderX = 200; lShoulderY = 250;}
 
-        rShoulderLength = rShoulder.length();
-        forRshoulder = rShoulder.substring(1, rShoulderLength-1);
-        forRshoulderInt = forRshoulder.split(", ");
-        rShoulderX = Integer.parseInt(forRshoulderInt[0]);
-        rShoulderY = Integer.parseInt(forRshoulderInt[1]);
+        if (!rShoulder.equals("None")) {
+            rShoulderLength = rShoulder.length();
+            forRshoulder = rShoulder.substring(1, rShoulderLength - 1);
+            forRshoulderInt = forRshoulder.split(", ");
+            rShoulderX = Integer.parseInt(forRshoulderInt[0]);
+            rShoulderY = Integer.parseInt(forRshoulderInt[1]);
+        } else {rShoulderX = 250; rShoulderY = 250;}
 
         forTopWidth = rShoulderX - lShoulderX; // 상의 width
 
-        // 하의 위치 정보 parsing
-        lWristLength = lWrist.length();
-        forLwrist = lWrist.substring(1, lWristLength-1);
-        forLwristInt = forLwrist.split(", ");
-        lWristX = Integer.parseInt(forLwristInt[0]);
-        lWristY = Integer.parseInt(forLwristInt[1]);
+        if (!lWrist.equals("None")) {
+            // 하의 위치 정보 parsing
+            lWristLength = lWrist.length();
+            forLwrist = lWrist.substring(1, lWristLength - 1);
+            forLwristInt = forLwrist.split(", ");
+            lWristX = Integer.parseInt(forLwristInt[0]);
+            lWristY = Integer.parseInt(forLwristInt[1]);
+        } else {lWristX = 250; lWristY = 1000;}
 
-        rWristLength = rWrist.length();
-        forRwrist = rWrist.substring(1, rWristLength-1);
-        forRwristInt = forRwrist.split(", ");
-        rWristX = Integer.parseInt(forRwristInt[0]);
-        rWristY = Integer.parseInt(forRwristInt[1]);
+        if (!rWrist.equals("None")) {
+            rWristLength = rWrist.length();
+            forRwrist = rWrist.substring(1, rWristLength - 1);
+            forRwristInt = forRwrist.split(", ");
+            rWristX = Integer.parseInt(forRwristInt[0]);
+            rWristY = Integer.parseInt(forRwristInt[1]);
+        } else {rWristX = 750; rWristY = 1000;}
 
         forBottomWidth = rWristX - lWristX; // 하의 width
-
         forTopHeight = lShoulderY - lWristY; // 상의 height
-        /*
-        if(lKnee != "None"){
-        // 상의 및 하의 height 정의
-        lKneeLength = lKnee.length();
-        forLknee = lKnee.substring(1, lKneeLength-1);
-        forLkneeInt = lKnee.split(", ");
-        lKneeX = Integer.parseInt(forLwristInt[0]);
-        lKneeY = Integer.parseInt(forLwristInt[1]);
 
-         // 상의 height
-        forBottomHeight = lWristY - lKneeX; // 하의 height
-        }*/
+        if(!lKnee.equals("None")) {
+            // 상의 및 하의 height 정의
+            lKneeLength = lKnee.length();
+            forLknee = lKnee.substring(1, lKneeLength - 1);
+            forLkneeInt = lKnee.split(", ");
+            lKneeX = Integer.parseInt(forLwristInt[0]);
+            lKneeY = Integer.parseInt(forLwristInt[1]);
+        } else {lKneeX = 300; lKneeY = 1500;}
+
+        forBottomHeight = lWristY - lKneeY; // 하의 height
     }
 
     @Override
@@ -261,7 +267,7 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
             top.setX(lShoulderX);
             top.setY(lShoulderY);
             top.getLayoutParams().width = forTopWidth;
-            //top.getLayoutParams().height = forTopHeight;
+            top.getLayoutParams().height = forTopHeight;
             top.setImageBitmap(photo);
             top.setImageAlpha(255);
             top.requestLayout();
@@ -271,6 +277,7 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
             bottom.setX(lWristX);
             bottom.setY(lWristY);
             bottom.getLayoutParams().width = forBottomWidth;
+            bottom.getLayoutParams().height = forBottomHeight;
             bottom.setImageBitmap(photo);
             bottom.setImageAlpha(255);
             bottom.requestLayout();
@@ -351,6 +358,8 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
 
                 break;
             case R.id.reset:
+                top.setImageBitmap(null);
+                bottom.setImageBitmap(null);
                 break;
             case R.id.match_camera:
                 getPhotoFromAlbum();
