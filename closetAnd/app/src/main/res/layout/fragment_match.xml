@@ -48,7 +48,7 @@
 
     <FrameLayout
         android:layout_marginTop="80dp"
-
+        android:id="@+id/frame"
         android:layout_width="280dp"
         android:layout_height="650dp" >
 

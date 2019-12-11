@@ -37,6 +37,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.text.SimpleDateFormat;
@@ -128,7 +129,6 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
 
     String avatarPhotoPath;
     boolean avatarSelected = false;
-    TextView test;
 
     String uid = UID;
 
@@ -264,7 +264,7 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
         parsing();
         top = view.findViewById(R.id.match_top);
         bottom = view.findViewById(R.id.match_bottom);
-/*
+
         lshoulder = view.findViewById(R.id.lshoulder);
         rshoulder = view.findViewById(R.id.rshoulder);
         lwrist = view.findViewById(R.id.lwrist);
@@ -286,10 +286,11 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
         lknee.setX(lKneeX);
         lknee.setY(lKneeY);
         lknee.setText(lKnee);
-*/
+
         System.out.println(category);
         if(category.equals("top") || category.equals("shirt") ||
                 category.equals("Coat") || category.equals("Dress")) {
+
             // 첫번째로 선택한 옷은 상의
             top.setX(lShoulderX);
             top.setY(lShoulderY);
@@ -339,6 +340,7 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
                             Button ok = (Button) popupView.findViewById(R.id.match_save_Ok);
                             ok.setOnClickListener(new View.OnClickListener() {
                                 public void onClick(View v) {
+                                    takeScreenshot();
                                     //save networkigng 해야하는 곳(아바타랑 Look 같이 보내주기)
                                     //mPopupWindow.dismiss();
                                     //save networkigng 해야하는 곳(아바타랑 Look 같이 보내주기)
@@ -531,120 +533,49 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
             return uri.getPath();
         }
 
+
         return null;
     }
-<<<<<<< HEAD
 
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
+    private void takeScreenshot() {
+        Date now = new Date();
+        android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
 
-        // Save a file: path for use with ACTION_VIEW intents
-        avatarPhotoPath = image.getAbsolutePath();
-        //currentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
+        try {
+            // image naming and path  to include sd card  appending name you choose for file
+            String mPath = Environment.getExternalStorageDirectory().toString() + "/" + now + ".jpg";
 
-    String currentPhotoPath;
+            // create bitmap screen capture
+            //View v1 = getActivity().getWindow().getDecorView().getRootView();
+            //ImageView v1 = getActivity().getWindow().getDecorView().getRootView();
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 3030) {
-            Uri uri = data.getData();
-            String filePath = getPath(getActivity(), uri);
-            Log.d("Log_dFilePath ", filePath.toString());
+            //View v1 = (ImageView) view.findViewById(R.id.newimage);
+            View v1 =(FrameLayout)view.findViewById(R.id.frame);
+            v1.setDrawingCacheEnabled(true);
+            Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
+            v1.setDrawingCacheEnabled(false);
 
-            NetworkingAvatar networking = new NetworkingAvatar(filePath, getActivity());
-            networking.connectServer();
-            //여기서 null나면 박수빈한테 알려조
-            if (new File(filePath).exists()) {
-                iv.setImageURI(Uri.fromFile(new File(filePath)));
-            }
+            File imageFile = new File(mPath);
 
-            while(!networking.responsed)
-                ; //response받을 때 까지 기다림 아예 view동작을멈춤
-            avatarInfo = networking.getAvaInfo();
-            Log.d("Log_dAvatar", avatarInfo.toString());
-            try {
-                lShoulder = (String)avatarInfo.get("LShoulder");
-                rShoulder = (String)avatarInfo.get("RShoulder");
-                lWrist = (String)avatarInfo.get("LWrist");
-                rWrist = (String)avatarInfo.get("RWrist");
-                lKnee = (String)avatarInfo.get("LKnee");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            FileOutputStream outputStream = new FileOutputStream(imageFile);
+            int quality = 100;
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+            outputStream.flush();
+            outputStream.close();
 
+            openScreenshot(imageFile);
+        } catch (Throwable e) {
+            // Several error may come out with file handling or DOM
+            e.printStackTrace();
         }
-
-        //String selectedImagesPaths = getRealPathFromURI(getContext(), uri);
-
-        //currentPhotoPath = image.getAbsolutePath();
-        //File imgFile = new File(currentPhotoPath);
-
-        // networkingPhoto(filePath);
-
     }
-    // Save a file: path for use with ACTION_VIEW intents
-
-    //Log.d("Real file path is", selectedImagesPaths);
-    //imagesSelected = true;
-
-
-        /*
-<<<<<<< HEAD
-        if (requestCode == MY_PERMISSIONS_REQUEST_CAMERA && resultCode == RESULT_OK) {
-
-            avatarSelected = true;
-            //File imgFile = new File(avatarPhotoPath);
-            //if (imgFile.exists()) {
-            //    iv.setImageURI(Uri.fromFile(imgFile));
-            //}
-        }
-        AddClothes sendImage = new AddClothes(avatarSelected, avatarPhotoPath);
-        sendImage.connectServer();
-
-=======
-   }     if (requestCode == MY_PERMISSIONS_REQUEST_CAMERA && resultCode == RESULT_OK) {
->>>>>>> 3aa693f8957a5708a68fb8b9df2c0985a3f94052
-            File imgFile = new File(currentPhotoPath);
-            if (imgFile.exists()) {
-                iv.setImageURI(Uri.fromFile(imgFile));
-            }
-        }*/
-
+    private void openScreenshot(File imageFile) {
+        //Intent intent = new Intent();
+        //intent.setAction(Intent.ACTION_VIEW);
+        //Uri uri = Uri.fromFile(imageFile);
+        //ImageView new1 = (ImageView) view.findViewById(R.id.newimage);
+        //new1.setImageURI(Uri.fromFile(imageFile));
+        //intent.setDataAndType(uri, "image/*");
+        //startActivity(intent);
     }
-
-
-    // 이미지 Resize 함수
-   /* private int setSimpleSize(BitmapFactory.Options options, int requestWidth, int requestHeight){
-        // 이미지 사이즈를 체크할 원본 이미지 가로/세로 사이즈를 임시 변수에 대입.
-        int originalWidth = options.outWidth;
-        int originalHeight = options.outHeight;
-
-        // 원본 이미지 비율인 1로 초기화
-        int size = 1;
-
-        // 해상도가 깨지지 않을만한 요구되는 사이즈까지 2의 배수의 값으로 원본 이미지를 나눈다.
-        while(requestWidth < originalWidth || requestHeight < originalHeight){
-            originalWidth = originalWidth / 2;
-            originalHeight = originalHeight / 2;
-
-            size = size * 2;
-        }
-        return size;
-    }*/
-
-
-
-=======
 }
->>>>>>> 0e2dd7a02afb43149d0c45c5a6083e673ec69b03
