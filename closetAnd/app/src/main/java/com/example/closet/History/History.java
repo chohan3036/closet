@@ -58,24 +58,27 @@ public class History extends Fragment {
         loadGridView(view);
 
     }
+
     private void getClothings(String category) {
         try {
             photoUrls.clear();
             uid = UID; // 고치기
             Log.d("uid", uid);
             //결과없으면 match에서 코디를 만들고 저장하라고 알려주기
-            URL url = new URL("http://52.78.194.160:3000/closet/show/personalHistory/"+uid);
+            URL url = new URL("http://52.78.194.160:3000/closet/show/personalHistory/" + uid);
             Networking_Get networking = new Networking_Get(url);
             networking.execute();
             JSONObject result = networking.get();
-            JSONArray clothingResults = (JSONArray) result.get("result");
-            //Log.d("Log_d_jsonarray", String.valueOf(clothingResults));
-            for (int i = 0; i < clothingResults.length(); i++) {
-                JSONObject eachClothing = clothingResults.getJSONObject(i);
-                String photoFile = eachClothing.getString("photo_look");
-                Log.d("Log_dPhotoFile",photoFile);
-                if(!"null".equals(photoFile))
-                    photoUrls.add(new URL(photoFile));
+            if (result != null) {
+                JSONArray clothingResults = (JSONArray) result.get("result");
+                //Log.d("Log_d_jsonarray", String.valueOf(clothingResults));
+                for (int i = 0; i < clothingResults.length(); i++) {
+                    JSONObject eachClothing = clothingResults.getJSONObject(i);
+                    String photoFile = eachClothing.getString("photo_look");
+                    Log.d("Log_dPhotoFile", photoFile);
+                    if (!"null".equals(photoFile))
+                        photoUrls.add(new URL(photoFile));
+                }
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -86,20 +89,19 @@ public class History extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
     }
 
     private void loadGridView(View view) {
         GridView gridView = (GridView) view.findViewById(R.id.history_grid);
         arrayTextList = new ArrayList<>();
         System.out.println(photoUrls.size());
-        for (int i = 1; i <= photoUrls.size()+1; i++)
+        for (int i = 1; i <= photoUrls.size() + 1; i++)
             arrayTextList.add("History Items " + i);
         adapter = new History_GridAdapter(context, photoUrls, arrayTextList);
         gridView.setAdapter(adapter);
         //photoUrls.clear();//여기?
     }
-
-
 
 
 }
