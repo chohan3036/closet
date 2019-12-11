@@ -60,6 +60,7 @@ public class History extends Fragment {
     }
     private void getClothings(String category) {
         try {
+            photoUrls.clear();
             uid = UID; // 고치기
             Log.d("uid", uid);
             //결과없으면 match에서 코디를 만들고 저장하라고 알려주기
