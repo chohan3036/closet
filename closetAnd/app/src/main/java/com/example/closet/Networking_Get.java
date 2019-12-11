@@ -38,8 +38,11 @@ public class Networking_Get extends AsyncTask<Void,Void,JSONObject> {
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
             response = readStream(in);
             //Log.d("Log_dResponse",response);
+            if(urlConnection.getResponseCode() == 400){
+                return null;
+            }
             JSONObject responseJson = new JSONObject(response);
-            //Log.d("Log_dGETResponseJSON",responseJson.toString());
+            Log.d("Log_dGETResponseJSON",responseJson.toString());
             //JSON return 해주기.
             return responseJson;
         } catch (IOException e) {

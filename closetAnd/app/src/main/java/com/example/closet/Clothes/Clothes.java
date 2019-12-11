@@ -250,6 +250,8 @@ public class Clothes extends AppCompatActivity {
         gridView = (GridView) findViewById(R.id.clothes_grid);
         adapter = new Clothes_Adapter(this, R.layout.clothes_griditem, photoUrls);
         gridView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+ 
     }
 
     @SuppressLint("ResourceType")
