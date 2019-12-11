@@ -31,6 +31,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
+
 import static com.example.closet.MainActivity.UID;
 
 class Recommend_GridAdapter extends BaseAdapter {
@@ -65,6 +66,7 @@ class Recommend_GridAdapter extends BaseAdapter {
             e.printStackTrace();
         }
     }
+
     public int getCount() {
         return photoUrls.size();
     }
@@ -89,11 +91,14 @@ class Recommend_GridAdapter extends BaseAdapter {
 
         viewHolder.imageView.setImageBitmap(photoBitmap.get(i));
         viewHolder.textView.setText("코디 정보? ");
-        for (int j = 0; j < likedHid.size(); j++) {
-            if (Integer.parseInt(hidList.get(i)) == likedHid.get(j)) {
-                //Log.d("Log_dLikeHids", String.valueOf(likedHid.get(j)) + "\n" + j);
-                //Log.d("Log_dHidList", hidList.get(i) + "\n" + i);
-                viewHolder.imageButton.setImageResource(R.drawable.full_like);
+        if (likedHid == null) {
+        } else {
+            for (int j = 0; j < likedHid.size(); j++) {
+                if (Integer.parseInt(hidList.get(i)) == likedHid.get(j)) {
+                    //Log.d("Log_dLikeHids", String.valueOf(likedHid.get(j)) + "\n" + j);
+                    //Log.d("Log_dHidList", hidList.get(i) + "\n" + i);
+                    viewHolder.imageButton.setImageResource(R.drawable.full_like);
+                }
             }
         }
         viewHolder.imageButton.setOnClickListener(new OnClickListener() {
@@ -110,11 +115,11 @@ class Recommend_GridAdapter extends BaseAdapter {
                     JSONObject jsonObject = networking.get();
                     if (String.valueOf(jsonObject.get("like_status")).equals("1")) {
                         //viewHolder.imageButton.setImageResource(R.drawable.full_like);
-                        selected = (ImageButton)view.findViewById(view.getId());
+                        selected = (ImageButton) view.findViewById(view.getId());
                         selected.setImageResource(R.drawable.full_like);
 
                     } else {
-                        selected = (ImageButton)view.findViewById(view.getId());
+                        selected = (ImageButton) view.findViewById(view.getId());
                         selected.setImageResource(R.drawable.emptylike);
                     }
                 } catch (MalformedURLException e) {
@@ -146,14 +151,19 @@ class Recommend_GridAdapter extends BaseAdapter {
             networking_get.execute();
 
             JSONObject jsonObject = networking_get.get();
-            JSONArray result = null;
-            if (jsonObject != null)
-                result = (JSONArray) jsonObject.get("result");
-            //Log.d("Log_dWWWWWW",result.toString());
+            if (jsonObject == null)
+                ;
 
-            for (int i = 0; i < result.length(); i++) {
-                Log.d("Log_dLikeListItem", String.valueOf(result.get(i)));
-                likedHid.add((Integer) result.get(i));
+            else {
+                JSONArray result = null;
+                if (jsonObject != null)
+                    result = (JSONArray) jsonObject.get("result");
+                //Log.d("Log_dWWWWWW",result.toString());
+
+                for (int i = 0; i < result.length(); i++) {
+                    Log.d("Log_dLikeListItem", String.valueOf(result.get(i)));
+                    likedHid.add((Integer) result.get(i));
+                }
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();
