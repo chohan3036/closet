@@ -90,6 +90,7 @@ public class History extends Fragment {
     private void loadGridView(View view) {
         GridView gridView = (GridView) view.findViewById(R.id.history_grid);
         arrayTextList = new ArrayList<>();
+        System.out.println(photoUrls.size());
         for (int i = 1; i <= photoUrls.size()+1; i++)
             arrayTextList.add("History Items " + i);
         adapter = new History_GridAdapter(context, photoUrls, arrayTextList);
