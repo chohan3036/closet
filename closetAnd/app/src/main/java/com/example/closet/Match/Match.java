@@ -37,7 +37,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.text.SimpleDateFormat;
@@ -298,7 +297,6 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
                 mPopupWindow.setFocusable(true);
                 mPopupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
 
-
                 Spinner spinner = (Spinner) popupView.findViewById(R.id.match_spinner);
                 String[] Look_item = getResources().getStringArray(R.array.match_array);
                 ArrayAdapter<String> dataAdapter3 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, Look_item);
@@ -313,12 +311,11 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
                             Button ok = (Button) popupView.findViewById(R.id.match_save_Ok);
                             ok.setOnClickListener(new View.OnClickListener() {
                                 public void onClick(View v) {
-                                    takeScreenshot();
                                     //save networkigng 해야하는 곳(아바타랑 Look 같이 보내주기)
                                     //mPopupWindow.dismiss();
                                     //save networkigng 해야하는 곳(아바타랑 Look 같이 보내주기)
                                     try {
-                                        URL url = new URL("http://52.78.194.160:3000/closet/show/personalHistory/"+uid);
+                                        URL url = new URL("http://52.78.194.160:3030/storeHistory");
                                         HashMap<String, String> arguments = new HashMap<>();
                                         arguments.put("uid", uid);
                                         arguments.put("outer_cid", "28");
@@ -446,42 +443,6 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
             }
         }
     }
-    private void takeScreenshot() {
-        Date now = new Date();
-        android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
-
-        try {
-            // image naming and path  to include sd card  appending name you choose for file
-            String mPath = Environment.getExternalStorageDirectory().toString() + "/" + now + ".jpg";
-
-            // create bitmap screen capture
-            View v1 = getActivity().getWindow().getDecorView().getRootView();
-            v1.setDrawingCacheEnabled(true);
-            Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
-            v1.setDrawingCacheEnabled(false);
-
-            File imageFile = new File(mPath);
-
-            FileOutputStream outputStream = new FileOutputStream(imageFile);
-            int quality = 100;
-            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
-            outputStream.flush();
-            outputStream.close();
-
-            openScreenshot(imageFile);
-        } catch (Throwable e) {
-            // Several error may come out with file handling or DOM
-            e.printStackTrace();
-        }
-    }
-    private void openScreenshot(File imageFile) {
-        //Intent intent = new Intent();
-        //intent.setAction(Intent.ACTION_VIEW);
-        Uri uri = Uri.fromFile(imageFile);
-        iv.setImageURI(Uri.fromFile(imageFile));
-        //intent.setDataAndType(uri, "image/*");
-        //startActivity(intent);
-    }
 
     public static String getPath(final Context context, final Uri uri) {
 
@@ -545,6 +506,3 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
         return null;
     }
 }
-
-
-
