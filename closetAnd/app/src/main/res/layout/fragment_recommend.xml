@@ -22,28 +22,28 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:fontFamily="@font/nanum"
-            android:text="   추천 기준을 선택해 주세요"
-            android:textSize="20sp"/>
+            android:text="추천 기준을 선택해 주세요"
+            android:textSize="25sp"/>
 
         <Spinner
             android:id="@+id/recommend_spinner"
-            android:theme="@style/SpinnerTheme"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/montaga"
             android:layout_weight="1"
-            android:entries="@array/recommend_array1"/>
+            android:entries="@array/recommend_array1"
+            android:fontFamily="@font/nanum"
+            android:theme="@style/SpinnerTheme" />
 
-<!--
-        <Spinner
-            android:id="@+id/recommend_spinner_like"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="17dp"
-            android:layout_weight="1"
-            android:entries="@array/recommend_array3"></Spinner>
-        />
--->
+        <!--
+                <Spinner
+                    android:id="@+id/recommend_spinner_like"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="17dp"
+                    android:layout_weight="1"
+                    android:entries="@array/recommend_array3"></Spinner>
+                />
+        -->
     </LinearLayout>
 
         <GridView

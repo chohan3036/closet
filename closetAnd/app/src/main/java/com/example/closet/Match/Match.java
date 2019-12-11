@@ -533,4 +533,118 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
 
         return null;
     }
+<<<<<<< HEAD
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        avatarPhotoPath = image.getAbsolutePath();
+        //currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+    String currentPhotoPath;
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 3030) {
+            Uri uri = data.getData();
+            String filePath = getPath(getActivity(), uri);
+            Log.d("Log_dFilePath ", filePath.toString());
+
+            NetworkingAvatar networking = new NetworkingAvatar(filePath, getActivity());
+            networking.connectServer();
+            //여기서 null나면 박수빈한테 알려조
+            if (new File(filePath).exists()) {
+                iv.setImageURI(Uri.fromFile(new File(filePath)));
+            }
+
+            while(!networking.responsed)
+                ; //response받을 때 까지 기다림 아예 view동작을멈춤
+            avatarInfo = networking.getAvaInfo();
+            Log.d("Log_dAvatar", avatarInfo.toString());
+            try {
+                lShoulder = (String)avatarInfo.get("LShoulder");
+                rShoulder = (String)avatarInfo.get("RShoulder");
+                lWrist = (String)avatarInfo.get("LWrist");
+                rWrist = (String)avatarInfo.get("RWrist");
+                lKnee = (String)avatarInfo.get("LKnee");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        //String selectedImagesPaths = getRealPathFromURI(getContext(), uri);
+
+        //currentPhotoPath = image.getAbsolutePath();
+        //File imgFile = new File(currentPhotoPath);
+
+        // networkingPhoto(filePath);
+
+    }
+    // Save a file: path for use with ACTION_VIEW intents
+
+    //Log.d("Real file path is", selectedImagesPaths);
+    //imagesSelected = true;
+
+
+        /*
+<<<<<<< HEAD
+        if (requestCode == MY_PERMISSIONS_REQUEST_CAMERA && resultCode == RESULT_OK) {
+
+            avatarSelected = true;
+            //File imgFile = new File(avatarPhotoPath);
+            //if (imgFile.exists()) {
+            //    iv.setImageURI(Uri.fromFile(imgFile));
+            //}
+        }
+        AddClothes sendImage = new AddClothes(avatarSelected, avatarPhotoPath);
+        sendImage.connectServer();
+
+=======
+   }     if (requestCode == MY_PERMISSIONS_REQUEST_CAMERA && resultCode == RESULT_OK) {
+>>>>>>> 3aa693f8957a5708a68fb8b9df2c0985a3f94052
+            File imgFile = new File(currentPhotoPath);
+            if (imgFile.exists()) {
+                iv.setImageURI(Uri.fromFile(imgFile));
+            }
+        }*/
+
+    }
+
+
+    // 이미지 Resize 함수
+   /* private int setSimpleSize(BitmapFactory.Options options, int requestWidth, int requestHeight){
+        // 이미지 사이즈를 체크할 원본 이미지 가로/세로 사이즈를 임시 변수에 대입.
+        int originalWidth = options.outWidth;
+        int originalHeight = options.outHeight;
+
+        // 원본 이미지 비율인 1로 초기화
+        int size = 1;
+
+        // 해상도가 깨지지 않을만한 요구되는 사이즈까지 2의 배수의 값으로 원본 이미지를 나눈다.
+        while(requestWidth < originalWidth || requestHeight < originalHeight){
+            originalWidth = originalWidth / 2;
+            originalHeight = originalHeight / 2;
+
+            size = size * 2;
+        }
+        return size;
+    }*/
+
+
+
+=======
 }
+>>>>>>> 0e2dd7a02afb43149d0c45c5a6083e673ec69b03
