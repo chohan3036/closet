@@ -267,7 +267,6 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
         bottom = view.findViewById(R.id.match_bottom);
 
         /*
->>>>>>> origin/uiIssue
         lshoulder = view.findViewById(R.id.lshoulder);
         rshoulder = view.findViewById(R.id.rshoulder);
         lwrist = view.findViewById(R.id.lwrist);
@@ -288,30 +287,31 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
         lknee.setX(lKneeX);
         lknee.setY(lKneeY);
         lknee.setText(lKnee);
-<<<<<<< HEAD
-
-=======
         */
+
+        top.setX(lShoulderX);
+        top.setY(lShoulderY);
+        top.getLayoutParams().width = forTopWidth;
+        top.getLayoutParams().height = forTopHeight;
+
+        bottom.setX(lWristX);
+        bottom.setY(lWristY);
+        bottom.getLayoutParams().width = forBottomWidth;
+        bottom.getLayoutParams().height = forBottomHeight;
 
         System.out.println(category);
         if(category.equals("top") || category.equals("shirt") ||
                 category.equals("Coat") || category.equals("Dress")) {
 
             // 첫번째로 선택한 옷은 상의
-            top.setX(lShoulderX);
-            top.setY(lShoulderY);
-            top.getLayoutParams().width = forTopWidth;
-            top.getLayoutParams().height = forTopHeight;
+
             top.setImageBitmap(photo);
             top.setImageAlpha(255);
             top.requestLayout();
         }
         else {
             // 그 다음은 하의
-            bottom.setX(lWristX);
-            bottom.setY(lWristY);
-            bottom.getLayoutParams().width = forBottomWidth;
-            bottom.getLayoutParams().height = forBottomHeight;
+
             bottom.setImageBitmap(photo);
             bottom.setImageAlpha(255);
             bottom.requestLayout();
