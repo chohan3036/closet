@@ -261,6 +261,8 @@ public class Clothes extends AppCompatActivity {
                 break;
             case R.id.mypick:
                 ArrayList<URL> selected_to_match = new ArrayList<>();
+                ArrayList<String> selected_to_match_cid = new ArrayList<>();
+                ArrayList<String> selected_to_match_category = new ArrayList<>();
                 checked_items = Clothes_Adapter.checked_items;
                 try {
                     for (int i = 0; i < checked_items.size(); i++) {
@@ -268,8 +270,15 @@ public class Clothes extends AppCompatActivity {
                         JSONObject eachClothing = null;
                         //int check_index = checked_items.get(i);
                         eachClothing = clothingResults.getJSONObject(checked_items.get(i));
+                        // URL 저장
                         String photoFile = eachClothing.getString("photo");
                         selected_to_match.add(new URL(photoFile));
+                        // category 저장
+                        String category = eachClothing.getString("category");
+                        selected_to_match_category.add(category);
+                        // cid 저장
+                        String cid = eachClothing.getString("cid");
+                        selected_to_match_cid.add(cid);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -277,6 +286,9 @@ public class Clothes extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 selected_items.selected_from_clothes = selected_to_match;
+                selected_items.selected_from_clothes_category = selected_to_match_category;
+                selected_items.selected_from_clothes_cid = selected_to_match_cid;
+
                 Toast.makeText(this, "선택하신 옷이 전송되었습니다", Toast.LENGTH_LONG).show();
                 //Intent intent = new Intent(view.getContext(), Match.class);
                 //intent.putExtra("selected_items", selected_to_match);
@@ -369,12 +381,9 @@ public class Clothes extends AppCompatActivity {
 
             // DB에 저장할 정보들을 String 배열에 담음
             dbInfo[0] = uid;
-            dbInfo[1] = color.getText().toString();
             dbInfo[2] = AddClothes.responses[1].split(":")[1];
             dbInfo[3] = AddClothes.responses[2].split(":")[1];
             dbInfo[4] = AddClothes.responses[3].split(":")[1];
-            dbInfo[5] = category.getText().toString();
-            dbInfo[6] = description.getText().toString();
             dbInfo[7] = AddClothes.responses[7].split(":")[1] + ":" + AddClothes.responses[7].split(":")[2];
             int urlLength = dbInfo[7].length();
             dbInfo[7] = dbInfo[7].substring(0, urlLength - 2).replace("\"", "");
@@ -398,7 +407,6 @@ public class Clothes extends AppCompatActivity {
             imgView.setImageAlpha(255);
         }
 
-
         Button cancel = (Button) popupView.findViewById(R.id.Cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -415,6 +423,9 @@ public class Clothes extends AppCompatActivity {
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dbInfo[1] = color.getText().toString();
+                dbInfo[5] = category.getText().toString();
+                dbInfo[6] = description.getText().toString();
                 toDB.connectServer();
                 infoPopupWindow.dismiss();
             }

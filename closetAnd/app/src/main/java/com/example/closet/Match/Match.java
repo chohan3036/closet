@@ -117,8 +117,10 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1888;
     Intent intent, intent1;
     ImageView iv, top, bottom;
+    TextView lshoulder, rshoulder, lwrist, rwrist, lknee, rknee;
     GridView gridView;
     ArrayList<URL> selected_from_clothes2 = new ArrayList<>();
+    ArrayList<String> selected_from_clothes_category = new ArrayList<>();
     ArrayList<Integer> match_checked_items = Match_Adapter.match_checked_items;;
     Context context;
     JSONObject avatarInfo;//pose networking결과
@@ -154,11 +156,13 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
 
         Match_Adapter adapter;
         selected_from_clothes2 = selected_items.selected_from_clothes;
+        selected_from_clothes_category = selected_items.selected_from_clothes_category;
         if (selected_from_clothes2 == null) {
             Toast.makeText(context, "선택된 옷이 없습니다", Toast.LENGTH_LONG).show();
             //getContext못가져오면 이것도 못가져올것같기도?
         } else {
-            adapter = new Match_Adapter(getActivity(), R.layout.match_griditem, selected_from_clothes2, this);
+            adapter = new Match_Adapter(getActivity(), R.layout.match_griditem,
+                    selected_from_clothes2, selected_from_clothes_category,this);
             gridView.setAdapter(adapter);
         }
     }
@@ -255,13 +259,37 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
     }
 
     @Override
-    public void setValues(int i, Bitmap photo) {
+    public void setValues(String category, Bitmap photo) {
         // TODO Auto-generated method stub
         parsing();
         top = view.findViewById(R.id.match_top);
         bottom = view.findViewById(R.id.match_bottom);
+/*
+        lshoulder = view.findViewById(R.id.lshoulder);
+        rshoulder = view.findViewById(R.id.rshoulder);
+        lwrist = view.findViewById(R.id.lwrist);
+        rwrist = view.findViewById(R.id.rwrist);
+        lknee = view.findViewById(R.id.lknee);
 
-        if(i == 0) {
+        lshoulder.setX(lShoulderX);
+        lshoulder.setY(lShoulderY);
+        lshoulder.setText(lShoulder);
+        rshoulder.setX(rShoulderX);
+        rshoulder.setY(rShoulderY);
+        rshoulder.setText(rShoulder);
+        lwrist.setX(lWristX);
+        lwrist.setY(lWristY);
+        lwrist.setText(lWrist);
+        rwrist.setX(rWristX);
+        rwrist.setY(rWristY);
+        rwrist.setText(rWrist);
+        lknee.setX(lKneeX);
+        lknee.setY(lKneeY);
+        lknee.setText(lKnee);
+*/
+        System.out.println(category);
+        if(category.equals("top") || category.equals("shirt") ||
+                category.equals("Coat") || category.equals("Dress")) {
             // 첫번째로 선택한 옷은 상의
             top.setX(lShoulderX);
             top.setY(lShoulderY);

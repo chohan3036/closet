@@ -34,6 +34,7 @@ public class History extends Fragment {
     ArrayList<URL> photoUrls = new ArrayList<>();
     private ArrayList<String> arrayTextList;
     private History_GridAdapter adapter;
+
     public History() {
         // Required empty public constructor
     }
@@ -60,7 +61,7 @@ public class History extends Fragment {
     private void getClothings(String category) {
         try {
             uid = UID; // 고치기
-            Log.d("uid",uid);
+            Log.d("uid", uid);
             //결과없으면 match에서 코디를 만들고 저장하라고 알려주기
             URL url = new URL("http://52.78.194.160:3000/closet/show/personalHistory/"+uid);
             Networking_Get networking = new Networking_Get(url);
@@ -71,7 +72,7 @@ public class History extends Fragment {
             for (int i = 0; i < clothingResults.length(); i++) {
                 JSONObject eachClothing = clothingResults.getJSONObject(i);
                 String photoFile = eachClothing.getString("photo_look");
-                //Log.d("Log_dPhotoFile",photoFile);
+                Log.d("Log_dPhotoFile",photoFile);
                 if(!"null".equals(photoFile))
                     photoUrls.add(new URL(photoFile));
             }
@@ -93,7 +94,11 @@ public class History extends Fragment {
             arrayTextList.add("History Items " + i);
         adapter = new History_GridAdapter(context, photoUrls, arrayTextList);
         gridView.setAdapter(adapter);
-        photoUrls.clear();//여기?
+        //photoUrls.clear();//여기?
     }
+<<<<<<< HEAD
 }
 
+=======
+}
+>>>>>>> ebd882ac51b09c88e913bc0e870821b639ad2bfd

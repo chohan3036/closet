@@ -31,6 +31,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
+import static com.example.closet.MainActivity.UID;
 
 class Recommend_GridAdapter extends BaseAdapter {
 
@@ -42,7 +43,7 @@ class Recommend_GridAdapter extends BaseAdapter {
     private ViewHolder viewHolder = new ViewHolder();
     boolean showing = false;
     ArrayList<String> hidList = new ArrayList<>();
-    String uid = "1"; // 받아오기
+    String uid = UID; // 받아오기
 
 
     private ArrayList<Integer> likedHid = new ArrayList<>();//  그 사용자가 좋아요  한 list
