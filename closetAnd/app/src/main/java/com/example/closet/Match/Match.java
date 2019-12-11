@@ -30,6 +30,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.closet.Clothes.DBClothes;
 import com.example.closet.Clothes.UrlToBitmap;
 import com.example.closet.Clothes.UrlToBitmap2;
 import com.example.closet.DataTransferInterface;
@@ -138,6 +139,10 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
 
     String uid = null;
     String mPath;
+    String urlStr;
+    URL url;
+    UrlToBitmap2 utb;
+    Bitmap bitmap;
 
     String lShoulder, forLshoulder, rShoulder, forRshoulder;
     String[] forLshoulderInt, forRshoulderInt;
@@ -318,6 +323,7 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
         forBottomWidth = rWristX - lWristX; // 하의 width
         forTopHeight = lShoulderY - lWristY; // 상의 height
 
+/*
         if (!lKnee.equals("None")) {
             // 상의 및 하의 height 정의
             lKneeLength = lKnee.length();
@@ -331,7 +337,7 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
         }
 
         forBottomHeight = lWristY - lKneeY; // 하의 height
-
+*/
         top.setX(lShoulderX);
         top.setY(lShoulderY);
         //top.getLayoutParams().width = forTopWidth;
@@ -510,10 +516,9 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
             NetworkingAvatar networking = new NetworkingAvatar(filePath, getActivity());
             networking.connectServer();
             //여기서 null나면 박수빈한테 알려조
-            if (new File(filePath).exists()) {
-                iv.setImageURI(Uri.fromFile(new File(filePath)));
-            }
-
+            //if (new File(filePath).exists()) {
+            //    iv.setImageURI(Uri.fromFile(new File(filePath)));
+            //}
             while (!networking.responsed) ; //response받을 때 까지 기다림 아예 view동작을멈춤
             avatarInfo = networking.getAvaInfo();
             Log.d("Log_dAvatar", avatarInfo.toString());
@@ -525,9 +530,28 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
                 lWrist = (String) avatarInfo.get("LWrist");
                 rWrist = (String) avatarInfo.get("RWrist");
                 lKnee = (String) avatarInfo.get("LKnee");
+                urlStr = (String) avatarInfo.get("photo");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            // 이미지를 서버로부터 받은 URL에서 가져와 보여줌
+            urlStr = urlStr.replace("\"","");
+            networking.imageRequest(urlStr);
+            try {
+                url = new URL(urlStr);
+                utb = new UrlToBitmap2(url);
+                utb.execute();
+                bitmap = utb.get();
+            } catch (MalformedURLException e){
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            // 일단 BITMAP으로 가져온 뒤에, setImageAlpha를 통해 검정 부분을 투명하게 만들어 보여줌
+            iv.setImageBitmap(bitmap);
+            iv.setImageAlpha(255);
         }
     }
 
