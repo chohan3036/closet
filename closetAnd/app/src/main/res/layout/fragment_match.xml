@@ -61,13 +61,15 @@
 
         <ImageView
             android:id="@+id/match_top"
+            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:background="@drawable/borderline"/>
 
         <ImageView
             android:id="@+id/match_bottom"
+            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:background="@drawable/borderline"/>
 
         <TextView
             android:id="@+id/lshoulder"
