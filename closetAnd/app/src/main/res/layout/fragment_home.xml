@@ -60,21 +60,21 @@
         android:layout_gravity="top"
         android:clickable="true"
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="10dp"
         android:src="@drawable/lightbulb"
         android:text="코디 팁!" />
 
     <TextView
-        android:layout_marginTop="70dp"
         android:id="@+id/tip_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="70dp"
         android:fontFamily="@font/nanum"
         android:foregroundTint="#2196F3"
         android:text="오늘의 코디 팁!"
         android:textColor="@android:color/black"
-        android:textSize="25sp"/>
+        android:textSize="25sp" />
 
 </FrameLayout>
