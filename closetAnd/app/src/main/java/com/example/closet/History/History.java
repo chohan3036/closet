@@ -72,7 +72,7 @@ public class History extends Fragment {
             for (int i = 0; i < clothingResults.length(); i++) {
                 JSONObject eachClothing = clothingResults.getJSONObject(i);
                 String photoFile = eachClothing.getString("photo_look");
-                //Log.d("Log_dPhotoFile",photoFile);
+                Log.d("Log_dPhotoFile",photoFile);
                 if(!"null".equals(photoFile))
                     photoUrls.add(new URL(photoFile));
             }
@@ -94,6 +94,6 @@ public class History extends Fragment {
             arrayTextList.add("History Items " + i);
         adapter = new History_GridAdapter(context, photoUrls, arrayTextList);
         gridView.setAdapter(adapter);
-        photoUrls.clear();//여기?
+        //photoUrls.clear();//여기?
     }
 }

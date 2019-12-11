@@ -38,7 +38,7 @@ class History_GridAdapter extends BaseAdapter {
         this.photoUrls = photoUrls;
         this.arrayTextList = arrayTextList;
 
-        urlToBitmap = new UrlToBitmap(photoUrls);
+        urlToBitmap = new UrlToBitmap(this.photoUrls);
         urlToBitmap.execute();
         try {
             photoBitmap = urlToBitmap.get();

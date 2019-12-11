@@ -72,6 +72,7 @@ public class NetworkingAvatar {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         try {
             Bitmap responseImage = BitmapFactory.decodeFile(selectedImagesPaths, options);
+            /*
             // 사이즈가 클 때 줄이는 코드
             int height = responseImage.getHeight();
             int width = responseImage.getWidth();
@@ -82,11 +83,13 @@ public class NetworkingAvatar {
                 width = resized.getWidth();
             }
             responseImage = resized;
+            */
             responseImage.compress(Bitmap.CompressFormat.JPEG, 80, stream);
         } catch(Exception e){
             System.out.println("Please Make Sure the Selected File is an Image.");
         }
         byte[] byteArray = stream.toByteArray();
+
 
         multipartBodyBuilder.addFormDataPart("photo", "avatar.jpg",
                 RequestBody.create(MediaType.parse("image/*jpg"), byteArray));
