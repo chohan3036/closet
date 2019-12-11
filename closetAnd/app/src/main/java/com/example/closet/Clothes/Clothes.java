@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -353,7 +355,6 @@ public class Clothes extends AppCompatActivity {
                 addPopupWindow.dismiss();
             }
         });
-
     }
 
     protected void infoPopup() {
@@ -432,12 +433,48 @@ public class Clothes extends AppCompatActivity {
         });
     }
 
+    public static Bitmap rotateImage(Bitmap source, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
+                matrix, true);
+    }
 
     @Override
-
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PICK_FROM_CAMERA ) {
-            imagesSelected = true;
+           /* uri = data.getData();
+            Bitmap bitmap1 = null;
+                try {
+                    bitmap1 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                    if (bitmap1 != null) {
+                    ExifInterface ei = new ExifInterface(uri.toString());
+                    int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                            ExifInterface.ORIENTATION_UNDEFINED);
+
+                    Bitmap rotatedBitmap = null;
+                    switch (orientation) {
+
+                        case ExifInterface.ORIENTATION_ROTATE_90:
+                            rotatedBitmap = rotateImage(bitmap, 90);
+                            break;
+
+                        case ExifInterface.ORIENTATION_ROTATE_180:
+                            rotatedBitmap = rotateImage(bitmap, 180);
+                            break;
+
+                        case ExifInterface.ORIENTATION_ROTATE_270:
+                            rotatedBitmap = rotateImage(bitmap, 270);
+                            break;
+
+                        case ExifInterface.ORIENTATION_NORMAL:
+                        default:
+                            rotatedBitmap = bitmap;
+                    }
+                }
+            }catch (IOException e) { e.printStackTrace(); }
+              */
+                imagesSelected = true;
         }
         else if (requestCode == PICK_FROM_ALBUM) {
             if (data == null) {
@@ -447,7 +484,6 @@ public class Clothes extends AppCompatActivity {
                 Log.d("UIR is ", uri.toString());
                 selectedImagesPaths = getRealPathFromURI(this, uri);
                 Log.d("Real file path is", selectedImagesPaths);
-
                 imagesSelected = true;
             }
         }

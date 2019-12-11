@@ -72,15 +72,18 @@ public class AddClothes extends AppCompatActivity {
         try {
             Bitmap responseImage = BitmapFactory.decodeFile(selectedImagesPaths, options);
             // 사이즈가 클 때 줄이는 코드
+
             int height = responseImage.getHeight();
             int width = responseImage.getWidth();
             Bitmap resized = null;
-            while(height > 800 || width > 800){
+            if(height > 800 || width > 800){
+                while(height > 800 || width > 800){
                 resized = Bitmap.createScaledBitmap(responseImage, width / 2 , height / 2, true);
                 height = resized.getHeight();
                 width = resized.getWidth();
+                }
+                responseImage = resized;
             }
-            responseImage = resized;
             responseImage.compress(Bitmap.CompressFormat.JPEG, 80, stream);
         }catch(Exception e){
             System.out.println("Please Make Sure the Selected File is an Image.");

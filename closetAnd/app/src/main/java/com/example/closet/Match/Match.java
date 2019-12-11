@@ -134,7 +134,6 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
 
     String avatarPhotoPath;
     boolean avatarSelected = false;
-    TextView test;
 
     String uid = null;
     String mPath;
@@ -315,7 +314,9 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
         parsing();
         top = view.findViewById(R.id.match_top);
         bottom = view.findViewById(R.id.match_bottom);
+
         /*
+>>>>>>> origin/uiIssue
         lshoulder = view.findViewById(R.id.lshoulder);
         rshoulder = view.findViewById(R.id.rshoulder);
         lwrist = view.findViewById(R.id.lwrist);
@@ -336,10 +337,15 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
         lknee.setX(lKneeX);
         lknee.setY(lKneeY);
         lknee.setText(lKnee);
+<<<<<<< HEAD
+
+=======
         */
+
         System.out.println(category);
         if (category.equals("top") || category.equals("shirt") ||
                 category.equals("Coat") || category.equals("Dress")) {
+
             // 첫번째로 선택한 옷은 상의
             top.setX(lShoulderX);
             top.setY(lShoulderY);
@@ -388,6 +394,7 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
                             Button ok = (Button) popupView.findViewById(R.id.match_save_Ok);
                             ok.setOnClickListener(new View.OnClickListener() {
                                 public void onClick(View v) {
+                                    takeScreenshot();
                                     //save networkigng 해야하는 곳(아바타랑 Look 같이 보내주기)
                                     //mPopupWindow.dismiss();
                                     //save networkigng 해야하는 곳(아바타랑 Look 같이 보내주기)
@@ -581,15 +588,20 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
             return uri.getPath();
         }
 
+
         return null;
     }
 
     private String takeScreenshot() {
+
         Date now = new Date();
         android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
 
         try {
             // image naming and path  to include sd card  appending name you choose for file
+
+            //String mPath = Environment.getExternalStorageDirectory().toString() + "/" + now + ".jpg";
+
             mPath = Environment.getExternalStorageDirectory().toString() + "/" + now + ".jpg";
 
             // create bitmap screen capture
@@ -615,7 +627,9 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
             // Several error may come out with file handling or DOM
             e.printStackTrace();
         }
+
         return mPath;
+
     }
 
     private void openScreenshot(File imageFile) {

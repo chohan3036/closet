@@ -132,6 +132,7 @@ public class Recommend extends Fragment implements AdapterView.OnItemSelectedLis
         String string = adapterView.getItemAtPosition(i).toString();
         //처음에 들어갔을 때 어떻게 보여주지?
         try {
+
             if (string.equals("나이/성별")) {
                 url = new URL("http://52.78.194.160:3030/recommendByUserInfo?uid=" + uid);
             } else if (string.equals("코디 기반")) {
