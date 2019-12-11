@@ -30,6 +30,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.closet.Clothes.DBClothes;
 import com.example.closet.Clothes.UrlToBitmap;
 import com.example.closet.Clothes.UrlToBitmap2;
 import com.example.closet.DataTransferInterface;
@@ -122,6 +123,7 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1888;
     Intent intent, intent1;
     ImageView iv, top, bottom;
+    FrameLayout frame;
     TextView lshoulder, rshoulder, lwrist, rwrist, lknee, rknee;
     GridView gridView;
     ArrayList<URL> selected_from_clothes2 = new ArrayList<>();
@@ -137,6 +139,10 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
 
     String uid = null;
     String mPath;
+    String urlStr;
+    URL url;
+    UrlToBitmap2 utb;
+    Bitmap bitmap;
 
     String lShoulder, forLshoulder, rShoulder, forRshoulder;
     String[] forLshoulderInt, forRshoulderInt;
@@ -241,7 +247,31 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
 
         //test = (TextView) view.findViewById(R.id.match_tv);
         //test.setText(avatarInfo.toString());
-
+        top = view.findViewById(R.id.match_top);
+        bottom = view.findViewById(R.id.match_bottom);
+        frame = view.findViewById(R.id.frame);
+/*
+        lshoulder = view.findViewById(R.id.lshoulder);
+        rshoulder = view.findViewById(R.id.rshoulder);
+        lwrist = view.findViewById(R.id.lwrist);
+        rwrist = view.findViewById(R.id.rwrist);
+        lknee = view.findViewById(R.id.lknee);
+        lshoulder.setX(lShoulderX);
+        lshoulder.setY(lShoulderY);
+        lshoulder.setText(lShoulder);
+        rshoulder.setX(rShoulderX);
+        rshoulder.setY(rShoulderY);
+        rshoulder.setText(rShoulder);
+        lwrist.setX(lWristX);
+        lwrist.setY(lWristY);
+        lwrist.setText(lWrist);
+        rwrist.setX(rWristX);
+        rwrist.setY(rWristY);
+        rwrist.setText(rWrist);
+        lknee.setX(lKneeX);
+        lknee.setY(lKneeY);
+        lknee.setText(lKnee);
+     */
         // 상의 위치 정보 parsing
         if (!lShoulder.equals("None")) {
             lShoulderLength = lShoulder.length();
@@ -251,7 +281,7 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
             lShoulderY = Integer.parseInt(forLshoulderInt[1]);
         } else {
             lShoulderX = 200;
-            lShoulderY = 250;
+            lShoulderY = 100;
         }
 
         if (!rShoulder.equals("None")) {
@@ -261,8 +291,8 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
             rShoulderX = Integer.parseInt(forRshoulderInt[0]);
             rShoulderY = Integer.parseInt(forRshoulderInt[1]);
         } else {
-            rShoulderX = 250;
-            rShoulderY = 250;
+            rShoulderX = 400;
+            rShoulderY = 100;
         }
 
         forTopWidth = rShoulderX - lShoulderX; // 상의 width
@@ -286,13 +316,14 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
             rWristX = Integer.parseInt(forRwristInt[0]);
             rWristY = Integer.parseInt(forRwristInt[1]);
         } else {
-            rWristX = 750;
+            rWristX = 450;
             rWristY = 1000;
         }
 
         forBottomWidth = rWristX - lWristX; // 하의 width
         forTopHeight = lShoulderY - lWristY; // 상의 height
 
+/*
         if (!lKnee.equals("None")) {
             // 상의 및 하의 height 정의
             lKneeLength = lKnee.length();
@@ -306,19 +337,31 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
         }
 
         forBottomHeight = lWristY - lKneeY; // 하의 height
+*/
+        top.setX(lShoulderX);
+        top.setY(lShoulderY);
+        //top.getLayoutParams().width = forTopWidth;
+        //top.getLayoutParams().height = forTopHeight;
+
+        bottom.setX(lWristX);
+        bottom.setY(lWristY);
+        //bottom.getLayoutParams().width = forBottomWidth;
+        //bottom.getLayoutParams().height = forBottomHeight;
     }
 
     @Override
     public void setValues(String category, Bitmap photo) {
         // TODO Auto-generated method stub
         parsing();
-        top = view.findViewById(R.id.match_top);
-        bottom = view.findViewById(R.id.match_bottom);
+
+        System.out.println(top.getX());
+        System.out.println(top.getY());
+        System.out.println(bottom.getX());
+        System.out.println(bottom.getY());
 
         System.out.println(category);
-        if (category.equals("top") || category.equals("shirt") ||
+        if (category.equals("Top") || category.equals("Shirt") ||
                 category.equals("Coat") || category.equals("Dress")) {
-
             // 첫번째로 선택한 옷은 상의
             Log.d("Log_dIshoulderX", String.valueOf(lShoulderX));
             Log.d("Log_dIshoulderY", String.valueOf(lShoulderY));
@@ -331,17 +374,13 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
             top.setImageBitmap(photo);
             top.setImageAlpha(255);
             top.requestLayout();
-        } else {
-            // 그 다음은 하의
-            bottom.setX(lWristX);
-            bottom.setY(lWristY);
-            bottom.getLayoutParams().width = forBottomWidth;
-            bottom.getLayoutParams().height = forBottomHeight;
+        }
+        else {
             bottom.setImageBitmap(photo);
             bottom.setImageAlpha(255);
             bottom.requestLayout();
         }
-        //top.setLayoutParams(new FrameLayout.LayoutParams());
+        //frame.requestLayout();
     }
 
     public void onClick(View view) {
@@ -458,10 +497,9 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
             NetworkingAvatar networking = new NetworkingAvatar(filePath, getActivity());
             networking.connectServer();
             //여기서 null나면 박수빈한테 알려조
-            if (new File(filePath).exists()) {
-                iv.setImageURI(Uri.fromFile(new File(filePath)));
-            }
-
+            //if (new File(filePath).exists()) {
+            //    iv.setImageURI(Uri.fromFile(new File(filePath)));
+            //}
             while (!networking.responsed) ; //response받을 때 까지 기다림 아예 view동작을멈춤
             avatarInfo = networking.getAvaInfo();
             Log.d("Log_dAvatar", avatarInfo.toString());
@@ -473,9 +511,28 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
                 lWrist = (String) avatarInfo.get("LWrist");
                 rWrist = (String) avatarInfo.get("RWrist");
                 lKnee = (String) avatarInfo.get("LKnee");
+                urlStr = (String) avatarInfo.get("photo");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            // 이미지를 서버로부터 받은 URL에서 가져와 보여줌
+            urlStr = urlStr.replace("\"","");
+            networking.imageRequest(urlStr);
+            try {
+                url = new URL(urlStr);
+                utb = new UrlToBitmap2(url);
+                utb.execute();
+                bitmap = utb.get();
+            } catch (MalformedURLException e){
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            // 일단 BITMAP으로 가져온 뒤에, setImageAlpha를 통해 검정 부분을 투명하게 만들어 보여줌
+            iv.setImageBitmap(bitmap);
+            iv.setImageAlpha(255);
         }
     }
 
