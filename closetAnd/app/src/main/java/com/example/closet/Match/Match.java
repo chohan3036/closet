@@ -249,7 +249,9 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
         //test.setText(avatarInfo.toString());
         top = view.findViewById(R.id.match_top);
         bottom = view.findViewById(R.id.match_bottom);
-        frame = view.findViewById(R.id.frame);
+
+        lShoulderX = 250; lShoulderY = 250;
+        lWristX = 0; lWristY = 500;
 /*
         lshoulder = view.findViewById(R.id.lshoulder);
         rshoulder = view.findViewById(R.id.rshoulder);
@@ -273,6 +275,7 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
         lknee.setText(lKnee);
      */
         // 상의 위치 정보 parsing
+        /*
         if (!lShoulder.equals("None")) {
             lShoulderLength = lShoulder.length();
             forLshoulder = lShoulder.substring(1, lShoulderLength - 1);
@@ -323,7 +326,7 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
         forBottomWidth = rWristX - lWristX; // 하의 width
         forTopHeight = lShoulderY - lWristY; // 상의 height
 
-/*
+
         if (!lKnee.equals("None")) {
             // 상의 및 하의 height 정의
             lKneeLength = lKnee.length();

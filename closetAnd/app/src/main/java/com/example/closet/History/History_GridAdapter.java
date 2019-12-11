@@ -90,6 +90,7 @@ class History_GridAdapter extends BaseAdapter {
                 ImageView single_image = (ImageView) popupView.findViewById(R.id.single_iv);
                 Button single_ok = (Button) popupView.findViewById(R.id.single_ok);
                 single_image.setImageBitmap(photoBitmap.get(i));
+                single_image.setImageAlpha(255);
 
                 single_ok.setOnClickListener(new View.OnClickListener() {
                     @Override
