@@ -99,7 +99,6 @@ class History_GridAdapter extends BaseAdapter {
                 });
             }
         });
-
         return view;
     }
 
