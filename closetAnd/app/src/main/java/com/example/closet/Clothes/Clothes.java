@@ -251,7 +251,7 @@ public class Clothes extends AppCompatActivity {
         adapter = new Clothes_Adapter(this, R.layout.clothes_griditem, photoUrls);
         gridView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
- 
+
     }
 
     @SuppressLint("ResourceType")
@@ -272,7 +272,6 @@ public class Clothes extends AppCompatActivity {
                     for (int i = 0; i < checked_items.size(); i++) {
                         //Log.d("Log_dDDaaaaa", i + ":" + (checked_items.get(i)));
                         JSONObject eachClothing = null;
-                        //int check_index = checked_items.get(i);
                         eachClothing = clothingResults.getJSONObject(checked_items.get(i));
                         // URL 저장
                         String photoFile = eachClothing.getString("photo");

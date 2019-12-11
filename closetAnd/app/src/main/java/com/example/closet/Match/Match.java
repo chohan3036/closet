@@ -365,7 +365,15 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
         System.out.println(category);
         if (category.equals("Top") || category.equals("Shirt") ||
                 category.equals("Coat") || category.equals("Dress")) {
+            // 첫번째로 선택한 옷은 상의
+            Log.d("Log_dIshoulderX", String.valueOf(lShoulderX));
+            Log.d("Log_dIshoulderY", String.valueOf(lShoulderY));
 
+            top.setX(lShoulderX);
+            top.setY(lShoulderY);
+
+            top.getLayoutParams().width = forTopWidth;
+            top.getLayoutParams().height = forTopHeight;
             top.setImageBitmap(photo);
             top.setImageAlpha(255);
             top.requestLayout();
@@ -380,11 +388,6 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
 
     public void onClick(View view) {
         switch (view.getId()) {
-            //case R.id.pick:
-            //    intent = new Intent(getContext(), Match_Grid.class);
-            //    //intent.putExtra("selected_items", selected_from_clothes);
-            //    startActivity(intent); // match_grid로 이동
-            //    break;
             case R.id.save:
                 final View popupView = getLayoutInflater().inflate(R.layout.match_pop_up, null);
                 mPopupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -407,33 +410,11 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
                                 public void onClick(View v) {
                                     takeScreenshot();
                                     //save networkigng 해야하는 곳(아바타랑 Look 같이 보내주기)
-                                    //mPopupWindow.dismiss();
-                                    //save networkigng 해야하는 곳(아바타랑 Look 같이 보내주기)
                                     mPath = takeScreenshot();
                                     //try {
                                     NetworkingHistory networkingHistory = new NetworkingHistory(mPath, Look, getActivity());
                                     networkingHistory.connectServer();
-                                        /*
-                                        URL url = new URL("http://52.78.194.160:3030/storeHistory");
-                                        HashMap<String, String> arguments = new HashMap<>();
-                                        arguments.put("uid", uid);
-                                        //arguments.put("outer_cid", "28");
-                                        //arguments.put("up_cid", "26");
-                                        //arguments.put("down_cid", "27");
-                                        arguments.put("look_name", Look);
-                                        //들어가는 값 다 처리해야 함.
-                                        Networking networking = new Networking(url, arguments);
-                                        networking.execute();
-                                        JSONObject result = networking.get();
-                                        Log.d("Log_dStoreHistory", String.valueOf(result));
-                                        */
-                                    //} catch (MalformedURLException e) {
-                                    //    e.printStackTrace();
-                                    //} catch (InterruptedException e) {
-                                    //    e.printStackTrace();
-                                    //} catch (ExecutionException e) {
-                                    //    e.printStackTrace();
-                                    //}
+
                                 }
                             });
                         }
