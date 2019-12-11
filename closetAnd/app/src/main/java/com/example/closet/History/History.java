@@ -97,4 +97,9 @@ public class History extends Fragment {
         gridView.setAdapter(adapter);
         //photoUrls.clear();//여기?
     }
+
+
+
+
 }
+
