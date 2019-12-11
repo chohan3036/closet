@@ -29,6 +29,7 @@
             android:layout_height="50dp"
             android:layout_marginRight="50dp"
             android:fontFamily= "@font/nanum"
+            android:textSize="22dp"
             android:background="#FFFFFF"
             android:hint="Id"></EditText>
 
@@ -56,6 +57,7 @@
             android:layout_marginRight="50dp"
             android:background="#FFFFFF"
             android:fontFamily= "@font/nanum"
+            android:textSize="22dp"
             android:hint="Password"></EditText>
 
     </LinearLayout>
@@ -66,7 +68,8 @@
         android:layout_gravity="center"
         android:layout_marginBottom="20dp"
         android:fontFamily= "@font/nanum"
-        android:text="자동 로그인"/>
+        android:text="자동 로그인"
+        android:textSize="20dp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -82,7 +85,8 @@
             android:layout_weight="1"
             android:background="#eee6c4"
             android:fontFamily= "@font/nanum"
-            android:text="로그인" />
+            android:text="로그인"
+            android:textSize="25dp"/>
 
         <Button
             android:id="@+id/btn_second"
@@ -94,7 +98,8 @@
             android:layout_weight="1"
             android:background="#eee6c4"
             android:fontFamily="@font/nanum"
-            android:text="회원가입" />
+            android:text="회원가입"
+            android:textSize="25dp"/>
 
     </LinearLayout>
 

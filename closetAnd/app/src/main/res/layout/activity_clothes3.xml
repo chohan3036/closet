@@ -22,11 +22,12 @@
 
             <Button
                 android:id="@+id/callCamera"
-                android:layout_width="130dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="@font/montaga"
+                android:fontFamily="@font/nanum"
                 android:text="CAMERA"
+                android:textSize="25dp"
                 android:background="#EDC6C6"
                 android:textColor="#000000" />
         </LinearLayout>
@@ -42,8 +43,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ALBUM"
+                android:textSize="25dp"
                 android:background="#EDC6C6"
-                android:fontFamily="@font/montaga"
+                android:fontFamily="@font/nanum"
                 android:layout_gravity="center"
                 android:textColor="#000000"/>
         </LinearLayout>
@@ -61,8 +63,9 @@
             android:id="@+id/closeAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/montaga"
+            android:fontFamily="@font/nanum"
             android:text="cancel"
+            android:textSize="25dp"
             android:layout_gravity="center_horizontal"
             android:textColor="#000000"/>
     </LinearLayout>

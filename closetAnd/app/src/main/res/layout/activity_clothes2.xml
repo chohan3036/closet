@@ -61,7 +61,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Cancel"
-            android:fontFamily="@font/montaga"
+            android:layout_marginRight="10dp"
+            android:textSize="25dp"
+            android:fontFamily="@font/nanum"
             android:id="@+id/Cancel"
             android:background="#EDC6C6"/>
 
@@ -69,7 +71,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:fontFamily="@font/montaga"
+            android:fontFamily="@font/nanum"
+            android:textSize="25dp"
             android:text="Ok"
             android:id="@+id/Ok"
             android:background="#EDC6C6"/>

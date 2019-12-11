@@ -580,4 +580,5 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
         //intent.setDataAndType(uri, "image/*");
         //startActivity(intent);
     }
+
 }
