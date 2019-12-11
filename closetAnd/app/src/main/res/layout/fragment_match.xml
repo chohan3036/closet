@@ -19,6 +19,7 @@
             android:background="#EDC6C6"
             android:fontFamily="@font/nanum"
             android:text="Reset"
+            android:textSize="20dp"
             android:textColor="#000000" />
 
         <Button
@@ -30,6 +31,7 @@
             android:background="#FFD8D8"
             android:fontFamily="@font/nanum"
             android:text="Save"
+            android:textSize="20dp"
             android:textColor="#000000" />
 
 
@@ -45,7 +47,9 @@
     </RelativeLayout>
 
     <FrameLayout
+        android:id="@+id/frame"
         android:layout_marginTop="80dp"
+
         android:layout_width="280dp"
         android:layout_height="650dp" >
 
@@ -103,6 +107,7 @@
             android:id="@+id/progressbar"
             android:layout_gravity="center"
             android:visibility="invisible"
+
         />
 
     </FrameLayout>

@@ -17,6 +17,7 @@
             android:layout_marginLeft="20dp"
             android:background="#FFFFFF"
             android:theme="@style/SpinnerTheme"
+            android:fontFamily="@font/nanum"
             android:entries="@array/clothes_array" />
 
         <Spinner
@@ -27,6 +28,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:background="#FFFFFF"
+            android:fontFamily="@font/nanum"
             android:entries="@array/clothes_color_array"/>
 
     </LinearLayout>
@@ -60,12 +62,13 @@
             android:id="@+id/add"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginTop="15dp"
+            android:layout_weight="1"
             android:background="#eee6c4"
-            android:text="ADD"
             android:fontFamily="@font/nanum"
-        android:onClick="onClick"/>
+            android:onClick="onClick"
+            android:textSize="25dp"
+            android:text="ADD" />
 
         <Button
             android:id="@+id/info"
@@ -76,6 +79,7 @@
             android:layout_marginLeft="15dp"
             android:background="#eee6c4"
             android:text="INFO"
+            android:textSize="25dp"
             android:fontFamily="@font/nanum"
             android:onClick="onClick"/>
 
@@ -89,6 +93,7 @@
             android:background="#eee6c4"
             android:fontFamily="@font/nanum"
             android:text="MYPICK"
+            android:textSize="25dp"
             android:onClick="onClick"/>
 
     </LinearLayout>

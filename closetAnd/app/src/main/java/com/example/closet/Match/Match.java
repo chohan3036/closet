@@ -37,6 +37,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.text.SimpleDateFormat;
@@ -131,6 +132,7 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
     TextView test;
 
     String uid = UID;
+    String mPath;
 
     public Match() {
         // Required empty public constructor
@@ -264,13 +266,12 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
         parsing();
         top = view.findViewById(R.id.match_top);
         bottom = view.findViewById(R.id.match_bottom);
-/*
+        /*
         lshoulder = view.findViewById(R.id.lshoulder);
         rshoulder = view.findViewById(R.id.rshoulder);
         lwrist = view.findViewById(R.id.lwrist);
         rwrist = view.findViewById(R.id.rwrist);
         lknee = view.findViewById(R.id.lknee);
-
         lshoulder.setX(lShoulderX);
         lshoulder.setY(lShoulderY);
         lshoulder.setText(lShoulder);
@@ -286,7 +287,7 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
         lknee.setX(lKneeX);
         lknee.setY(lKneeY);
         lknee.setText(lKnee);
-*/
+        */
         System.out.println(category);
         if(category.equals("top") || category.equals("shirt") ||
                 category.equals("Coat") || category.equals("Dress")) {
@@ -342,27 +343,31 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
                                     //save networkigng 해야하는 곳(아바타랑 Look 같이 보내주기)
                                     //mPopupWindow.dismiss();
                                     //save networkigng 해야하는 곳(아바타랑 Look 같이 보내주기)
-                                    try {
+                                    mPath = takeScreenshot();
+                                    //try {
+                                        NetworkingHistory networkingHistory = new NetworkingHistory(mPath, Look, getActivity());
+                                        networkingHistory.connectServer();
+                                        /*
                                         URL url = new URL("http://52.78.194.160:3030/storeHistory");
                                         HashMap<String, String> arguments = new HashMap<>();
                                         arguments.put("uid", uid);
-                                        arguments.put("outer_cid", "28");
-                                        arguments.put("up_cid", "26");
-                                        arguments.put("down_cid", "27");
+                                        //arguments.put("outer_cid", "28");
+                                        //arguments.put("up_cid", "26");
+                                        //arguments.put("down_cid", "27");
                                         arguments.put("look_name", Look);
                                         //들어가는 값 다 처리해야 함.
                                         Networking networking = new Networking(url, arguments);
                                         networking.execute();
                                         JSONObject result = networking.get();
                                         Log.d("Log_dStoreHistory", String.valueOf(result));
-
-                                    } catch (MalformedURLException e) {
-                                        e.printStackTrace();
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    } catch (ExecutionException e) {
-                                        e.printStackTrace();
-                                    }
+                                        */
+                                    //} catch (MalformedURLException e) {
+                                    //    e.printStackTrace();
+                                    //} catch (InterruptedException e) {
+                                    //    e.printStackTrace();
+                                    //} catch (ExecutionException e) {
+                                    //    e.printStackTrace();
+                                    //}
                                 }
                             });
                         }
@@ -533,4 +538,47 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
 
         return null;
     }
+    private String takeScreenshot() {
+        Date now = new Date();
+        android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
+
+        try {
+            // image naming and path  to include sd card  appending name you choose for file
+            mPath = Environment.getExternalStorageDirectory().toString() + "/" + now + ".jpg";
+
+            // create bitmap screen capture
+            //View v1 = getActivity().getWindow().getDecorView().getRootView();
+            //ImageView v1 = getActivity().getWindow().getDecorView().getRootView();
+
+            //View v1 = (ImageView) view.findViewById(R.id.newimage);
+            View v1 =(FrameLayout)view.findViewById(R.id.frame);
+            v1.setDrawingCacheEnabled(true);
+            Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
+            v1.setDrawingCacheEnabled(false);
+
+            File imageFile = new File(mPath);
+
+            FileOutputStream outputStream = new FileOutputStream(imageFile);
+            int quality = 100;
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+            outputStream.flush();
+            outputStream.close();
+
+            openScreenshot(imageFile);
+        } catch (Throwable e) {
+            // Several error may come out with file handling or DOM
+            e.printStackTrace();
+        }
+        return mPath;
+    }
+    private void openScreenshot(File imageFile) {
+        //Intent intent = new Intent();
+        //intent.setAction(Intent.ACTION_VIEW);
+        //Uri uri = Uri.fromFile(imageFile);
+        //ImageView new1 = (ImageView) view.findViewById(R.id.newimage);
+        //new1.setImageURI(Uri.fromFile(imageFile));
+        //intent.setDataAndType(uri, "image/*");
+        //startActivity(intent);
+    }
+
 }
