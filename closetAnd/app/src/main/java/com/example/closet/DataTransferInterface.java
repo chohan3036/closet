@@ -5,5 +5,5 @@ import android.graphics.Bitmap;
 import java.util.ArrayList;
 
 public interface DataTransferInterface {
-    public void setValues(Bitmap photo);
+    public void setValues(String category, Bitmap photo);
 }

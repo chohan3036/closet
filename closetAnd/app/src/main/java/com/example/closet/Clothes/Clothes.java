@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -21,13 +22,16 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 import android.widget.Spinner;
 
 import java.io.File;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
@@ -37,6 +41,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import com.example.closet.GetUID;
 import com.example.closet.Networking_Get;
 import com.example.closet.R;
 import com.example.closet.SaveSharedPreference;
@@ -48,8 +53,12 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URI;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
+
+import static com.example.closet.MainActivity.UID;
 
 public class Clothes extends AppCompatActivity {
 
@@ -57,7 +66,7 @@ public class Clothes extends AppCompatActivity {
     ArrayList<URL> photoUrls = new ArrayList<>();
     GridView gridView;
     int spinner_id = 0;
-    private Context context;
+    Context context;
 
     //****image to server
     private static final int PICK_FROM_CAMERA = 0;
@@ -66,11 +75,16 @@ public class Clothes extends AppCompatActivity {
     String selectedImagesPaths;
     boolean imagesSelected = false;
     private Uri uri;
-    String [] responses;
+    String [] dbInfo = new String[8];
+    DBClothes toDB;
+
+    UrlToBitmap2 utb;
+    URL url;
+    Bitmap bitmap;
     //****image to server
 
-    String uid = "3"; // 들어오는  유저 index저장 하기.
-    private String net_url = "http://52.78.194.160:3000/closet/show/personalCloset?uid=" + uid;
+    String uid; // 들어오는  유저 index저장 하기.
+    private String net_url;
 
     ArrayList<Integer> checked_items;
     JSONArray clothingResults;
@@ -80,8 +94,10 @@ public class Clothes extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clothes);
         context = this; //context오는지 확인해야 할 듯
+        uid = UID;
+        net_url = "http://52.78.194.160:3000/closet/show/personalCloset?uid=" + uid;
+        Log.d("Logged in this ID -> ",uid);
         getClothings(net_url);
-        getUid();
         loadGridView();
         setSpinner();
 
@@ -102,7 +118,6 @@ public class Clothes extends AppCompatActivity {
                 } else {
                     Toast.makeText(getApplicationContext(), "Access to Storage read Permission Denied.", Toast.LENGTH_SHORT).show();
                 }
-
             }
             case 2: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -121,11 +136,6 @@ public class Clothes extends AppCompatActivity {
                 return;
             }
         }
-    }
-
-    private void getUid() {
-        uid = SaveSharedPreference.getString(this, "uid"); //이걸 메인에서 받아서 intent로 넘겨줘야하나?
-        Log.d("Log_dGetUid",uid);
     }
 
     private void setSpinner() {
@@ -173,9 +183,7 @@ public class Clothes extends AppCompatActivity {
                     getClothings(categoryUrl);
                     loadGridView();
                 }
-
             }
-
             public void onNothingSelected(AdapterView<?> arg0) {
                 // TODO Auto-generated method stub
             }
@@ -215,7 +223,7 @@ public class Clothes extends AppCompatActivity {
             networking.execute();
             JSONObject result = networking.get();
             clothingResults = (JSONArray) result.get("result");
-            //Log.d("Log_d_jsonarrayResult", String.valueOf(clothingResults));
+            Log.d("Log_d_jsonarrayResult", String.valueOf(clothingResults));
             //checked 된 거랑 맞춰서 intent로 보내는 방법으로  해보기
             //[{"cid":19,"color_name":"red","color_r":255,"color_g":10,"color_b":30,"category":"skirt","description":"favorite","photo":"https:\/\/closetsook.s3.ap-northeast-2.amazonaws.com\/1574096231635.PNG"},{"cid":24,"color_name":"white","color_r":11,"color_g":45,"color_b":133,"category":"skirt"
 
@@ -253,6 +261,8 @@ public class Clothes extends AppCompatActivity {
                 break;
             case R.id.mypick:
                 ArrayList<URL> selected_to_match = new ArrayList<>();
+                ArrayList<String> selected_to_match_cid = new ArrayList<>();
+                ArrayList<String> selected_to_match_category = new ArrayList<>();
                 checked_items = Clothes_Adapter.checked_items;
                 try {
                     for (int i = 0; i < checked_items.size(); i++) {
@@ -260,8 +270,15 @@ public class Clothes extends AppCompatActivity {
                         JSONObject eachClothing = null;
                         //int check_index = checked_items.get(i);
                         eachClothing = clothingResults.getJSONObject(checked_items.get(i));
+                        // URL 저장
                         String photoFile = eachClothing.getString("photo");
                         selected_to_match.add(new URL(photoFile));
+                        // category 저장
+                        String category = eachClothing.getString("category");
+                        selected_to_match_category.add(category);
+                        // cid 저장
+                        String cid = eachClothing.getString("cid");
+                        selected_to_match_cid.add(cid);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -269,6 +286,9 @@ public class Clothes extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 selected_items.selected_from_clothes = selected_to_match;
+                selected_items.selected_from_clothes_category = selected_to_match_category;
+                selected_items.selected_from_clothes_cid = selected_to_match_cid;
+
                 Toast.makeText(this, "선택하신 옷이 전송되었습니다", Toast.LENGTH_LONG).show();
                 //Intent intent = new Intent(view.getContext(), Match.class);
                 //intent.putExtra("selected_items", selected_to_match);
@@ -297,6 +317,7 @@ public class Clothes extends AppCompatActivity {
             }
         });
 
+        // 카메라 버튼 -> 카메라 인텐트 및 찍은 사진 저장
         Button camera = (Button) addPopupView.findViewById(R.id.callCamera);
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -316,9 +337,11 @@ public class Clothes extends AppCompatActivity {
                         startActivityForResult(takePictureIntent, PICK_FROM_CAMERA);
                     }
                 }
+                addPopupWindow.dismiss();
             }
         });
 
+        // 앨범 버튼 -> 앨범 호출 (갤러리 등등 외부 탐색기 사용 가능; getRealPathURI에서 알아서 가져옴)
         Button album = (Button) addPopupView.findViewById(R.id.callAlbum);
         album.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -327,8 +350,10 @@ public class Clothes extends AppCompatActivity {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/*");
                 startActivityForResult(intent, PICK_FROM_ALBUM);
+                addPopupWindow.dismiss();
             }
         });
+
     }
 
     protected void infoPopup() {
@@ -340,15 +365,56 @@ public class Clothes extends AppCompatActivity {
         // 외부 영역 선택시 PopUp 종료
         infoPopupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
 
-        EditText color = popupView.findViewById(R.id.cloth_color);
-        color.setText(AddClothes.responses[0].split(":")[1]);
-        EditText category = popupView.findViewById(R.id.cloth_category);
-        category.setText(AddClothes.responses[1].split(":")[1]);
+        // OK 버튼 눌렀을 때 써야 하기 때문에 final로 선언
+        final EditText color = popupView.findViewById(R.id.cloth_color);
+        final EditText category = popupView.findViewById(R.id.cloth_category);
+        final EditText description = popupView.findViewById(R.id.cloth_description);
+        final ImageView imgView = popupView.findViewById(R.id.cloth_image);
+
+        // 이전에 ADD 작업한 게 있다면 IF 내부를 실행, 아니라면 빈 INFO 화면 띄우기
+        if (imagesSelected == true) {
+            toDB = new DBClothes(dbInfo);
+
+            // 서버로부터 받은 응답을 파싱하여 INFO 화면에 띄워줌
+            color.setText(AddClothes.responses[0].split(":")[1].replace("\"", ""));
+            category.setText(AddClothes.responses[4].split(":")[1].replace("\"", ""));
+
+            // DB에 저장할 정보들을 String 배열에 담음
+            dbInfo[0] = uid;
+            dbInfo[2] = AddClothes.responses[1].split(":")[1];
+            dbInfo[3] = AddClothes.responses[2].split(":")[1];
+            dbInfo[4] = AddClothes.responses[3].split(":")[1];
+            dbInfo[7] = AddClothes.responses[7].split(":")[1] + ":" + AddClothes.responses[7].split(":")[2];
+            int urlLength = dbInfo[7].length();
+            dbInfo[7] = dbInfo[7].substring(0, urlLength - 2).replace("\"", "");
+
+            // 이미지를 서버로부터 받은 URL에서 가져와 보여줌
+            toDB.imageRequest(dbInfo[7]);
+            try {
+                url = new URL(dbInfo[7]);
+                utb = new UrlToBitmap2(url);
+                utb.execute();
+                bitmap = utb.get();
+            } catch (MalformedURLException e){
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            // 일단 BITMAP으로 가져온 뒤에, setImageAlpha를 통해 검정 부분을 투명하게 만들어 보여줌
+            imgView.setImageBitmap(bitmap);
+            imgView.setImageAlpha(255);
+        }
 
         Button cancel = (Button) popupView.findViewById(R.id.Cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                color.setText("");
+                category.setText("");
+                description.setText("");
+                imgView.setImageBitmap(null);
                 infoPopupWindow.dismiss();
             }
         });
@@ -357,9 +423,45 @@ public class Clothes extends AppCompatActivity {
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Ok", Toast.LENGTH_SHORT).show();
+                dbInfo[1] = color.getText().toString();
+                dbInfo[5] = category.getText().toString();
+                dbInfo[6] = description.getText().toString();
+                toDB.connectServer();
+                infoPopupWindow.dismiss();
             }
         });
+    }
+
+
+    @Override
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PICK_FROM_CAMERA ) {
+            imagesSelected = true;
+        }
+        else if (requestCode == PICK_FROM_ALBUM) {
+            if (data == null) {
+                Log.d("Log_d data", "data is null");
+            } else {
+                uri = data.getData();
+                Log.d("UIR is ", uri.toString());
+                selectedImagesPaths = getRealPathFromURI(this, uri);
+                Log.d("Real file path is", selectedImagesPaths);
+
+                imagesSelected = true;
+            }
+        }
+        AddClothes sendImage = new AddClothes(imagesSelected, selectedImagesPaths);
+        try {
+            sendImage.connectServer();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        infoPopup();
+        imagesSelected = false;
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private File createImageFile() throws IOException {
@@ -374,27 +476,6 @@ public class Clothes extends AppCompatActivity {
         );
         selectedImagesPaths = image.getAbsolutePath();
         return image;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PICK_FROM_CAMERA ) {
-            imagesSelected = true;
-        }
-        else if (requestCode == PICK_FROM_ALBUM) {
-            if (data == null) {
-                Log.d("Log_d data", "data is null");
-            } else {
-                uri = data.getData();
-                Log.d("UIR is ", uri.toString());
-                selectedImagesPaths = getRealPathFromURI(this, uri);
-                Log.d("Real file path is", selectedImagesPaths);
-                imagesSelected = true;
-            }
-        }
-        AddClothes sendImage = new AddClothes(imagesSelected, selectedImagesPaths);
-        sendImage.connectServer();
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public static String getRealPathFromURI(final Context context, final Uri uri) {

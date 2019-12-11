@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,13 +25,16 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+import static com.example.closet.MainActivity.UID;
+
 public class History extends Fragment {
 
+    String uid;
     private Context context;
     ArrayList<URL> photoUrls = new ArrayList<>();
     private ArrayList<String> arrayTextList;
     private History_GridAdapter adapter;
-    String uid;
+
     public History() {
         // Required empty public constructor
     }
@@ -56,7 +60,8 @@ public class History extends Fragment {
     }
     private void getClothings(String category) {
         try {
-            uid = "2"; // 고치기
+            uid = UID; // 고치기
+            Log.d("uid", uid);
             //결과없으면 match에서 코디를 만들고 저장하라고 알려주기
             URL url = new URL("http://52.78.194.160:3000/closet/show/personalHistory/"+uid);
             Networking_Get networking = new Networking_Get(url);
@@ -71,7 +76,6 @@ public class History extends Fragment {
                 if(!"null".equals(photoFile))
                     photoUrls.add(new URL(photoFile));
             }
-
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -92,6 +96,4 @@ public class History extends Fragment {
         gridView.setAdapter(adapter);
         photoUrls.clear();//여기?
     }
-
 }
-
