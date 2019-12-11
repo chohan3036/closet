@@ -224,7 +224,6 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
                 iv.setImageBitmap(avatarPhoto);
 
                 lShoulder = (String) result.get("LShoulder");
-
                 rShoulder = (String) result.get("Rshoulder");
                 lWrist = (String) result.get("LWrist");
                 rWrist = (String) result.get("RWrist");
@@ -250,8 +249,8 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
         top = view.findViewById(R.id.match_top);
         bottom = view.findViewById(R.id.match_bottom);
 
-        lShoulderX = 250; lShoulderY = 250;
-        lWristX = 0; lWristY = 500;
+        lShoulderX = 90; lShoulderY = 250;
+        lWristX = 30; lWristY = 500;
 /*
         lshoulder = view.findViewById(R.id.lshoulder);
         rshoulder = view.findViewById(R.id.rshoulder);
@@ -369,11 +368,6 @@ public class Match extends Fragment implements View.OnClickListener, DataTransfe
             Log.d("Log_dIshoulderX", String.valueOf(lShoulderX));
             Log.d("Log_dIshoulderY", String.valueOf(lShoulderY));
 
-            top.setX(lShoulderX);
-            top.setY(lShoulderY);
-
-            top.getLayoutParams().width = forTopWidth;
-            top.getLayoutParams().height = forTopHeight;
             top.setImageBitmap(photo);
             top.setImageAlpha(255);
             top.requestLayout();

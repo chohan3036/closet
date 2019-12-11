@@ -62,11 +62,11 @@
         <ImageView
             android:id="@+id/match_top"
             android:layout_height="250dp"
-            android:layout_width="200dp"/>
+            android:layout_width="250dp"/>
 
         <ImageView
             android:id="@+id/match_bottom"
-            android:layout_height="480dp"
+            android:layout_height="550dp"
             android:layout_width="250dp"/>
 
         <TextView
