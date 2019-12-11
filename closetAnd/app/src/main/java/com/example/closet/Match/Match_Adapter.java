@@ -63,24 +63,6 @@ class Match_Adapter extends BaseAdapter {
             e.printStackTrace();
         }
     }
-/*
-    private void fileToBitmap() {
-
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        for(int i = 0 ; i<photoUrls.size(); i++) {
-            Bitmap bitmap = BitmapFactory.decodeFile(photoUrls.get(i).getPath(), bmOptions);
-            System.out.println(photoUrls.get(i).getPath());
-            System.out.println(photoUrls.get(i).getAbsolutePath());
-            try {
-                System.out.println(photoUrls.get(i).getCanonicalPath());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            //bitmap= Bitmap.createScaledBitmap(bitmap,)
-            Log.d("Log_dBITMAP",bitmap.toString());
-            photoBitmap.add(bitmap);
-        }
-    }*/
 
     public int getCount() {
         return selected_from_clothes.size();
