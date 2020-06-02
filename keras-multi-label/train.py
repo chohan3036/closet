@@ -1,11 +1,10 @@
-# USAGE
+# 기억하기!! 아래처럼 콘솔에 입력
 # python train.py --dataset dataset --model fashion.model --labelbin mlb.pickle
 
-# set the matplotlib backend so figures can be saved in the background
+# 백그라운드에 figure 저장 위함 (연구 필요)
 import matplotlib
 matplotlib.use("Agg")
 
-# import the necessary packages
 from keras.preprocessing.image import ImageDataGenerator
 from keras.optimizers import Adam
 from keras.preprocessing.image import img_to_array
@@ -21,7 +20,7 @@ import pickle
 import cv2
 import os
 
-# construct the argument parse and parse the arguments
+# argument 입력하기
 ap = argparse.ArgumentParser()
 ap.add_argument("-d", "--dataset", required=True,
 	help="path to input dataset (i.e., directory of images)")
@@ -33,83 +32,70 @@ ap.add_argument("-p", "--plot", type=str, default="plot.png",
 	help="path to output accuracy/loss plot")
 args = vars(ap.parse_args())
 
-# initialize the number of epochs to train for, initial learning rate,
-# batch size, and image dimensions
+# epochs, initial learning rate, batch size, and image dimensions
+# 이 부분은 그대로 쓰기
 EPOCHS = 75
 INIT_LR = 1e-3
 BS = 32
 IMAGE_DIMS = (96, 96, 3)
 
-# grab the image paths and randomly shuffle them
+# 이미지 랜덤으로 섞기
 print("[INFO] loading images...")
 imagePaths = sorted(list(paths.list_images(args["dataset"])))
 random.seed(42)
 random.shuffle(imagePaths)
 
-# initialize the data and labels
 data = []
 labels = []
-
-# loop over the input images
 for imagePath in imagePaths:
-	# load the image, pre-process it, and store it in the data list
+	# 이미지 전처리해서 리스트에 넣기
 	image = cv2.imread(imagePath)
 	image = cv2.resize(image, (IMAGE_DIMS[1], IMAGE_DIMS[0]))
 	image = img_to_array(image)
 	data.append(image)
 
-	# extract set of class labels from the image path and update the
-	# labels list
+	# 분류할 종류
 	l = label = imagePath.split(os.path.sep)[-2].split("_")
 	labels.append(l)
 	print(labels)
 
-# scale the raw pixel intensities to the range [0, 1]
 data = np.array(data, dtype="float") / 255.0
 labels = np.array(labels)
 print("[INFO] data matrix: {} images ({:.2f}MB)".format(
 	len(imagePaths), data.nbytes / (1024 * 1000.0)))
 
-# binarize the labels using scikit-learn's special multi-label
 # binarizer implementation
 print("[INFO] class labels:")
 mlb = MultiLabelBinarizer()
 labels = mlb.fit_transform(labels)
-
-# loop over each of the possible class labels and show them
 for (i, label) in enumerate(mlb.classes_):
 	print("{}. {}".format(i + 1, label))
 
-# partition the data into training and testing splits using 80% of
-# the data for training and the remaining 20% for testing
+# 80%는 학습, 나머지는 테스트용으로 분리
 (trainX, testX, trainY, testY) = train_test_split(data,
 	labels, test_size=0.2, random_state=42)
 
-# construct the image generator for data augmentation
+# augmentation - 이미지 데이터 늘려줌(소규모로 학습시키니까 정확도 높여줘야..)
+# 회전, 옮기기, 전단, 확대, 뒤집기
+# 학습용 이미지 모두에 대해 실행
 aug = ImageDataGenerator(rotation_range=25, width_shift_range=0.1,
 	height_shift_range=0.1, shear_range=0.2, zoom_range=0.2,
 	horizontal_flip=True, fill_mode="nearest")
 
-# initialize the model using a sigmoid activation as the final layer
-# in the network so we can perform multi-label classification
+# sigmoid : 이미지 분류 해야하니까 결과값 0/1로 반환하기
 print("[INFO] compiling model...")
 model = SmallerVGGNet.build(
 	width=IMAGE_DIMS[1], height=IMAGE_DIMS[0],
 	depth=IMAGE_DIMS[2], classes=len(mlb.classes_),
 	finalAct="sigmoid")
 
-# initialize the optimizer (SGD is sufficient)
+# 옵티마이저로 ADAM 사용(sgd로 대체 가능, 나중에 테스트)
 opt = Adam(lr=INIT_LR, decay=INIT_LR / EPOCHS)
 
-# compile the model using binary cross-entropy rather than
-# categorical cross-entropy -- this may seem counterintuitive for
-# multi-label classification, but keep in mind that the goal here
-# is to treat each output label as an independent Bernoulli
-# distribution
+# 손실함수는 binary corss entropy로.. 0/1이니까
 model.compile(loss="binary_crossentropy", optimizer=opt,
 	metrics=["accuracy"])
 
-# train the network
 print("[INFO] training network...")
 H = model.fit_generator(
 	aug.flow(trainX, trainY, batch_size=BS),
@@ -117,17 +103,14 @@ H = model.fit_generator(
 	steps_per_epoch=len(trainX) // BS,
 	epochs=EPOCHS, verbose=1)
 
-# save the model to disk
 print("[INFO] serializing network...")
 model.save(args["model"])
 
-# save the multi-label binarizer to disk
 print("[INFO] serializing label binarizer...")
 f = open(args["labelbin"], "wb")
 f.write(pickle.dumps(mlb))
 f.close()
 
-# plot the training loss and accuracy
 plt.style.use("ggplot")
 plt.figure()
 N = EPOCHS
